@@ -7,9 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\" />
-    <Folder Include="Enumerations\" />
-    <Folder Include="Exceptions\" />
+    <Compile Remove="Entities\**" />
+    <Compile Remove="Enumerations\**" />
+    <Compile Remove="Exceptions\**" />
+    <EmbeddedResource Remove="Entities\**" />
+    <EmbeddedResource Remove="Enumerations\**" />
+    <EmbeddedResource Remove="Exceptions\**" />
+    <None Remove="Entities\**" />
+    <None Remove="Enumerations\**" />
+    <None Remove="Exceptions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Neuroglia.Data" Version="2.0.3" />
   </ItemGroup>
 
 </Project>
