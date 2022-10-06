@@ -13,15 +13,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "presentation", "presentatio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{DDB1A85A-F4C1-4145-872A-13A4C211131A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synapse.Demo.Domain", "sources\core\Synapse.Demo.Domain\Synapse.Demo.Domain.csproj", "{DC527379-E6FD-4DFB-AF39-58D3896E7D88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synapse.Demo.Domain", "sources\core\Synapse.Demo.Domain\Synapse.Demo.Domain.csproj", "{DC527379-E6FD-4DFB-AF39-58D3896E7D88}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infrastructure", "infrastructure", "{778D8914-8F7D-4E5D-ABC9-F98922CAA648}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synapse.Demo.Application", "sources\core\Synapse.Demo.Application\Synapse.Demo.Application.csproj", "{0602BF01-CC2E-4F71-8F4F-70A77026DFFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synapse.Demo.Application", "sources\core\Synapse.Demo.Application\Synapse.Demo.Application.csproj", "{0602BF01-CC2E-4F71-8F4F-70A77026DFFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synapse.Demo.Domain.UnitTests", "tests\Synapse.Demo.Domain.Tests\Synapse.Demo.Domain.UnitTests.csproj", "{295C2F70-330A-4BCA-8E6D-449C2BA7FACC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synapse.Demo.Domain.UnitTests", "tests\Synapse.Demo.Domain.Tests\Synapse.Demo.Domain.UnitTests.csproj", "{295C2F70-330A-4BCA-8E6D-449C2BA7FACC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synapse.Demo.Application.UnitTests", "tests\Synapse.Demo.Application.UnitTests\Synapse.Demo.Application.UnitTests.csproj", "{2BBB9961-7878-423D-A8EB-73C1E5330292}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synapse.Demo.Application.UnitTests", "tests\Synapse.Demo.Application.UnitTests\Synapse.Demo.Application.UnitTests.csproj", "{2BBB9961-7878-423D-A8EB-73C1E5330292}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synapse.Demo.WebUI.E2eTests", "tests\Synapse.Demo.WebUI.IntegrationTests\Synapse.Demo.WebUI.E2eTests.csproj", "{3A44095A-8FB3-4F5E-AF42-4008077D0856}"
 EndProject
@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synapse.Demo.WebServer", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synapse.Demo.WebUI", "sources\presentation\Synapse.Demo.WebUI\Synapse.Demo.WebUI.csproj", "{1B53259D-CB16-4749-9439-4664DCEA79D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synapse.Demo.Infrastructure", "sources\infrastructure\Synapse.Demo.Infrastructure\Synapse.Demo.Infrastructure.csproj", "{AE91BFA1-B4A7-496E-B5F1-C3E3ECD232C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synapse.Demo.Infrastructure", "sources\infrastructure\Synapse.Demo.Infrastructure\Synapse.Demo.Infrastructure.csproj", "{AE91BFA1-B4A7-496E-B5F1-C3E3ECD232C4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synapse.Demo.Api.Rest", "sources\presentation\Synapse.Demo.Api.Rest\Synapse.Demo.Api.Rest.csproj", "{9D0E2401-AE17-4D10-B861-CF06C760464D}"
 EndProject

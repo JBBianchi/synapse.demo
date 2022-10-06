@@ -1,4 +1,4 @@
-﻿namespace Synapse.Demo.Domain.DomainException.Device;
+﻿namespace Synapse.Demo.Domain.Exceptions.Devices;
 
 /// <summary>
 /// The <see cref="Exception"/> thrown when the type of a <see cref="Device"/> is null or empty
@@ -7,6 +7,6 @@ public class NullDeviceTypeDomainException
     : Exception
 {
     public NullDeviceTypeDomainException()
-        : base("A device type cannot be null or empty.") 
+        : base("A device type cannot be null or empty.")
     { }
 }

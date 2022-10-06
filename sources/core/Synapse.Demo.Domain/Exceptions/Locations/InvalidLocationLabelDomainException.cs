@@ -1,4 +1,4 @@
-﻿namespace Synapse.Demo.Domain.DomainException.Location;
+﻿namespace Synapse.Demo.Domain.Exceptions.Locations;
 
 /// <summary>
 /// The <see cref="Exception"/> thrown when the label of a <see cref="Location"/> is not in a valid format
@@ -7,6 +7,6 @@ public class InvalidLocationLabelDomainException
     : Exception
 {
     public InvalidLocationLabelDomainException(string label)
-        : base($"The location label '{label}' is invalid, it cannot contain '{Domain.Location.LabelSeparator}'.")
+        : base($"The location label '{label}' is invalid, it cannot contain '{Models.Location.LabelSeparator}'.")
     { }
 }

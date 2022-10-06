@@ -7,15 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Device\**" />
     <Compile Remove="Entities\**" />
     <Compile Remove="Enumerations\**" />
-    <Compile Remove="Exceptions\**" />
+    <EmbeddedResource Remove="Device\**" />
     <EmbeddedResource Remove="Entities\**" />
     <EmbeddedResource Remove="Enumerations\**" />
-    <EmbeddedResource Remove="Exceptions\**" />
+    <None Remove="Device\**" />
     <None Remove="Entities\**" />
     <None Remove="Enumerations\**" />
-    <None Remove="Exceptions\**" />
   </ItemGroup>
 
   <ItemGroup>

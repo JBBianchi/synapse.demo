@@ -1,10 +1,10 @@
-﻿namespace Synapse.Demo.Domain.DomainEvent.Device;
+﻿namespace Synapse.Demo.Domain.Events.Devices;
 
 /// <summary>
-/// The <see cref="DomainEvent"/> fired after the state of a <see cref="Domain.Device"/> as changed
+/// The <see cref="DomainEvent"/> fired after the state of a <see cref="Device"/> as changed
 /// </summary>
 public class DeviceStateChangedDomainEvent
-    : DomainEvent<Domain.Device>
+    : DomainEvent<Device>
 {
     /// <summary>
     /// Gets the state of the <see cref="Device"/>
@@ -23,7 +23,7 @@ public class DeviceStateChangedDomainEvent
     /// <summary>
     /// Constructs a new <see cref="DeviceCreatedDomainEvent"/>
     /// </summary>
-    /// <param name="state">The new state of the <see cref="Domain.Device"/></param>
+    /// <param name="state">The new state of the <see cref="Device"/></param>
     public DeviceStateChangedDomainEvent(string id, object? state)
         : base(id)
     {

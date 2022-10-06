@@ -6,4 +6,18 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="CloudNative.CloudEvents" Version="2.4.0" />
+    <PackageReference Include="Neuroglia.Core" Version="2.0.3" />
+    <PackageReference Include="Neuroglia.Data" Version="2.0.3" />
+    <PackageReference Include="Neuroglia.Eventing.CloudEvents" Version="2.0.3" />
+    <PackageReference Include="Neuroglia.Mapping" Version="2.0.3" />
+    <PackageReference Include="Neuroglia.Mediation" Version="2.0.3" />
+    <PackageReference Include="Neuroglia.Mediation.FluentValidation" Version="2.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Synapse.Demo.Domain\Synapse.Demo.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

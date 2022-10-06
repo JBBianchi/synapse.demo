@@ -2,7 +2,7 @@ global using Xunit;
 global using FluentAssertions;
 
 
-global using Synapse.Demo.Domain;
-global using Synapse.Demo.Domain.DomainEvent.Device;
-global using Synapse.Demo.Domain.DomainException.Device;
-global using Synapse.Demo.Domain.DomainException.Location;
+global using Synapse.Demo.Domain.Models;
+global using Synapse.Demo.Domain.Events.Devices;
+global using Synapse.Demo.Domain.Exceptions.Devices;
+global using Synapse.Demo.Domain.Exceptions.Locations;

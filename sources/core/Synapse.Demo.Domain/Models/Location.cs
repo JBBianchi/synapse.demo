@@ -1,4 +1,4 @@
-﻿namespace Synapse.Demo.Domain;
+﻿namespace Synapse.Demo.Domain.Models;
 
 /// <summary>
 /// Represents a location and its logical hierarchy
@@ -10,7 +10,6 @@ public record class Location
     /// </summary>
     public readonly static string LabelSeparator = "\\\\";
 
-    public Guid Id { get; init; }
     /// <summary>
     /// Gets the label that identifies the <see cref="Location"/>
     /// </summary>
@@ -23,8 +22,9 @@ public record class Location
     /// <summary>
     /// Constructs a new <see cref="Location"/>
     /// </summary>
-    protected Location() {
-        this.Label = "";
+    protected Location()
+    {
+        Label = "";
     }
 
     /// <summary>
@@ -36,8 +36,8 @@ public record class Location
     {
         if (string.IsNullOrWhiteSpace(label)) throw new NullLocationLabelDomainException();
         if (label.IndexOf(LabelSeparator) > -1) throw new InvalidLocationLabelDomainException(label);
-        this.Label = label;
-        this.Parent = parent;
+        Label = label;
+        Parent = parent;
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ public record class Location
     /// <returns></returns>
     public override string ToString()
     {
-        if (this.Parent == null) return this.Label.ToString();
-        return this.Parent.ToString() + LabelSeparator + this.Label.ToString();
+        if (Parent == null) return Label.ToString();
+        return Parent.ToString() + LabelSeparator + Label.ToString();
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Synapse.Demo.Domain;
+﻿namespace Synapse.Demo.Domain.Models;
 
 /// <summary>
 /// Represents an IoT device
@@ -33,10 +33,10 @@ public class Device
     protected Device()
         : base("")
     {
-        this.Label = "";
-        this.Type = "";
-        this.Location = "";
-        this.State = null;
+        Label = "";
+        Type = "";
+        Location = "";
+        State = null;
     }
 
     /// <summary>
@@ -74,11 +74,11 @@ public class Device
             state: this.State
         ));
          */
-        this.On(this.RegisterEvent(new DeviceCreatedDomainEvent(
-            id: id, 
-            label: label, 
-            type: type, 
-            location: location, 
+        On(RegisterEvent(new DeviceCreatedDomainEvent(
+            id: id,
+            label: label,
+            type: type,
+            location: location,
             state: state
         )));
     }
@@ -89,32 +89,32 @@ public class Device
     /// <param name="state"></param>
     public void SetState(object? state)
     {
-        this.On(this.RegisterEvent(new DeviceStateChangedDomainEvent(this.Id, state)));
+        On(RegisterEvent(new DeviceStateChangedDomainEvent(Id, state)));
     }
 
     /// <summary>
     /// Handles a <see cref="DeviceCreatedDomainEvent"/>
     /// </summary>
-    /// <param name="e">The <see cref="Domain.DomainEvent"/> to handle</param>
+    /// <param name="e">The <see cref="DomainEvent"/> to handle</param>
     protected void On(DeviceCreatedDomainEvent e)
     {
-        this.Id = e.AggregateId;
-        this.CreatedAt = e.CreatedAt;
-        this.LastModified = e.CreatedAt;
-        this.Label = e.Label;
-        this.Type = e.Type;
-        this.Location = e.Location;
-        this.State = e.State;
+        Id = e.AggregateId;
+        CreatedAt = e.CreatedAt;
+        LastModified = e.CreatedAt;
+        Label = e.Label;
+        Type = e.Type;
+        Location = e.Location;
+        State = e.State;
     }
 
     /// <summary>
     /// Handles a <see cref="DeviceStateChangedDomainEvent"/>
     /// </summary>
-    /// <param name="e">The <see cref="Domain.DomainEvent"/> to handle</param>
+    /// <param name="e">The <see cref="DomainEvent"/> to handle</param>
     protected void On(DeviceStateChangedDomainEvent e)
     {
-        this.State = e.State;
-        this.LastModified = e.CreatedAt;
+        State = e.State;
+        LastModified = e.CreatedAt;
     }
 
 }
