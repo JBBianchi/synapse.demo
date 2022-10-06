@@ -120,7 +120,7 @@
 
             var task = () => new Device(null!, label, type, location, null);
 
-            task.Should().Throw<NullDeviceLabelDomainException>();
+            task.Should().Throw<NullDeviceIdDomainException>();
         }
 
         [Fact]
@@ -132,7 +132,7 @@
 
             var task = () => new Device(" ", label ,type, location, null);
 
-            task.Should().Throw<NullDeviceLabelDomainException>();
+            task.Should().Throw<NullDeviceIdDomainException>();
         }
     }
 }

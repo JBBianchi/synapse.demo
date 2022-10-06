@@ -1,5 +1,8 @@
 ﻿namespace Synapse.Demo.Domain.DomainEvent.Device;
 
+/// <summary>
+/// The <see cref="DomainEvent"/> fired after the state of a <see cref="Domain.Device"/> as changed
+/// </summary>
 public class DeviceStateChangedDomainEvent
     : DomainEvent<Domain.Device>
 {

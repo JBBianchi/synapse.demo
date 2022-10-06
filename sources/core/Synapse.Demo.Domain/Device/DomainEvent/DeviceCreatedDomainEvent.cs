@@ -1,5 +1,8 @@
 ﻿namespace Synapse.Demo.Domain.DomainEvent.Device;
 
+/// <summary>
+/// The <see cref="DomainEvent"/> fired after the creation of a <see cref="Domain.Device"/>
+/// </summary>
 public class DeviceCreatedDomainEvent
     : DomainEvent<Domain.Device>
 {

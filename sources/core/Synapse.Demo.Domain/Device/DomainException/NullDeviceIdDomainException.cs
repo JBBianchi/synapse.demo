@@ -1,5 +1,8 @@
 ﻿namespace Synapse.Demo.Domain.DomainException.Device;
 
+/// <summary>
+/// The <see cref="Exception"/> thrown when the id of a <see cref="Device"/> is null or empty
+/// </summary>
 public class NullDeviceIdDomainException
     : Exception
 {
