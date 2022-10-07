@@ -14,8 +14,6 @@ public abstract class AggregateRoot
     /// <param name="id">The <see cref="AggregateRoot"/>'s unique identifier</param>
     protected AggregateRoot(string id)
         : base(id)
-    {
-
-    }
+    {}
 
 }

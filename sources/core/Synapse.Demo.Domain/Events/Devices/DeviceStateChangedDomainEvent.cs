@@ -9,19 +9,17 @@ public class DeviceStateChangedDomainEvent
     /// <summary>
     /// Gets the state of the <see cref="Device"/>
     /// </summary>
-    public object? State { get; protected set; }
+    public object? State { get; protected set; } = null!;
 
     /// <summary>
-    /// Constructs a new <see cref="DeviceCreatedDomainEvent"/>
+    /// Initializes a new <see cref="DeviceCreatedDomainEvent"/>
     /// </summary>
     protected DeviceStateChangedDomainEvent()
-        : base("")
-    {
-        this.State = null;
-    }
+        : base(null!)
+    {}
 
     /// <summary>
-    /// Constructs a new <see cref="DeviceCreatedDomainEvent"/>
+    /// Initializes a new <see cref="DeviceCreatedDomainEvent"/>
     /// </summary>
     /// <param name="state">The new state of the <see cref="Device"/></param>
     public DeviceStateChangedDomainEvent(string id, object? state)

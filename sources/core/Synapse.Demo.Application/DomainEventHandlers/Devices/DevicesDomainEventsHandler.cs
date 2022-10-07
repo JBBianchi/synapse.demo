@@ -11,8 +11,7 @@ internal class DevicesDomainEventsHandler
     /// <inheritdoc/>
     public DevicesDomainEventsHandler(ILoggerFactory loggerFactory, IMapper mapper, IMediator mediator, ICloudEventBus cloudEventBus, IRepository<Domain.Models.Device, string> writeModels, IRepository<Device, string> readModels) 
         : base(loggerFactory, mapper, mediator, cloudEventBus, writeModels, readModels)
-    {
-    }
+    {}
 
     /// <summary>
     /// Handles a <see cref="DeviceCreatedDomainEvent"/>
@@ -24,7 +23,7 @@ internal class DevicesDomainEventsHandler
     public async Task HandleAsync(DeviceCreatedDomainEvent e, CancellationToken cancellationToken = default)
     {
         await this.GetOrReconcileReadModelForAsync(e.AggregateId, cancellationToken);
-        var integrationEvent = this._mapper.Map<DeviceCreatedIntegrationEvent>(e);
+        var integrationEvent = this.Mapper.Map<DeviceCreatedIntegrationEvent>(e);
         await this.PublishIntegrationEventAsync(integrationEvent, cancellationToken);
     }
 }

@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\sources\core\Synapse.Demo.Application\Synapse.Demo.Application.csproj" />
+    <ProjectReference Include="..\..\sources\core\Synapse.Demo.Integration\Synapse.Demo.Integration.csproj" />
   </ItemGroup>
 
 </Project>

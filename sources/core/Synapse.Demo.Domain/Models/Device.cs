@@ -4,40 +4,35 @@
 /// Represents an IoT device
 /// </summary>
 public class Device
-        : AggregateRoot
+    : AggregateRoot
 {
 
     /// <summary>
     /// Gets the label of the <see cref="Device"/>
     /// </summary>
-    public string Label { get; protected set; }
+    public string Label { get; protected set; } = null!;
 
     /// <summary>
     /// Gets the type of <see cref="Device"/>
     /// </summary>
-    public string Type { get; protected set; }
+    public string Type { get; protected set; } = null!;
 
     /// <summary>
     /// Gets the location of the <see cref="Device"/>
     /// </summary>
-    public string Location { get; protected set; }
+    public string Location { get; protected set; } = null!;
 
     /// <summary>
     /// Gets the state of the <see cref="Device"/>
     /// </summary>
-    public object? State { get; protected set; }
+    public object? State { get; protected set; } = null;
 
     /// <summary>
-    /// Constructs a new <see cref="Device"/>
+    /// Initializes a new <see cref="Device"/>
     /// </summary>
     protected Device()
-        : base("")
-    {
-        Label = "";
-        Type = "";
-        Location = "";
-        State = null;
-    }
+        : base(null!)
+    {}
 
     /// <summary>
     /// Construct a new <see cref="Device"/>
@@ -54,27 +49,12 @@ public class Device
     public Device(string id, string label, string type, string location, object? state)
         : base(id)
     {
+        // TODO: replace with generic DomainException ?
         if (string.IsNullOrWhiteSpace(id)) throw new NullDeviceIdDomainException();
         if (string.IsNullOrWhiteSpace(label)) throw new NullDeviceLabelDomainException();
         if (string.IsNullOrWhiteSpace(type)) throw new NullDeviceTypeDomainException();
         if (string.IsNullOrWhiteSpace(location)) throw new NullDeviceLocationDomainException();
-        /*
-        this.Id = id;
-        this.CreatedAt = DateTime.UtcNow;
-        this.LastModified = DateTime.UtcNow;
-        this.Label = label;
-        this.Type = type;
-        this.Location = location;
-        this.State = state;        
-        this.RegisterEvent(new DeviceCreatedDomainEvent(
-            id: this.Id, 
-            label: this.Label, 
-            type: this.Type, 
-            location: this.Location, 
-            state: this.State
-        ));
-         */
-        On(RegisterEvent(new DeviceCreatedDomainEvent(
+        this.On(this.RegisterEvent(new DeviceCreatedDomainEvent(
             id: id,
             label: label,
             type: type,
@@ -89,7 +69,7 @@ public class Device
     /// <param name="state"></param>
     public void SetState(object? state)
     {
-        On(RegisterEvent(new DeviceStateChangedDomainEvent(Id, state)));
+        this.On(this.RegisterEvent(new DeviceStateChangedDomainEvent(Id, state)));
     }
 
     /// <summary>
@@ -98,13 +78,13 @@ public class Device
     /// <param name="e">The <see cref="DomainEvent"/> to handle</param>
     protected void On(DeviceCreatedDomainEvent e)
     {
-        Id = e.AggregateId;
-        CreatedAt = e.CreatedAt;
-        LastModified = e.CreatedAt;
-        Label = e.Label;
-        Type = e.Type;
-        Location = e.Location;
-        State = e.State;
+        this.Id = e.AggregateId;
+        this.CreatedAt = e.CreatedAt;
+        this.LastModified = e.CreatedAt;
+        this.Label = e.Label;
+        this.Type = e.Type;
+        this.Location = e.Location;
+        this.State = e.State;
     }
 
     /// <summary>
@@ -113,8 +93,8 @@ public class Device
     /// <param name="e">The <see cref="DomainEvent"/> to handle</param>
     protected void On(DeviceStateChangedDomainEvent e)
     {
-        State = e.State;
-        LastModified = e.CreatedAt;
+        this.State = e.State;
+        this.LastModified = e.CreatedAt;
     }
 
 }

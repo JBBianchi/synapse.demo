@@ -13,22 +13,20 @@ public record class Location
     /// <summary>
     /// Gets the label that identifies the <see cref="Location"/>
     /// </summary>
-    public string Label { get; init; }
+    public string Label { get; init; } = null!;
     /// <summary>
     /// Gets the potential parent <see cref="Location"/>
     /// </summary>
-    public Location? Parent { get; init; }
+    public Location? Parent { get; init; } = null;
 
     /// <summary>
-    /// Constructs a new <see cref="Location"/>
+    /// Initializes a new <see cref="Location"/>
     /// </summary>
     protected Location()
-    {
-        Label = "";
-    }
+    {}
 
     /// <summary>
-    /// Constructs a new <see cref="Location"/> with the provided label and parent.
+    /// Initializes a new <see cref="Location"/> with the provided label and parent.
     /// </summary>
     /// <param name="label">The label of the location</param>
     /// <param name="parent">The optional parent <see cref="Location"/></param>

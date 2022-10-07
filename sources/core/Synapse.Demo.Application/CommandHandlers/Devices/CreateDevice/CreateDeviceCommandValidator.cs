@@ -1,4 +1,4 @@
-﻿namespace Synapse.Demo.Application.Commands.Devices.CreateDevice;
+﻿namespace Synapse.Demo.Application.CommandHandlers.Devices.CreateDevice;
 
 // TODO: Write tests
 /// <summary>
@@ -8,7 +8,7 @@ internal class CreateDeviceCommandValidator
     : AbstractValidator<CreateDeviceCommand>
 {
     /// <summary>
-    /// Constructs a new <see cref="CreateDeviceCommandValidator"/>
+    /// Initializes a new <see cref="CreateDeviceCommandValidator"/>
     /// </summary>
     public CreateDeviceCommandValidator()
     {

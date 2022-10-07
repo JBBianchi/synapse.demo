@@ -1,4 +1,4 @@
-﻿namespace Synapse.Demo.Application.Commands.Devices.CreateDevice;
+﻿namespace Synapse.Demo.Integration.Commands.Devices;
 
 // TODO: Write tests
 /// <summary>
@@ -33,7 +33,7 @@ public class CreateDeviceCommand
     public object? State { get; init; }
 
     /// <summary>
-    /// Constructs a new <see cref="CreateDeviceCommand"></see>
+    /// Initializes a new <see cref="CreateDeviceCommand"></see>
     /// </summary>
     /// <param name="id">The id of the <see cref="Device"/> to create</param>
     /// <param name="label">The label of the <see cref="Device"/> to create</param>

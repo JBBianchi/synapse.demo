@@ -5,6 +5,7 @@
 /// The integration event fired after the creation of a <see cref="Domain.Models.Device"/>
 /// </summary>
 [CloudEventEnvelope("device", "created")]
+[DataTransferObjectFor(typeof(DeviceCreatedDomainEvent))]
 public class DeviceCreatedIntegrationEvent
     : IntegrationEvent
 {
@@ -34,7 +35,7 @@ public class DeviceCreatedIntegrationEvent
     public object? State { get; init; }
 
     /// <summary>
-    /// Constructs a new <see cref="DeviceCreatedIntegrationEvent"/>
+    /// Initializes a new <see cref="DeviceCreatedIntegrationEvent"/>
     /// </summary>
     /// <param name="id">The id of the created <see cref="Device"/></param>
     /// <param name="label">The label of the created <see cref="Device"/></param>
@@ -53,15 +54,7 @@ public class DeviceCreatedIntegrationEvent
     }
 
     /// <summary>
-    /// Constructs a new <see cref="DeviceCreatedIntegrationEvent"/>
-    /// </summary>
-    /// <param name="device">The created <see cref="Device"/></param>
-    public DeviceCreatedIntegrationEvent(Device device)
-        : this(device.Id, device.Label, device.Type, device.Location, device.State)
-    { }
-
-    /// <summary>
-    /// Constructs a new <see cref="DeviceCreatedIntegrationEvent"/>
+    /// Initializes a new <see cref="DeviceCreatedIntegrationEvent"/>
     /// </summary>
     protected DeviceCreatedIntegrationEvent() { }
 }

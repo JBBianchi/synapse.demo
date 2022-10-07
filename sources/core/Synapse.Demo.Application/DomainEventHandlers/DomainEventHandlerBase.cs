@@ -10,22 +10,22 @@ internal class DomainEventHandlerBase
     /// <summary>
     /// Gets the service used to perform logging
     /// </summary>
-    protected ILogger _logger { get; }
+    protected ILogger Logger { get; init; }
 
     /// <summary>
     /// Gets the service used to map objects
     /// </summary>
-    protected IMapper _mapper { get; }
+    protected IMapper Mapper { get; init; }
 
     /// <summary>
     /// Gets the service used to mediate calls
     /// </summary>
-    protected IMediator _mediator { get; }
+    protected IMediator Mediator { get; init; }
 
     /// <summary>
     /// Gets the service used to publish and subscribe to <see cref="CloudEvent"/>s
     /// </summary>
-    protected ICloudEventBus _cloudEventBus { get; }
+    protected ICloudEventBus CloudEventBus { get; init; }
 
     /// <summary>
     /// Initializes a new <see cref="DomainEventHandlerBase"/>
@@ -36,10 +36,10 @@ internal class DomainEventHandlerBase
     /// <param name="cloudEventBus">The service used to publish and subscribe to <see cref="CloudEvent"/>s</param>
     protected DomainEventHandlerBase(ILoggerFactory loggerFactory, IMapper mapper, IMediator mediator, ICloudEventBus cloudEventBus)
     {
-        this._logger = loggerFactory.CreateLogger(this.GetType());
-        this._mapper = mapper;
-        this._mediator = mediator;
-        this._cloudEventBus = cloudEventBus;
+        this.Logger = loggerFactory.CreateLogger(this.GetType());
+        this.Mapper = mapper;
+        this.Mediator = mediator;
+        this.CloudEventBus = cloudEventBus;
     }
 
     /// <summary>
@@ -51,22 +51,22 @@ internal class DomainEventHandlerBase
     protected virtual async Task PublishIntegrationEventAsync<TEvent>(TEvent e, CancellationToken cancellationToken)
         where TEvent : class, Integration.IIntegrationEvent
     {
-        await this._mediator.PublishAsync(e);
+        await this.Mediator.PublishAsync(e);
         if (!e.GetType().TryGetCustomAttribute(out CloudEventEnvelopeAttribute couldEventAttribute))
             return;
         var eventIdentifier = $"/{couldEventAttribute.AggregateType}/{couldEventAttribute.ActionName}/v1";
         CloudEvent cloudEvent = new()
         {
             Id = Guid.NewGuid().ToString(),
-            Source = new(Environment.GetEnvironmentVariable("CLOUDEVENTS_SOURCE")!),
-            Type = $"com.synapse.demo/eventIdentifier",
+            Source = new(Environment.GetEnvironmentVariable(ApplicationConstants.EnvironmentVariables.CloudEventsSource)!),
+            Type = $"{ApplicationConstants.CloudEventsType}/{eventIdentifier}",
             Time = e.CreatedAt,
             Subject = e.AggregateId.ToString(),
-            DataSchema = new($"{Environment.GetEnvironmentVariable("SCHEMA_REGISTRY_URI")}/{eventIdentifier}", UriKind.RelativeOrAbsolute),
+            DataSchema = new($"{Environment.GetEnvironmentVariable(ApplicationConstants.EnvironmentVariables.SchemaRegistryUri)}/{eventIdentifier}", UriKind.RelativeOrAbsolute),
             DataContentType = MediaTypeNames.Application.Json,
             Data = e
         };
-        await this._cloudEventBus.PublishAsync(cloudEvent, cancellationToken);
+        await this.CloudEventBus.PublishAsync(cloudEvent, cancellationToken);
     }
 }
 
@@ -87,12 +87,12 @@ internal abstract class DomainEventHandlerBase<TWriteModel, TReadModel, TKey>
     /// <summary>
     /// Gets the <see cref="IRepository"/> used to manage the write models for which to handle <see cref="IDomainEvent"/>s
     /// </summary>
-    protected readonly IRepository<TWriteModel, TKey> _writeModels;
+    protected IRepository<TWriteModel, TKey> WriteModels { get; init; }
 
     /// <summary>
     /// Gets the <see cref="IRepository"/> used to manage the read models to project handled <see cref="IDomainEvent"/>s to
     /// </summary>
-    protected readonly IRepository<TReadModel, TKey> _readModels;
+    protected IRepository<TReadModel, TKey> ReadModels { get; init; }
 
     /// <summary>
     /// Initializes a new <see cref="DomainEventHandlerBase"/>
@@ -108,8 +108,8 @@ internal abstract class DomainEventHandlerBase<TWriteModel, TReadModel, TKey>
         IRepository<TWriteModel, TKey> writeModels, IRepository<TReadModel, TKey> readModels)
         : base(loggerFactory, mapper, mediator, cloudEventBus)
     {
-        this._writeModels = writeModels;
-        this._readModels = readModels;
+        this.WriteModels = writeModels;
+        this.ReadModels = readModels;
     }
 
     /// <summary>
@@ -120,18 +120,18 @@ internal abstract class DomainEventHandlerBase<TWriteModel, TReadModel, TKey>
     /// <returns>The read model for the <see cref="IAggregateRoot"/> with the specified key</returns>
     protected virtual async Task<TReadModel> GetOrReconcileReadModelForAsync(TKey aggregateKey, CancellationToken cancellationToken)
     {
-        TReadModel readModel = await this._readModels.FindAsync(aggregateKey, cancellationToken);
+        TReadModel readModel = await this.ReadModels.FindAsync(aggregateKey, cancellationToken);
         if (readModel == null)
         {
-            TWriteModel writeModel = await this._writeModels.FindAsync(aggregateKey, cancellationToken);
+            TWriteModel writeModel = await this.WriteModels.FindAsync(aggregateKey, cancellationToken);
             if (writeModel == null)
             {
-                this._logger.LogError("Failed to find a aggregate of type {aggregateType} with the specified key {key}", typeof(TWriteModel), aggregateKey);
+                this.Logger.LogError("Failed to find a aggregate of type {aggregateType} with the specified key {key}", typeof(TWriteModel), aggregateKey);
                 throw new Exception($"Failed to find a aggregate of type {typeof(TWriteModel)} with the specified key {aggregateKey}");
             }
             readModel = await this.ProjectAsync(writeModel, cancellationToken);
-            readModel = await this._readModels.AddAsync(readModel, cancellationToken);
-            await this._readModels.SaveChangesAsync(cancellationToken);
+            readModel = await this.ReadModels.AddAsync(readModel, cancellationToken);
+            await this.ReadModels.SaveChangesAsync(cancellationToken);
         }
         return readModel;
     }
@@ -144,7 +144,7 @@ internal abstract class DomainEventHandlerBase<TWriteModel, TReadModel, TKey>
     /// <returns>The projected <see cref="IAggregateRoot"/></returns>
     protected virtual async Task<TReadModel> ProjectAsync(TWriteModel writeModel, CancellationToken cancellationToken)
     {
-        return await Task.FromResult(this._mapper.Map<TReadModel>(writeModel));
+        return await Task.FromResult(this.Mapper.Map<TReadModel>(writeModel));
     }
 
 }

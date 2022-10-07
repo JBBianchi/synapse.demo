@@ -1,6 +1,4 @@
-﻿using Neuroglia;
-
-namespace Synapse.Demo.Application.Commands.Devices.CreateDevice;
+﻿namespace Synapse.Demo.Application.CommandHandlers.Devices.CreateDevice;
 
 // TODO: Write tests
 /// <summary>
@@ -12,10 +10,10 @@ internal class CreateDeviceCommandHandler
     /// <summary>
     /// Gets the <see cref="IRepository"/> used to manage <see cref="Domain.Models.Device"/>s
     /// </summary>
-    protected readonly IRepository<Domain.Models.Device> _devices;
+    protected IRepository<Domain.Models.Device> Devices { get; init; }
 
     /// <summary>
-    /// Constructs a new <see cref="CreateDeviceCommandHandler"/>
+    /// Initializes a new <see cref="CreateDeviceCommandHandler"/>
     /// </summary>
     /// <param name="loggerFactory">The service used to create <see cref="ILogger"/>s</param>
     /// <param name="mediator">The service used to mediate calls</param>
@@ -25,22 +23,23 @@ internal class CreateDeviceCommandHandler
         , IRepository<Domain.Models.Device> devices) 
         : base(loggerFactory, mediator, mapper)
     {
-        this._devices = devices;
+        this.Devices = devices;
     }
 
     /// <inheritdoc/>
     public async Task<IOperationResult<Device>> HandleAsync(CreateDeviceCommand command, CancellationToken cancellationToken = default)
     {
         var device = new Domain.Models.Device(command.Id, command.Label, command.Type, command.Location, command.State);
-        await this._devices.AddAsync(device, cancellationToken);
-        await this._devices.SaveChangesAsync(cancellationToken);
-        device = await this._devices.FindAsync(command.Id, cancellationToken);
+        await this.Devices.AddAsync(device, cancellationToken);
+        await this.Devices.SaveChangesAsync(cancellationToken);
+        device = await this.Devices.FindAsync(command.Id, cancellationToken);
         if (device == null)
         {
             throw new DomainException($"A device with id '{command.Id}' should have been created but cannot be found.");
         }
-        await this._mediator.PublishAsync(new DeviceCreatedDomainEvent(device), cancellationToken);
-        var deviceDto = this._mapper.Map<Device>(device);
+        // Already published automagically by the repository implementation
+        // await this.Mediator.PublishAsync(this.Mapper.Map<DeviceCreatedDomainEvent>(device), cancellationToken);
+        var deviceDto = this.Mapper.Map<Device>(device);
         return this.Ok(deviceDto);
     }
 }

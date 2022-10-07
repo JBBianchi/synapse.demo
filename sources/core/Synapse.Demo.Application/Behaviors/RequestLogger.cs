@@ -14,15 +14,15 @@ internal class RequestLogger<TRequest, TResult>
     /// <summary>
     /// Gets the <see cref="ILogger/>
     /// </summary>
-    private readonly ILogger _logger;
+    protected ILogger Logger { get; init; }
 
     /// <summary>
-    /// Constructs a new <see cref="RequestLogger<TRequest, TResult>"/>
+    /// Initializes a new <see cref="RequestLogger<TRequest, TResult>"/>
     /// </summary>
     /// <param name="logger">The <see cref="ILogger/></param>
     public RequestLogger(ILogger<RequestLogger<TRequest, TResult>> logger)
     {
-        this._logger = logger;
+        this.Logger = logger;
     }
 
     /// <summary>
@@ -35,9 +35,9 @@ internal class RequestLogger<TRequest, TResult>
     public async Task<TResult> HandleAsync(TRequest request, RequestHandlerDelegate<TResult> next, CancellationToken cancellationToken = default)
     {
         var requestName = typeof(TRequest).Name;
-        this._logger.LogTrace($"Processing request '{requestName}': {request}");
+        this.Logger.LogTrace($"Processing request '{requestName}': {request}");
         var reponse = (await next());
-        this._logger.LogTrace($"Processed request '{requestName}'");
+        this.Logger.LogTrace($"Processed request '{requestName}'");
         return reponse;
     }
 }

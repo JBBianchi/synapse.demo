@@ -6,41 +6,40 @@
 public class DeviceCreatedDomainEvent
     : DomainEvent<Device>
 {
+    /// <summary>
+    /// Gets the id of the <see cref="Device"/>
+    /// </summary>
+    public string Id { get; protected set; } = null!;
 
     /// <summary>
     /// Gets the label of the <see cref="Device"/>
     /// </summary>
-    public string Label { get; protected set; }
+    public string Label { get; protected set; } = null!;
 
     /// <summary>
     /// Gets the type of <see cref="Device"/>
     /// </summary>
-    public string Type { get; protected set; }
+    public string Type { get; protected set; } = null!;
 
     /// <summary>
     /// Gets the location of the <see cref="Device"/>
     /// </summary>
-    public string Location { get; protected set; }
+    public string Location { get; protected set; } = null!;
 
     /// <summary>
     /// Gets the state of the <see cref="Device"/>
     /// </summary>
-    public object? State { get; protected set; }
+    public object? State { get; protected set; } = null!;
 
     /// <summary>
-    /// Constructs a new <see cref="DeviceCreatedDomainEvent"/>
+    /// Initializes a new <see cref="DeviceCreatedDomainEvent"/>
     /// </summary>
     protected DeviceCreatedDomainEvent()
-        : base("")
-    {
-        this.Label = "";
-        this.Type = "";
-        this.Location = "";
-        this.State = null;
-    }
+        : base(null!)
+    {}
 
     /// <summary>
-    /// Constructs a new <see cref="DeviceCreatedDomainEvent"/>
+    /// Initializes a new <see cref="DeviceCreatedDomainEvent"/>
     /// </summary>
     /// <param name="label">The label of the created <see cref="Device"/></param>
     /// <param name="type">The type of the created <see cref="Device"/></param>
@@ -49,21 +48,10 @@ public class DeviceCreatedDomainEvent
     public DeviceCreatedDomainEvent(string id, string label, string type, string location, object? state)
         : base(id)
     {
+        this.Id = id;
         this.Label = label;
         this.Type = type;
         this.Location = location;
         this.State = state;
-    }
-
-    /// <summary>
-    /// Constructs a new <see cref="DeviceCreatedDomainEvent"/>
-    /// </summary>
-    /// <param name="label">The label of the created <see cref="Device"/></param>
-    /// <param name="type">The type of the created <see cref="Device"/></param>
-    /// <param name="location">The location of the created <see cref="Device"/></param>
-    /// <param name="state">The state of the create <see cref="Device"/></param>
-    public DeviceCreatedDomainEvent(Device device)
-        : this(device.Id, device.Label, device.Type, device.Location, device.State)
-    {
     }
 }

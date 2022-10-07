@@ -16,21 +16,21 @@ internal class RequestPerformanceTimer<TRequest, TResult>
     /// <summary>
     /// Gets a <see cref="ILogger/>
     /// </summary>
-    private readonly ILogger _logger;
+    protected ILogger Logger { get; init; }
 
     /// <summary>
-    /// Gets a <see cref="Stopwatch/>
+    /// Gets a <see cref="System.Diagnostics.Stopwatch/>
     /// </summary>
-    private readonly Stopwatch _stopwatch;
+    protected Stopwatch Stopwatch { get; init; }
 
     /// <summary>
-    /// Constructs a new <see cref="RequestPerformanceTimer<TRequest, TResult>"/>
+    /// Initializes a new <see cref="RequestPerformanceTimer<TRequest, TResult>"/>
     /// </summary>
     /// <param name="logger"></param>
     public RequestPerformanceTimer(ILogger<RequestPerformanceTimer<TRequest, TResult>> logger)
     {
-        this._logger = logger;
-        this._stopwatch = new();
+        this.Logger = logger;
+        this.Stopwatch = new();
     }
 
     /// <summary>
@@ -42,13 +42,13 @@ internal class RequestPerformanceTimer<TRequest, TResult>
     /// <returns></returns>
     public async Task<TResult> HandleAsync(TRequest request, RequestHandlerDelegate<TResult> next, CancellationToken cancellationToken = default)
     {
-        this._stopwatch.Start();
+        this.Stopwatch.Start();
         var reponse = (await next());
-        this._stopwatch.Stop();
-        if (this._stopwatch.ElapsedMilliseconds > 300)
+        this.Stopwatch.Stop();
+        if (this.Stopwatch.ElapsedMilliseconds > 300)
         {
             var requestName = typeof(TRequest).Name;
-            this._logger.LogWarning($"The request '{requestName}' took more than {this._stopwatch.ElapsedMilliseconds}ms to be processed.");
+            this.Logger.LogWarning($"The request '{requestName}' took more than {this.Stopwatch.ElapsedMilliseconds}ms to be processed.");
         }
         return reponse;
     }

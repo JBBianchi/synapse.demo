@@ -13,9 +13,7 @@ public abstract class DomainEvent<TAggregate>
     /// Initializes a new <see cref="DomainEvent{TAggregate}"/>
     /// </summary>
     protected DomainEvent()
-    {
-
-    }
+    {}
 
     /// <summary>
     /// Initializes a new <see cref="DomainEvent{TAggregate}"/>
@@ -23,7 +21,6 @@ public abstract class DomainEvent<TAggregate>
     /// <param name="aggregateId">The id of the <see cref="IAggregateRoot"/> to create the <see cref="DomainEvent{TAggregate}"/> for</param>
     protected DomainEvent(string aggregateId)
         : base(aggregateId)
-    {
-    }
+    {}
 
 }
