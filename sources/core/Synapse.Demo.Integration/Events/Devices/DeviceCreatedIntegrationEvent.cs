@@ -1,4 +1,4 @@
-﻿namespace Synapse.Demo.Application.Events.Devices;
+﻿namespace Synapse.Demo.Integration.Events.Devices;
 
 // TODO: Write tests
 /// <summary>

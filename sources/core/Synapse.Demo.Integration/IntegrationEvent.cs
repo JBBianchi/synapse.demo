@@ -1,4 +1,4 @@
-﻿namespace Synapse.Demo.Application;
+﻿namespace Synapse.Demo.Integration;
 
 /// <summary>
 /// Represents the base class for all <see cref="IIntegrationEvent"/>s

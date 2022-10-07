@@ -1,4 +1,4 @@
-﻿namespace Synapse.Demo.Application.Models;
+﻿namespace Synapse.Demo.Integration.Models;
 
 /// <summary>
 /// Represents an IoT device

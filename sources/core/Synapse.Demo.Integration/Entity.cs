@@ -1,4 +1,4 @@
-﻿namespace Synapse.Demo.Application;
+﻿namespace Synapse.Demo.Integration;
 
 /// <summary>
 /// Represents the base class of all the application's <see cref="IEntity"/> implementations

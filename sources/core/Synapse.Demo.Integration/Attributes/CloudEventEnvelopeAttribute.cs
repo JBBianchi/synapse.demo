@@ -1,4 +1,4 @@
-﻿namespace Synapse.Demo.Application.Attributes;
+﻿namespace Synapse.Demo.Integration.Attributes;
 
 // TODO: Write tests
 /// <summary>

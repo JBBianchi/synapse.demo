@@ -49,7 +49,7 @@ internal class DomainEventHandlerBase
     /// <param name="cancellationToken">A <see cref="CancellationToken"/></param>
     /// <returns>A new awaitable <see cref="Task"/></returns>
     protected virtual async Task PublishIntegrationEventAsync<TEvent>(TEvent e, CancellationToken cancellationToken)
-        where TEvent : class, IIntegrationEvent
+        where TEvent : class, Integration.IIntegrationEvent
     {
         await this._mediator.PublishAsync(e);
         if (!e.GetType().TryGetCustomAttribute(out CloudEventEnvelopeAttribute couldEventAttribute))

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Synapse.Demo.Integration;
 
-namespace Synapse.Demo.Application;
-
-internal interface IIntegrationEvent
+public interface IIntegrationEvent
     : Neuroglia.IIntegrationEvent
 {
     /// <summary>

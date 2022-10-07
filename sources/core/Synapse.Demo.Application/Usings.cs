@@ -7,7 +7,7 @@ global using Neuroglia.Eventing;
 global using Neuroglia.Mediation;
 global using Neuroglia.Mapping;
 
-global using Synapse.Demo.Application.Attributes;
-global using Synapse.Demo.Application.Events.Devices;
-global using Synapse.Demo.Application.Models;
 global using Synapse.Demo.Domain.Events.Devices;
+global using Synapse.Demo.Integration.Attributes;
+global using Synapse.Demo.Integration.Events.Devices;
+global using Synapse.Demo.Integration.Models;
