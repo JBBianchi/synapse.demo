@@ -16,7 +16,7 @@ public static class InfrastructureServiceCollectionExtensions
         if (services == null) throw DomainException.ArgumentNull(nameof(services));
         services.AddCloudEventBus(builder =>
         {
-            builder.WithBrokerUri(options.CloudEvents.BrokerUri);
+            //builder.WithBrokerUri(options.CloudEvents.BrokerUri);
         });
         return services;
     }
