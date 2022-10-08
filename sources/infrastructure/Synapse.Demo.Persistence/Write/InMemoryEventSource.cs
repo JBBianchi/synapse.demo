@@ -149,7 +149,7 @@ public class InMemoryEventSource
     /// </summary>
     public async Task AppendToStreamAsync(IEnumerable<IEventMetadata> events, CancellationToken cancellationToken = default)
     {
-        await this.AppendToStreamAsync(events, 0, cancellationToken);
+        await this.AppendToStreamAsync(events, -1, cancellationToken);
     }
 
     /// <summary>
@@ -157,7 +157,7 @@ public class InMemoryEventSource
     /// </summary>
     public async Task AppendToStreamAsync(IEnumerable<IEventMetadata> events, long expectedVersion, CancellationToken cancellationToken = default)
     {
-        if (expectedVersion != this._sequence+1) throw new DomainException($"The expected version '{expectedVersion}' doesn't match the current state version '{this._sequence}'.");
+        if (expectedVersion != this._sequence) throw new DomainException($"The expected version '{expectedVersion}' doesn't match the current state version '{this._sequence}'.");
         foreach (var e in events)
         {
             this._sequence++;

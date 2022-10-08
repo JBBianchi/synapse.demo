@@ -48,6 +48,7 @@ public class InMemoryEventStoreTests
         var domainEvent = new DeviceCreatedDomainEvent("device-123", "my device", "lamp", @"indoors\\kitchen", new { Hello = "World" });
         var events = new EventMetadata[]
         {
+            new ("FakeType", domainEvent),
             new ("FakeType", domainEvent)
         };
 
@@ -57,7 +58,7 @@ public class InMemoryEventStoreTests
 
         sourcedEvents.Should().NotBeNull();
         sourcedEvents.Should().HaveCount(events.Length * 2);
-        sourcedEvents.Last().Sequence.Should().Be(1);
+        sourcedEvents.Last().Sequence.Should().Be(3);
         sourcedEvents.Last().Data.As<DeviceCreatedDomainEvent>().Should().BeEquivalentTo(events.Last().Data);
     }
 }
