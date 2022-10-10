@@ -1,4 +1,7 @@
-﻿namespace Synapse.Demo.Persistence.Extensions.DependencyInjection;
+﻿using Neuroglia.Data.EventSourcing.Services;
+using System.Reflection;
+
+namespace Synapse.Demo.Persistence.Extensions.DependencyInjection;
 
 /// <summary>
 /// Extension methods for setting up the persitence services in an <see cref="IServiceCollection" />.
@@ -13,7 +16,16 @@ public static class PersistenceServiceCollectionExtensions
     public static IServiceCollection AddPersistence(this IServiceCollection services)
     {
         if (services == null) throw DomainException.ArgumentNull(nameof(services));
+        List<Type> writeModelTypes = TypeCacheUtil.FindFilteredTypes("domain:aggregates", t => t.IsClass && !t.IsAbstract && typeof(IAggregateRoot).IsAssignableFrom(t), typeof(Domain.Models.Device).Assembly).ToList();
+        List<Type> readModelTypes = writeModelTypes
+            .Where(t => t.TryGetCustomAttribute<DataTransferObjectTypeAttribute>(out _))
+            .Select(t => t.GetCustomAttribute<DataTransferObjectTypeAttribute>()!.Type)
+            .ToList();
+        services.AddInMemoryEventStore();
+        services.AddRepositories(writeModelTypes, typeof(EventSourcingRepository<,>));
+        services.AddRepositories(readModelTypes, typeof(InMemoryDbRepository<,>));
 
+        services.AddRepository(typeof(CloudEventOutboxEntry), typeof(InMemoryDbRepository<,>), ServiceLifetime.Singleton);
         return services;
     }
 
@@ -24,48 +36,54 @@ public static class PersistenceServiceCollectionExtensions
     /// <returns>The configured <see cref="IServiceCollection"/></returns>
     public static IServiceCollection AddInMemoryEventStore(this IServiceCollection services)
     {
+        if (services == null) throw DomainException.ArgumentNull(nameof(services));
+        services.TryAddSingleton<IAggregatorFactory, AggregatorFactory>();
         services.TryAddSingleton<InMemoryEventStore>();
         services.TryAddSingleton<IEventStore>(provider => provider.GetRequiredService<InMemoryEventStore>());
         return services;
     }
 
     /// <summary>
-    /// Adds and configures the <see cref="InMemoryReadRepository{TEntity, TKey}"/>
-    /// </summary>
-    /// <param name="services">The <see cref="IServiceCollection"/> to configure</param>
-    /// <param name="lifetime">The <see cref="ServiceLifetime"/> of the <see cref="InMemoryReadRepository{TEntity, TKey}"/> to add. Defaults to <see cref="ServiceLifetime.Scoped"/></param>
-    /// <returns>The configured <see cref="IServiceCollection"/></returns>
-    public static IServiceCollection AddInMemoryReadRepository<TEntity, TKey>(this IServiceCollection services, ServiceLifetime lifetime = ServiceLifetime.Scoped)
-        where TEntity : class, IIdentifiable<TKey>
-        where TKey : IEquatable<TKey>
-    {
-        return services.AddInMemoryReadRepository(typeof(TEntity), typeof(TKey), lifetime);
-    }
-
-    /// <summary>
-    /// Adds and configures the <see cref="InMemoryReadRepository{TEntity, TKey}"/>
+    /// Adds and configures the <see cref="IRepository{TEntity, TKey}"/>
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to configure</param>
     /// <param name="entityType">The type of entity to store</param>
-    /// <param name="keyType">The type of key used to uniquely identify entities to store</param>
-    /// <param name="lifetime">The <see cref="ServiceLifetime"/> of the <see cref="InMemoryReadRepository{TEntity, TKey}"/> to add. Defaults to <see cref="ServiceLifetime.Scoped"/></param>
+    /// <param name="repositoryType">The type of <see cref="IRepository{TEntity, TKey}"/> implementation used for the provided entityType</param>
+    /// <param name="serviceLifetime">The <see cref="ServiceLifetime"/> of the <see cref="IRepository{TEntity, TKey}"/> to add. Defaults to <see cref="ServiceLifetime.Scoped"/></param>
     /// <returns>The configured <see cref="IServiceCollection"/></returns>
-    private static IServiceCollection AddInMemoryReadRepository(this IServiceCollection services, Type entityType, Type keyType, ServiceLifetime lifetime = ServiceLifetime.Scoped)
+    public static IServiceCollection AddRepository(this IServiceCollection services, Type entityType, Type repositoryType, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
     {
-        if (entityType == null)
-            throw new ArgumentNullException(nameof(entityType));
-        if (!typeof(IIdentifiable).IsAssignableFrom(entityType))
-            throw new ArgumentException($"Type '{entityType.Name}' is not an implementation of the '{nameof(IIdentifiable)}' interface", nameof(entityType));
-        var identifiableType = entityType.GetGenericType(typeof(IIdentifiable<>));
-        var expectedKeyType = identifiableType.GetGenericArguments()[0];
-        if (keyType == null)
-            throw new ArgumentNullException(nameof(keyType));
-        if (!expectedKeyType.IsAssignableFrom(keyType))
-            throw new ArgumentException($"Type '{entityType.Name}' expects a key of type '{expectedKeyType.Name}'", nameof(keyType));
-        Type implementationType = typeof(InMemoryReadRepository<,>).MakeGenericType(entityType, keyType);
-        services.TryAdd(new ServiceDescriptor(implementationType, implementationType, lifetime));
-        services.TryAdd(new ServiceDescriptor(typeof(IRepository<,>).MakeGenericType(entityType, keyType), provider => provider.GetRequiredService(implementationType), lifetime));
-        services.TryAdd(new ServiceDescriptor(typeof(IRepository<>).MakeGenericType(entityType), provider => provider.GetRequiredService(implementationType), lifetime));
+        if (services == null) throw DomainException.ArgumentNull(nameof(services));
+        if (entityType == null) throw DomainException.ArgumentNull(nameof(entityType));
+        if (repositoryType == null) throw DomainException.ArgumentNull(nameof(repositoryType));
+        Type keyType = entityType.GetGenericType(typeof(IIdentifiable<>)).GetGenericArguments()[0];
+        if (keyType == null) throw DomainException.NullReference(nameof(services));
+        Type implementationType = repositoryType.MakeGenericType(entityType, keyType);
+        if (implementationType == null) throw DomainException.NullReference(nameof(implementationType));
+        services.Add(new(implementationType, implementationType, serviceLifetime));
+        services.Add(new(typeof(IRepository<>).MakeGenericType(entityType), provider => provider.GetRequiredService(implementationType), serviceLifetime));
+        services.Add(new(typeof(IRepository<,>).MakeGenericType(entityType, keyType), provider => provider.GetRequiredService(implementationType), serviceLifetime));
+        return services;
+    }
+
+
+    /// <summary>
+    /// Adds and configures the <see cref="IRepository{TEntity, TKey}"/>s
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/> to configure</param>
+    /// <param name="entityTypes">The types of entity to store</param>
+    /// <param name="repositoryType">The type of <see cref="IRepository{TEntity, TKey}"/> implementation used for the provided entity types</param>
+    /// <param name="serviceLifetime">The <see cref="ServiceLifetime"/> of the <see cref="IRepository{TEntity, TKey}"/> to add. Defaults to <see cref="ServiceLifetime.Scoped"/></param>
+    /// <returns>The configured <see cref="IServiceCollection"/></returns>
+    public static IServiceCollection AddRepositories(this IServiceCollection services, IEnumerable<Type> entityTypes, Type repositoryType, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
+    {
+        if (services == null) throw DomainException.ArgumentNull(nameof(services));
+        if (entityTypes == null || !entityTypes.Any()) throw DomainException.ArgumentNull(nameof(entityTypes));
+        if (repositoryType == null) throw DomainException.ArgumentNull(nameof(repositoryType));
+        foreach (Type entityType in entityTypes)
+        {
+            services.AddRepository(entityType, repositoryType, serviceLifetime);
+        }
         return services;
     }
 }

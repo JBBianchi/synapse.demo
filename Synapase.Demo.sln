@@ -41,7 +41,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synapse.Demo.Integration.Un
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synapse.Demo.Persistence", "sources\infrastructure\Synapse.Demo.Persistence\Synapse.Demo.Persistence.csproj", "{43A2B9B9-B73B-4C36-9D80-8F82AC51FDEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synapse.Demo.Persistence.UnitTests", "tests\Synapse.Demo.Persistence.UnitTests\Synapse.Demo.Persistence.UnitTests.csproj", "{79F888D7-E262-457E-9B22-D1764342BA93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synapse.Demo.Persistence.UnitTests", "tests\Synapse.Demo.Persistence.UnitTests\Synapse.Demo.Persistence.UnitTests.csproj", "{79F888D7-E262-457E-9B22-D1764342BA93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synapse.Demo.Persistence.IntegrationTests", "tests\Synapse.Demo.Persistence.IntegrationTests\Synapse.Demo.Persistence.IntegrationTests.csproj", "{812051F0-F117-4D7A-9CF7-11CBB9326E3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +107,10 @@ Global
 		{79F888D7-E262-457E-9B22-D1764342BA93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79F888D7-E262-457E-9B22-D1764342BA93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79F888D7-E262-457E-9B22-D1764342BA93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{812051F0-F117-4D7A-9CF7-11CBB9326E3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{812051F0-F117-4D7A-9CF7-11CBB9326E3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{812051F0-F117-4D7A-9CF7-11CBB9326E3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{812051F0-F117-4D7A-9CF7-11CBB9326E3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,6 +133,7 @@ Global
 		{B7A57739-33A8-48AF-81EB-3A9DF33EF002} = {DDB1A85A-F4C1-4145-872A-13A4C211131A}
 		{43A2B9B9-B73B-4C36-9D80-8F82AC51FDEA} = {778D8914-8F7D-4E5D-ABC9-F98922CAA648}
 		{79F888D7-E262-457E-9B22-D1764342BA93} = {DDB1A85A-F4C1-4145-872A-13A4C211131A}
+		{812051F0-F117-4D7A-9CF7-11CBB9326E3C} = {DDB1A85A-F4C1-4145-872A-13A4C211131A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {36DE8419-6939-4E54-9DD4-4C7294147691}

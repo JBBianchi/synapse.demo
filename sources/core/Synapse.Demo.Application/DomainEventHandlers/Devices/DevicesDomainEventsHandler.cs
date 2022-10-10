@@ -1,4 +1,7 @@
-﻿namespace Synapse.Demo.Application.DomainEventHandlers.Devices;
+﻿using Microsoft.Extensions.Options;
+using Synapse.Demo.Application.Configuration;
+
+namespace Synapse.Demo.Application.DomainEventHandlers.Devices;
 
 // TODO: Write tests
 /// <summary>
@@ -9,8 +12,8 @@ internal class DevicesDomainEventsHandler
     , INotificationHandler<DeviceCreatedDomainEvent>
 {
     /// <inheritdoc/>
-    public DevicesDomainEventsHandler(ILoggerFactory loggerFactory, IMapper mapper, IMediator mediator, ICloudEventBus cloudEventBus, IRepository<Domain.Models.Device, string> writeModels, IRepository<Device, string> readModels) 
-        : base(loggerFactory, mapper, mediator, cloudEventBus, writeModels, readModels)
+    public DevicesDomainEventsHandler(ILoggerFactory loggerFactory, IMapper mapper, IMediator mediator, ICloudEventBus cloudEventBus, IOptions<DemoApplicationOptions> options, IRepository<Domain.Models.Device, string> writeModels, IRepository<Device, string> readModels) 
+        : base(loggerFactory, mapper, mediator, cloudEventBus, options, writeModels, readModels)
     {}
 
     /// <summary>

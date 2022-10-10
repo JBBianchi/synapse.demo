@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Synapse.Demo.Persistence.IntegrationTests": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "CLOUDEVENTSSOURCE": "https://demo.synpase.com",
+        "CLOUDEVENTBROKER": "https://webhook.site/2938e77a-0508-4d98-8d75-3830262437b3",
+        "SCHEMAREGISTRY": "https://schema-registry.synapse.com"
+      }
+    }
+  }
+}

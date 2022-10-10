@@ -5,7 +5,7 @@
 /// </summary>
 /// <typeparam name="TEntity"></typeparam>
 /// <typeparam name="TKey"></typeparam>
-public class InMemoryReadRepository<TEntity, TKey> 
+public class InMemoryDbRepository<TEntity, TKey> 
     : RepositoryBase<TEntity, TKey>
     , IDisposable
         where TEntity : class, IIdentifiable<TKey> 
@@ -24,10 +24,10 @@ public class InMemoryReadRepository<TEntity, TKey>
     protected ILogger Logger { get; init; }
 
     /// <summary>
-    /// Initializes a new <see cref="InMemoryReadRepository{TEntity, TKey}"/>
+    /// Initializes a new <see cref="InMemoryDbRepository{TEntity, TKey}"/>
     /// </summary>
     /// <param name="logger"></param>
-    public InMemoryReadRepository(ILogger<InMemoryReadRepository<TEntity, TKey>> logger)
+    public InMemoryDbRepository(ILogger<InMemoryDbRepository<TEntity, TKey>> logger)
     {
         this.Logger = logger;
     }
@@ -36,7 +36,7 @@ public class InMemoryReadRepository<TEntity, TKey>
     public override async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         if (entity == null) throw DomainException.ArgumentNull(nameof(entity));
-        if (!this.Data.ContainsKey(entity.Id)) throw DomainException.EntityAlreadyExists(typeof(TEntity), entity.Id, "Id");
+        if (this.Data.ContainsKey(entity.Id)) throw DomainException.EntityAlreadyExists(typeof(TEntity), entity.Id, "Id");
         this.Data.Add(entity.Id, entity);
         this.Logger.LogTrace($"Added entity with key '{entity.Id}'");
         return await Task.FromResult(entity);
@@ -59,7 +59,11 @@ public class InMemoryReadRepository<TEntity, TKey>
     public override async Task<TEntity> FindAsync(TKey key, CancellationToken cancellationToken = default)
     {
         if (key == null) throw DomainException.ArgumentNull(nameof(key));
-        if (!this.Data.ContainsKey(key)) throw new DomainException($"Unable to find the entity with key '{key}'.");
+        if (!this.Data.ContainsKey(key))
+        {
+            this.Logger.LogTrace($"Unable to find entity with key '{key}'");
+            return null;
+        }
         this.Logger.LogTrace($"Found entity with key '{key}'");
         return await Task.FromResult(this.Data[key]);
     }

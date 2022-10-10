@@ -1,4 +1,6 @@
-﻿using System.Net.Mime;
+﻿using Microsoft.Extensions.Options;
+using Synapse.Demo.Application.Configuration;
+using System.Net.Mime;
 
 namespace Synapse.Demo.Application.DomainEventHandlers;
 
@@ -28,18 +30,30 @@ internal class DomainEventHandlerBase
     protected ICloudEventBus CloudEventBus { get; init; }
 
     /// <summary>
+    /// Gets the applicaiton <see cref="IOptions{TOptions}"/>
+    /// </summary>
+    protected DemoApplicationOptions Options { get; init; }
+
+    /// <summary>
     /// Initializes a new <see cref="DomainEventHandlerBase"/>
     /// </summary>
     /// <param name="loggerFactory">The service used to create <see cref="ILogger"/>s</param>
     /// <param name="mapper">The service used to map objects</param>
     /// <param name="mediator">The service used to mediate calls</param>
     /// <param name="cloudEventBus">The service used to publish and subscribe to <see cref="CloudEvent"/>s</param>
-    protected DomainEventHandlerBase(ILoggerFactory loggerFactory, IMapper mapper, IMediator mediator, ICloudEventBus cloudEventBus)
+    /// <param name="options">The applicaiton <see cref="IOptions{TOptions}"/></param>
+    protected DomainEventHandlerBase(ILoggerFactory loggerFactory, IMapper mapper, IMediator mediator, ICloudEventBus cloudEventBus, IOptions<DemoApplicationOptions> options)
     {
+        if (loggerFactory == null) throw DomainException.ArgumentNull(nameof(loggerFactory));
+        if (mapper == null) throw DomainException.ArgumentNull(nameof(mapper));
+        if (mediator == null) throw DomainException.ArgumentNull(nameof(mediator));
+        if (cloudEventBus == null) throw DomainException.ArgumentNull(nameof(cloudEventBus));
+        if (options == null) throw DomainException.ArgumentNull(nameof(options));
         this.Logger = loggerFactory.CreateLogger(this.GetType());
         this.Mapper = mapper;
         this.Mediator = mediator;
         this.CloudEventBus = cloudEventBus;
+        this.Options = options.Value;
     }
 
     /// <summary>
@@ -54,15 +68,15 @@ internal class DomainEventHandlerBase
         await this.Mediator.PublishAsync(e);
         if (!e.GetType().TryGetCustomAttribute(out CloudEventEnvelopeAttribute couldEventAttribute))
             return;
-        var eventIdentifier = $"/{couldEventAttribute.AggregateType}/{couldEventAttribute.ActionName}/v1";
+        var eventIdentifier = $"{couldEventAttribute.AggregateType}/{couldEventAttribute.ActionName}/v1";
         CloudEvent cloudEvent = new()
         {
             Id = Guid.NewGuid().ToString(),
-            Source = new(Environment.GetEnvironmentVariable(ApplicationConstants.EnvironmentVariables.CloudEventsSource)!),
+            Source = new (this.Options.CloudEventsSource),
             Type = $"{ApplicationConstants.CloudEventsType}/{eventIdentifier}",
             Time = e.CreatedAt,
             Subject = e.AggregateId.ToString(),
-            DataSchema = new($"{Environment.GetEnvironmentVariable(ApplicationConstants.EnvironmentVariables.SchemaRegistryUri)}/{eventIdentifier}", UriKind.RelativeOrAbsolute),
+            DataSchema = new($"{this.Options.SchemaRegistry}/{eventIdentifier}", UriKind.RelativeOrAbsolute),
             DataContentType = MediaTypeNames.Application.Json,
             Data = e
         };
@@ -101,13 +115,15 @@ internal abstract class DomainEventHandlerBase<TWriteModel, TReadModel, TKey>
     /// <param name="mapper">The service used to map objects</param>
     /// <param name="mediator">The service used to mediate calls</param>
     /// <param name="cloudEventBus">The service used to publish and subscribe to <see cref="CloudEvent"/>s</param>
-    /// <param name="cloudEventHub">The current <see cref="ICloudEventHub"/>'s <see cref="IHubContext{THub, T}"/></param>
+    /// <param name="options">The applicaiton <see cref="IOptions{TOptions}"/></param>
     /// <param name="writeModels">The <see cref="IRepository"/> used to manage the write models for which to handle <see cref="IDomainEvent"/>s</param>
     /// <param name="readModels">The <see cref="IRepository"/> used to manage the read models to project handled <see cref="IDomainEvent"/>s to</param>
-    protected DomainEventHandlerBase(ILoggerFactory loggerFactory, IMapper mapper, IMediator mediator, ICloudEventBus cloudEventBus,
+    protected DomainEventHandlerBase(ILoggerFactory loggerFactory, IMapper mapper, IMediator mediator, ICloudEventBus cloudEventBus, IOptions<DemoApplicationOptions> options,
         IRepository<TWriteModel, TKey> writeModels, IRepository<TReadModel, TKey> readModels)
-        : base(loggerFactory, mapper, mediator, cloudEventBus)
+        : base(loggerFactory, mapper, mediator, cloudEventBus, options)
     {
+        if (writeModels == null) throw DomainException.ArgumentNull(nameof(writeModels));
+        if (readModels == null) throw DomainException.ArgumentNull(nameof(readModels));
         this.WriteModels = writeModels;
         this.ReadModels = readModels;
     }

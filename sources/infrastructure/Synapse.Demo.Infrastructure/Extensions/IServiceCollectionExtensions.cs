@@ -1,4 +1,8 @@
-﻿namespace Synapse.Demo.Infrastructure.Extensions.DependencyInjection;
+﻿using CloudNative.CloudEvents.SystemTextJson;
+using CloudNative.CloudEvents;
+using Synapse.Demo.Application.Configuration;
+
+namespace Synapse.Demo.Infrastructure.Extensions.DependencyInjection;
 
 
 /// <summary>
@@ -11,12 +15,13 @@ public static class InfrastructureServiceCollectionExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
     /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IDemoApplicationOptions applicationOptions)
     {
         if (services == null) throw DomainException.ArgumentNull(nameof(services));
+        services.AddSingleton<CloudEventFormatter, JsonEventFormatter>();
         services.AddCloudEventBus(builder =>
         {
-            //builder.WithBrokerUri(options.CloudEvents.BrokerUri);
+            builder.WithBrokerUri(new (applicationOptions.CloudEventBroker));
         });
         return services;
     }

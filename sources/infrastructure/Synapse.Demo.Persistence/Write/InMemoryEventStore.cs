@@ -75,7 +75,7 @@ public class InMemoryEventStore
     public virtual async Task<IEnumerable<ISourcedEvent>> ReadEventsForwardAsync(string streamId, long offset, long length, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(streamId)) throw DomainException.ArgumentNull(nameof(streamId));
-        if (offset < 0) throw DomainException.ArgumentMustBeHigherOrEqualTo(nameof(offset), 0);
+        if (offset < -1) throw DomainException.ArgumentMustBeHigherOrEqualTo(nameof(offset), -1);
         if (length < 0) throw DomainException.ArgumentMustBeHigherOrEqualTo(nameof(length), 0);
         if (!await this.StreamExistsAsync(streamId, cancellationToken)) return null!;
         return await this.Streams[streamId].ReadEventsForwardAsync(offset, length, cancellationToken);
@@ -85,7 +85,7 @@ public class InMemoryEventStore
     public virtual async Task<IEnumerable<ISourcedEvent>> ReadEventsForwardAsync(string streamId, long offset, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(streamId)) throw DomainException.ArgumentNull(nameof(streamId));
-        if (offset < 0) throw DomainException.ArgumentMustBeHigherOrEqualTo(nameof(offset), 0);
+        if (offset < -1) throw DomainException.ArgumentMustBeHigherOrEqualTo(nameof(offset), -1);
         if (!await this.StreamExistsAsync(streamId, cancellationToken)) return null!;
         return await this.Streams[streamId].ReadEventsForwardAsync(offset, cancellationToken);
     }
@@ -102,7 +102,7 @@ public class InMemoryEventStore
     public virtual async Task<ISourcedEvent> ReadSingleEventForwardAsync(string streamId, long offset, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(streamId)) throw DomainException.ArgumentNull(nameof(streamId));
-        if (offset < 0) throw DomainException.ArgumentMustBeHigherOrEqualTo(nameof(offset), 0);
+        if (offset < -1) throw DomainException.ArgumentMustBeHigherOrEqualTo(nameof(offset), -1);
         if (!await this.StreamExistsAsync(streamId, cancellationToken)) return null!;
         return await this.Streams[streamId].ReadSingleEventForwardAsync(offset, cancellationToken);
     }
@@ -111,7 +111,7 @@ public class InMemoryEventStore
     public virtual async Task<IEnumerable<ISourcedEvent>> ReadEventsBackwardAsync(string streamId, long offset, long length, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(streamId)) throw DomainException.ArgumentNull(nameof(streamId));
-        if (offset < 0) throw DomainException.ArgumentMustBeHigherOrEqualTo(nameof(offset), 0);
+        if (offset < -1) throw DomainException.ArgumentMustBeHigherOrEqualTo(nameof(offset), -1);
         if (length < 0) throw DomainException.ArgumentMustBeHigherOrEqualTo(nameof(length), 0);
         if (!await this.StreamExistsAsync(streamId, cancellationToken)) return null!;
         return await this.Streams[streamId].ReadEventsBackwardAsync(offset, length, cancellationToken);
@@ -121,7 +121,7 @@ public class InMemoryEventStore
     public virtual async Task<IEnumerable<ISourcedEvent>> ReadEventsBackwardAsync(string streamId, long offset, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(streamId)) throw DomainException.ArgumentNull(nameof(streamId));
-        if (offset < 0) throw DomainException.ArgumentMustBeHigherOrEqualTo(nameof(offset), 0);
+        if (offset < -1) throw DomainException.ArgumentMustBeHigherOrEqualTo(nameof(offset), -1);
         if (!await this.StreamExistsAsync(streamId, cancellationToken)) return null!;
         return await this.Streams[streamId].ReadEventsBackwardAsync(offset, cancellationToken);
     }
@@ -130,7 +130,7 @@ public class InMemoryEventStore
     public virtual async Task<ISourcedEvent> ReadSingleEventBackwardAsync(string streamId, long offset, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(streamId)) throw DomainException.ArgumentNull(nameof(streamId));
-        if (offset < 0) throw DomainException.ArgumentMustBeHigherOrEqualTo(nameof(offset), 0);
+        if (offset < -1) throw DomainException.ArgumentMustBeHigherOrEqualTo(nameof(offset), -1);
         if (!await this.StreamExistsAsync(streamId, cancellationToken)) return null!;
         return await this.Streams[streamId].ReadSingleEventBackwardAsync(offset, cancellationToken);
     }

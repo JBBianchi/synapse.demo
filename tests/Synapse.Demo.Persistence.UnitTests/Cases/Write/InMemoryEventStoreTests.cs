@@ -9,7 +9,7 @@ public class InMemoryEventStoreTests
     {
         var eventStore = EventStoreFactory.Create();
         var streamId = "test-stream";
-        var domainEvent = new DeviceCreatedDomainEvent("device-123", "my device", "lamp", @"indoors\\kitchen", new { Hello = "World" });
+        var domainEvent = DomainEventFactory.CreateDeviceCreatedDomainEvent();
         var events = new EventMetadata[]
         {
             new ("FakeType", domainEvent)
@@ -28,7 +28,7 @@ public class InMemoryEventStoreTests
     {
         var eventStore = EventStoreFactory.Create();
         var streamId = "test-stream";
-        var domainEvent = new DeviceCreatedDomainEvent("device-123", "my device", "lamp", @"indoors\\kitchen", new { Hello = "World" });
+        var domainEvent = DomainEventFactory.CreateDeviceCreatedDomainEvent();
         var events = new EventMetadata[]
         {
             new ("FakeType", domainEvent)
@@ -45,7 +45,7 @@ public class InMemoryEventStoreTests
     {
         var eventStore = EventStoreFactory.Create();
         var streamId = "test-stream";
-        var domainEvent = new DeviceCreatedDomainEvent("device-123", "my device", "lamp", @"indoors\\kitchen", new { Hello = "World" });
+        var domainEvent = DomainEventFactory.CreateDeviceCreatedDomainEvent();
         var events = new EventMetadata[]
         {
             new ("FakeType", domainEvent),

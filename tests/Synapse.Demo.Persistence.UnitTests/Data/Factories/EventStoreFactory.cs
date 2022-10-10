@@ -2,12 +2,11 @@
 
 internal static class EventStoreFactory
 {
-    internal static IEventStore Create(Action<IServiceCollection>? serviceConfiguration = null)
+    internal static IEventStore Create()
     {
         ServiceCollection services = new();
         services.AddLogging();
         services.AddInMemoryEventStore();
-        if (serviceConfiguration != null) serviceConfiguration(services);
         return services.BuildServiceProvider().GetRequiredService<IEventStore>();
     }
 }

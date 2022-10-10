@@ -12,4 +12,8 @@
     <PackageReference Include="Neuroglia.Eventing.CloudEvents" Version="2.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\Synapse.Demo.Application\Synapse.Demo.Application.csproj" />
+  </ItemGroup>
+
 </Project>

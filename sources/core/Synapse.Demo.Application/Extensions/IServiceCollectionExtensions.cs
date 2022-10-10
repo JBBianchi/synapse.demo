@@ -1,4 +1,6 @@
-﻿namespace Synapse.Demo.Application.Extensions.DependencyInjection;
+﻿using CloudNative.CloudEvents.SystemTextJson;
+
+namespace Synapse.Demo.Application.Extensions.DependencyInjection;
 
 
 /// <summary>
@@ -13,6 +15,7 @@ public static class ApplicationServiceCollectionExtensions
     /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
+        // TODO: actually use config/builder
         if (services == null) throw DomainException.ArgumentNull(nameof(services));
         services.AddApplicationMediator();
         services.AddApplicationMapper();
