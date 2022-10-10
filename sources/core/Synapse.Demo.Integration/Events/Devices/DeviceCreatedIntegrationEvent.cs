@@ -5,7 +5,6 @@
 /// The integration event fired after the creation of a <see cref="Domain.Models.Device"/>
 /// </summary>
 [CloudEventEnvelope("device", "created")]
-[DataTransferObjectFor(typeof(DeviceCreatedDomainEvent))]
 public class DeviceCreatedIntegrationEvent
     : IntegrationEvent
 {

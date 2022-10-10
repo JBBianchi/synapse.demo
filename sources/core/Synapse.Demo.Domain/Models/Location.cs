@@ -3,6 +3,7 @@
 /// <summary>
 /// Represents a location and its logical hierarchy
 /// </summary>
+[DataTransferObjectType(typeof(Integration.Models.Location))]
 public record class Location
 {
     /// <summary>

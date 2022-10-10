@@ -22,4 +22,8 @@
     <PackageReference Include="Neuroglia.Data" Version="2.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Synapse.Demo.Integration\Synapse.Demo.Integration.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -22,7 +22,7 @@ public class MappingProfile
     /// <summary>
     /// Gets the types of the Integration assembly
     /// </summary>
-    protected Type[] IntegrationTypes { get; init; } = new List<Type>().ToArray();
+    protected Type[] DomainTypes { get; init; } = new List<Type>().ToArray();
 
     /// <summary>
     /// Initializes a new <see cref="MappingProfile"/>
@@ -32,9 +32,9 @@ public class MappingProfile
         this.AllowNullCollections = true;
         this.MappingConfigurationTypes = new HashSet<Type>();
         this.AssemblyTypes = this.GetType().Assembly.GetTypes();
-        this.IntegrationTypes = typeof(Integration.Attributes.DataTransferObjectForAttribute).Assembly.GetTypes();
+        this.DomainTypes = typeof(Domain.Models.Device).Assembly.GetTypes();
         this.AddConfiguredMappings();
-        this.AddIntegrationMappings();
+        this.AddDomainMappings();
     }
 
     /// <summary>
@@ -51,16 +51,20 @@ public class MappingProfile
     }
 
     /// <summary>
-    /// Configures the <see cref="MappingProfile"/> for integration classes marked with <see cref="DataTransferObjectForAttribute"/>
+    /// Configures the <see cref="MappingProfile"/> for domain classes marked with <see cref="DataTransferObjectTypeAttribute"/>
     /// </summary>
-    protected void AddIntegrationMappings()
+    protected void AddDomainMappings()
     {
-        foreach (Type dtoType in this.IntegrationTypes
+        foreach (Type domainType in this.DomainTypes
             .Where(t => !t.IsAbstract && !t.IsInterface && t.IsClass))
         {
-            DataTransferObjectForAttribute? entityTypeAttribute = dtoType.GetCustomAttribute<DataTransferObjectForAttribute>();
-            if (entityTypeAttribute != null && !this.MappingConfigurationTypes.Any(t => typeof(IMappingConfiguration<,>).MakeGenericType(entityTypeAttribute.Type, dtoType).IsAssignableFrom(t)))
-                this.CreateMap(entityTypeAttribute.Type, dtoType);
+            DataTransferObjectTypeAttribute? integrationTypeAttribute = domainType.GetCustomAttribute<DataTransferObjectTypeAttribute>();
+            if (integrationTypeAttribute?.Type == null) continue;
+            var integrationType = integrationTypeAttribute!.Type;
+            if (integrationTypeAttribute != null && !this.MappingConfigurationTypes.Any(t => typeof(IMappingConfiguration<,>).MakeGenericType(integrationType, domainType).IsAssignableFrom(t)))
+            {
+                this.CreateMap(domainType, integrationType);
+            }
         }
     }
 }

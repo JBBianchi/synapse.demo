@@ -3,6 +3,7 @@
 /// <summary>
 /// The <see cref="DomainEvent"/> fired after the creation of a <see cref="Device"/>
 /// </summary>
+[DataTransferObjectType(typeof(DeviceCreatedIntegrationEvent))]
 public class DeviceCreatedDomainEvent
     : DomainEvent<Device>
 {

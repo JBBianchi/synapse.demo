@@ -3,6 +3,7 @@
 /// <summary>
 /// Represents an IoT device
 /// </summary>
+[DataTransferObjectType(typeof(Integration.Models.Device))]
 public class Device
     : AggregateRoot
 {

@@ -35,3 +35,5 @@ internal abstract class CommandHandlerBase
     }
 
 }
+
+// TODO: currently, commandles handlers handle "integration" commands, they should handle "application" commands

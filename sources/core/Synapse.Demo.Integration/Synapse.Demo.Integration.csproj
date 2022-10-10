@@ -12,8 +12,4 @@
     <PackageReference Include="Neuroglia.Mediation" Version="2.0.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Synapse.Demo.Domain\Synapse.Demo.Domain.csproj" />
-  </ItemGroup>
-
 </Project>

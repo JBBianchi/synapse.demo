@@ -3,7 +3,6 @@
 /// <summary>
 /// Represents an IoT device
 /// </summary>
-[DataTransferObjectFor(typeof(Domain.Models.Device))]
 public class Device
     : Entity
 {

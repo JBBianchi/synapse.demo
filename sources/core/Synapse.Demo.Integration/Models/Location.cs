@@ -3,7 +3,6 @@
 /// <summary>
 /// Represents a location and its logical hierarchy
 /// </summary>
-[DataTransferObjectFor(typeof(Domain.Models.Location))]
 public class Location
 {
     /// <summary>
