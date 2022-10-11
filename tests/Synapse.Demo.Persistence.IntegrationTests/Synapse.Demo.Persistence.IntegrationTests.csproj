@@ -9,6 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Cases\Read\.gitkeep" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Cases\Read\.gitkeep" />
+  </ItemGroup>
+
+  <ItemGroup>
 	  <PackageReference Include="FluentAssertions" Version="6.7.0" />
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
 	  <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
@@ -29,10 +37,6 @@
     <ProjectReference Include="..\..\sources\core\Synapse.Demo.Application\Synapse.Demo.Application.csproj" />
     <ProjectReference Include="..\..\sources\infrastructure\Synapse.Demo.Infrastructure\Synapse.Demo.Infrastructure.csproj" />
     <ProjectReference Include="..\..\sources\infrastructure\Synapse.Demo.Persistence\Synapse.Demo.Persistence.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Cases\Read\" />
   </ItemGroup>
 
 </Project>

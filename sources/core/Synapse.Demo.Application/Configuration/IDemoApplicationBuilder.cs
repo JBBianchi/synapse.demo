@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-
-namespace Synapse.Demo.Application.Extensions.DependencyInjection;
+﻿namespace Synapse.Demo.Application.Configuration;
 
 /// <summary>
 /// An interface for configuring application services.
@@ -16,4 +14,9 @@ public interface IDemoApplicationBuilder
     /// Gets the <see cref="IConfiguration"/> to use
     /// </summary>
     IConfiguration Configuration { get; }
+
+    /// <summary>
+    /// Gets the <see cref="DemoApplicationOptions"/>
+    /// </summary>
+    IDemoApplicationOptions Options { get; }
 }

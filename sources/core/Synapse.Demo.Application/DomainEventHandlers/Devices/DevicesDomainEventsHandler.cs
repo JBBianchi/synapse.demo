@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-using Synapse.Demo.Application.Configuration;
-
-namespace Synapse.Demo.Application.DomainEventHandlers.Devices;
+﻿namespace Synapse.Demo.Application.DomainEventHandlers.Devices;
 
 // TODO: Write tests
 /// <summary>
@@ -10,6 +7,7 @@ namespace Synapse.Demo.Application.DomainEventHandlers.Devices;
 internal class DevicesDomainEventsHandler
     : DomainEventHandlerBase<Domain.Models.Device, Device, string>
     , INotificationHandler<DeviceCreatedDomainEvent>
+    , INotificationHandler<DeviceStateChangedDomainEvent>
 {
     /// <inheritdoc/>
     public DevicesDomainEventsHandler(ILoggerFactory loggerFactory, IMapper mapper, IMediator mediator, ICloudEventBus cloudEventBus, IOptions<DemoApplicationOptions> options, IRepository<Domain.Models.Device, string> writeModels, IRepository<Device, string> readModels) 
@@ -27,6 +25,23 @@ internal class DevicesDomainEventsHandler
     {
         await this.GetOrReconcileReadModelForAsync(e.AggregateId, cancellationToken);
         var integrationEvent = this.Mapper.Map<DeviceCreatedIntegrationEvent>(e);
+        await this.PublishIntegrationEventAsync(integrationEvent, cancellationToken);
+    }
+
+    /// <summary>
+    /// Handles a <see cref="DeviceStateChangedDomainEvent"/>
+    /// </summary>
+    /// <param name="e">The <see cref="DeviceCreatedDomainEvent"/> to handle</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public async Task HandleAsync(DeviceStateChangedDomainEvent e, CancellationToken cancellationToken = default)
+    {
+        var device = await this.GetOrReconcileReadModelForAsync(e.AggregateId, cancellationToken);
+        device.State = e.State;
+        await this.ReadModels.UpdateAsync(device, cancellationToken);
+        await this.ReadModels.SaveChangesAsync(cancellationToken);
+        var integrationEvent = this.Mapper.Map<DeviceStateChangedIntegrationEvent>(e);
         await this.PublishIntegrationEventAsync(integrationEvent, cancellationToken);
     }
 }

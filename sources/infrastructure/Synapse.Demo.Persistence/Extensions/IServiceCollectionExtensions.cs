@@ -1,7 +1,4 @@
-﻿using Neuroglia.Data.EventSourcing.Services;
-using System.Reflection;
-
-namespace Synapse.Demo.Persistence.Extensions.DependencyInjection;
+﻿namespace Synapse.Demo.Persistence.Extensions.DependencyInjection;
 
 /// <summary>
 /// Extension methods for setting up the persitence services in an <see cref="IServiceCollection" />.
@@ -13,7 +10,7 @@ public static class PersistenceServiceCollectionExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
     /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
-    public static IServiceCollection AddPersistence(this IServiceCollection services)
+    public static IServiceCollection AddDemoPersistence(this IServiceCollection services)
     {
         if (services == null) throw DomainException.ArgumentNull(nameof(services));
         List<Type> writeModelTypes = TypeCacheUtil.FindFilteredTypes("domain:aggregates", t => t.IsClass && !t.IsAbstract && typeof(IAggregateRoot).IsAssignableFrom(t), typeof(Domain.Models.Device).Assembly).ToList();
@@ -21,11 +18,10 @@ public static class PersistenceServiceCollectionExtensions
             .Where(t => t.TryGetCustomAttribute<DataTransferObjectTypeAttribute>(out _))
             .Select(t => t.GetCustomAttribute<DataTransferObjectTypeAttribute>()!.Type)
             .ToList();
-        services.AddInMemoryEventStore();
-        services.AddRepositories(writeModelTypes, typeof(EventSourcingRepository<,>));
-        services.AddRepositories(readModelTypes, typeof(InMemoryDbRepository<,>));
-
-        services.AddRepository(typeof(CloudEventOutboxEntry), typeof(InMemoryDbRepository<,>), ServiceLifetime.Singleton);
+        services.AddDemoInMemoryEventStore();
+        services.AddDemoRepositories(writeModelTypes, typeof(EventSourcingRepository<,>));
+        services.AddDemoRepositories(readModelTypes, typeof(InMemoryDbRepository<,>));
+        services.AddDemoRepository(typeof(CloudEventOutboxEntry), typeof(InMemoryDbRepository<,>), ServiceLifetime.Singleton);
         return services;
     }
 
@@ -34,7 +30,7 @@ public static class PersistenceServiceCollectionExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to configure</param>
     /// <returns>The configured <see cref="IServiceCollection"/></returns>
-    public static IServiceCollection AddInMemoryEventStore(this IServiceCollection services)
+    public static IServiceCollection AddDemoInMemoryEventStore(this IServiceCollection services)
     {
         if (services == null) throw DomainException.ArgumentNull(nameof(services));
         services.TryAddSingleton<IAggregatorFactory, AggregatorFactory>();
@@ -51,7 +47,7 @@ public static class PersistenceServiceCollectionExtensions
     /// <param name="repositoryType">The type of <see cref="IRepository{TEntity, TKey}"/> implementation used for the provided entityType</param>
     /// <param name="serviceLifetime">The <see cref="ServiceLifetime"/> of the <see cref="IRepository{TEntity, TKey}"/> to add. Defaults to <see cref="ServiceLifetime.Scoped"/></param>
     /// <returns>The configured <see cref="IServiceCollection"/></returns>
-    public static IServiceCollection AddRepository(this IServiceCollection services, Type entityType, Type repositoryType, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
+    public static IServiceCollection AddDemoRepository(this IServiceCollection services, Type entityType, Type repositoryType, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
     {
         if (services == null) throw DomainException.ArgumentNull(nameof(services));
         if (entityType == null) throw DomainException.ArgumentNull(nameof(entityType));
@@ -75,14 +71,14 @@ public static class PersistenceServiceCollectionExtensions
     /// <param name="repositoryType">The type of <see cref="IRepository{TEntity, TKey}"/> implementation used for the provided entity types</param>
     /// <param name="serviceLifetime">The <see cref="ServiceLifetime"/> of the <see cref="IRepository{TEntity, TKey}"/> to add. Defaults to <see cref="ServiceLifetime.Scoped"/></param>
     /// <returns>The configured <see cref="IServiceCollection"/></returns>
-    public static IServiceCollection AddRepositories(this IServiceCollection services, IEnumerable<Type> entityTypes, Type repositoryType, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
+    public static IServiceCollection AddDemoRepositories(this IServiceCollection services, IEnumerable<Type> entityTypes, Type repositoryType, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
     {
         if (services == null) throw DomainException.ArgumentNull(nameof(services));
         if (entityTypes == null || !entityTypes.Any()) throw DomainException.ArgumentNull(nameof(entityTypes));
         if (repositoryType == null) throw DomainException.ArgumentNull(nameof(repositoryType));
         foreach (Type entityType in entityTypes)
         {
-            services.AddRepository(entityType, repositoryType, serviceLifetime);
+            services.AddDemoRepository(entityType, repositoryType, serviceLifetime);
         }
         return services;
     }

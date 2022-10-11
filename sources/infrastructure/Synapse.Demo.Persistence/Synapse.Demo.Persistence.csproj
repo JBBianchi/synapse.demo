@@ -14,8 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\core\Synapse.Demo.Domain\Synapse.Demo.Domain.csproj" />
-    <ProjectReference Include="..\..\core\Synapse.Demo.Integration\Synapse.Demo.Integration.csproj" />
+    <ProjectReference Include="..\..\core\Synapse.Demo.Application\Synapse.Demo.Application.csproj" />
   </ItemGroup>
 
 </Project>

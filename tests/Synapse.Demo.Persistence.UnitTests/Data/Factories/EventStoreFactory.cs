@@ -6,7 +6,7 @@ internal static class EventStoreFactory
     {
         ServiceCollection services = new();
         services.AddLogging();
-        services.AddInMemoryEventStore();
+        services.AddDemoInMemoryEventStore();
         return services.BuildServiceProvider().GetRequiredService<IEventStore>();
     }
 }

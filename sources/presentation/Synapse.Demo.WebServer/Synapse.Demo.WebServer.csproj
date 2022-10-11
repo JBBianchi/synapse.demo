@@ -10,4 +10,11 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.9" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\infrastructure\Synapse.Demo.Infrastructure\Synapse.Demo.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\infrastructure\Synapse.Demo.Persistence\Synapse.Demo.Persistence.csproj" />
+    <ProjectReference Include="..\Synapse.Demo.Api.Rest\Synapse.Demo.Api.Rest.csproj" />
+    <ProjectReference Include="..\Synapse.Demo.Api.WebSocket\Synapse.Demo.Api.WebSocket.csproj" />
+  </ItemGroup>
+
 </Project>

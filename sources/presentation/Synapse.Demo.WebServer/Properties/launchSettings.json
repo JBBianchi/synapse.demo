@@ -8,7 +8,7 @@
       }
     },
     "profiles": {
-      "Synapase.Demo.UI.Server": {
+      "Synapse.Demo.UI.Server": {
         "commandName": "Project",
         "dotnetRunMessages": true,
         "launchBrowser": true,

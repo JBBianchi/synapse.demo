@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CloudNative.CloudEvents.NewtonsoftJson" Version="2.4.0" />
     <PackageReference Include="Neuroglia.Core" Version="2.0.3" />
     <PackageReference Include="Neuroglia.Data" Version="2.0.3" />
     <PackageReference Include="Neuroglia.Eventing.CloudEvents" Version="2.0.3" />

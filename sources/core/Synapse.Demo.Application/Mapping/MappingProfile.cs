@@ -34,6 +34,7 @@ public class MappingProfile
         this.AssemblyTypes = this.GetType().Assembly.GetTypes();
         this.DomainTypes = typeof(Domain.Models.Device).Assembly.GetTypes();
         this.AddConfiguredMappings();
+        this.AddCommandsMappings();
         this.AddDomainMappings();
     }
 
@@ -51,7 +52,21 @@ public class MappingProfile
     }
 
     /// <summary>
-    /// Configures the <see cref="MappingProfile"/> for domain classes marked with <see cref="DataTransferObjectTypeAttribute"/>
+    /// Configures the <see cref="MappingProfile"/> for integration commands to application commands marked with <see cref="DataTransferObjectTypeAttribute"/>
+    /// </summary>
+    protected void AddCommandsMappings()
+    {
+        foreach (Type applicationType in this.AssemblyTypes
+            .Where(t => !t.IsAbstract && !t.IsInterface && t.IsClass))
+        {
+            DataTransferObjectTypeAttribute? integrationTypeAttribute = applicationType.GetCustomAttribute<DataTransferObjectTypeAttribute>();
+            if (integrationTypeAttribute?.Type == null) continue;
+            this.CreateMapIfNoneExists(integrationTypeAttribute.Type, applicationType);
+        }
+    }
+
+    /// <summary>
+    /// Configures the <see cref="MappingProfile"/> for domain models/events marked with <see cref="DataTransferObjectTypeAttribute"/> to integration models/events
     /// </summary>
     protected void AddDomainMappings()
     {
@@ -60,11 +75,15 @@ public class MappingProfile
         {
             DataTransferObjectTypeAttribute? integrationTypeAttribute = domainType.GetCustomAttribute<DataTransferObjectTypeAttribute>();
             if (integrationTypeAttribute?.Type == null) continue;
-            var integrationType = integrationTypeAttribute!.Type;
-            if (integrationTypeAttribute != null && !this.MappingConfigurationTypes.Any(t => typeof(IMappingConfiguration<,>).MakeGenericType(integrationType, domainType).IsAssignableFrom(t)))
-            {
-                this.CreateMap(domainType, integrationType);
-            }
+            this.CreateMapIfNoneExists(domainType, integrationTypeAttribute.Type);
+        }
+    }
+
+    protected void CreateMapIfNoneExists(Type sourceType, Type destinationType)
+    {
+        if (!this.MappingConfigurationTypes.Any(t => typeof(IMappingConfiguration<,>).MakeGenericType(sourceType, destinationType).IsAssignableFrom(t)))
+        {
+            this.CreateMap(sourceType, destinationType);
         }
     }
 }

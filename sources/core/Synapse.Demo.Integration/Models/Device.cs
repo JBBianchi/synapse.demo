@@ -3,8 +3,9 @@
 /// <summary>
 /// Represents an IoT device
 /// </summary>
+[Queryable]
 public class Device
-    : Entity
+    : ModelDto
 {
 
     /// <summary>
@@ -31,6 +32,5 @@ public class Device
     /// Initializes a new <see cref="Device"/>
     /// </summary>
     protected Device()
-        : base(null!)
     {}
 }

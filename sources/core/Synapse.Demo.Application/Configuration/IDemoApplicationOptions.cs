@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents the application configuration options
 /// </summary>
-public interface IDemoApplicationOptions
+public interface IDemoApplicationOptions 
 {
     /// <summary>
     /// Gets/Sets the sources of the <see cref="CloudEvent"/>s emitted by the application

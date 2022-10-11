@@ -2,10 +2,9 @@
 
 // TODO: Write tests
 /// <summary>
-/// Represents the <see cref="ICommand"/> used to create a new <see cref="Device"/>
+/// Represents the command DTO used to create a new <see cref="Device"/>
 /// </summary>
 public class CreateDeviceCommand
-    : Command<Device>
 {
     /// <summary>
     /// Gets the id of the <see cref="Device"/> to create
@@ -42,6 +41,10 @@ public class CreateDeviceCommand
     /// <param name="state">The state of the <see cref="Device"/> to create</param>
     public CreateDeviceCommand(string id, string label, string type, string location, object? state)
     {
+        if (string.IsNullOrWhiteSpace(id)) throw DomainException.ArgumentNullOrWhitespace(nameof(id));
+        if (string.IsNullOrWhiteSpace(label)) throw DomainException.ArgumentNullOrWhitespace(nameof(label));
+        if (string.IsNullOrWhiteSpace(type)) throw DomainException.ArgumentNullOrWhitespace(nameof(type));
+        if (string.IsNullOrWhiteSpace(location)) throw DomainException.ArgumentNullOrWhitespace(nameof(location));
         this.Id = id;
         this.Label = label;
         this.Type = type;

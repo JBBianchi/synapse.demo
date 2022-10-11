@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection.Extensions;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Neuroglia.Eventing.Services;
 
@@ -9,18 +10,22 @@ internal static class RepositoryFactory
     internal static async Task<T> Create<T>()
         where T : class, IRepository
     {
-        var configuration = new DemoApplicationOptions()
+        var optionsDictionnary = new Dictionary<string, string>()
         {
-            CloudEventsSource = "https://demo.synpase.com",
-            CloudEventBroker = "https://webhook.site/2938e77a-0508-4d98-8d75-3830262437b3",
-            SchemaRegistry = "https://schema-registry.synapse.com"
+            { "CloudEventsSource", "https://demo.synpase.com" },
+            { "CloudEventBroker", "https://webhook.site/2938e77a-0508-4d98-8d75-3830262437b3" },
+            { "SchemaRegistry", "https://schema-registry.synapse.com" }
         };
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(optionsDictionnary)
+            .Build();
         ServiceCollection services = new();
-        services.TryAddSingleton(Options.Create(configuration));
         services.AddLogging();
-        services.AddApplication();
-        services.AddInfrastructure(configuration);
-        services.AddPersistence();
+        services.AddDemoApplication(configuration, demoBuilder =>
+        {
+            demoBuilder.AddInfrastructure();
+            demoBuilder.AddPersistence();
+        });
         var serviceProvider = services.BuildServiceProvider();
         var cloudEventBus = serviceProvider.GetRequiredService<CloudEventBus>();
         await cloudEventBus.StartAsync(new CancellationToken());

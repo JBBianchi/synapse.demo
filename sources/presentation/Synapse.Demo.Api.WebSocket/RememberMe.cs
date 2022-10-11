@@ -8,6 +8,7 @@ namespace Synapse.Demo.Api.WebSocket
 {
     internal class RememberMe
     {
-        Listen_For_Integration_Events_And_Send_Them_Over_WS();
+        // TODO: Listen_For_Integration_Events_And_Send_Them_Over_WS
+        //Listen_For_Integration_Events_And_Send_Them_Over_WS();
     }
 }

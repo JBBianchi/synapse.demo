@@ -90,6 +90,7 @@ public class InMemoryDbRepository<TEntity, TKey>
     /// <inheritdoc/>
     public override async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
+        // TODO: If aggregate, pubish events (but in this app, the repo is only used for read models soooo...)
         await Task.CompletedTask;
     }
 

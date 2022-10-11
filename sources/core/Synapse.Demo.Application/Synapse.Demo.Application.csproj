@@ -8,17 +8,26 @@
 
   <ItemGroup>
     <PackageReference Include="CloudNative.CloudEvents" Version="2.4.0" />
+    <PackageReference Include="CloudNative.CloudEvents.NewtonsoftJson" Version="2.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
     <PackageReference Include="Neuroglia.Core" Version="2.0.3" />
     <PackageReference Include="Neuroglia.Data" Version="2.0.3" />
     <PackageReference Include="Neuroglia.Eventing.CloudEvents" Version="2.0.3" />
     <PackageReference Include="Neuroglia.Mapping" Version="2.0.3" />
     <PackageReference Include="Neuroglia.Mediation" Version="2.0.3" />
     <PackageReference Include="Neuroglia.Mediation.FluentValidation" Version="2.0.3" />
+    <PackageReference Include="Neuroglia.Serialization.NewtonsoftJson" Version="2.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Synapse.Demo.Domain\Synapse.Demo.Domain.csproj" />
     <ProjectReference Include="..\Synapse.Demo.Integration\Synapse.Demo.Integration.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

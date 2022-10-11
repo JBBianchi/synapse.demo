@@ -5,7 +5,7 @@ internal static class MapperFactory
     internal static IMapper Create()
     {
         ServiceCollection services = new();
-        services.AddApplicationMapper();
+        services.AddDemoApplicationMapper();
         return services.BuildServiceProvider().GetRequiredService<IMapper>();
     }
 }
