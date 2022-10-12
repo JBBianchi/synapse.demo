@@ -77,7 +77,7 @@ public class CloudEventsHandler
     /// <summary>
     /// Creates subscriptions for commands sent over the <see cref="ICloudEventBus"/>
     /// </summary>
-    protected override Task ExecuteAsync(CancellationToken cancellationToken)
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
         foreach(Type integrationCommandType in TypeCacheUtil.FindFilteredTypes(
                 "integration:commands", 
@@ -119,7 +119,7 @@ public class CloudEventsHandler
                     })
             );
         }
-        return Task.CompletedTask;
+        await Task.CompletedTask;
     }
 
     private bool disposed;

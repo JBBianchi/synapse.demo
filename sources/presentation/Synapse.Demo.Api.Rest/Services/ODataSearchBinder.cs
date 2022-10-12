@@ -70,9 +70,9 @@ public partial class ODataSearchBinder
     }
 
     /// <summary>
-    /// Binds the specified <see cref="Integration.Models.Device workflow"/> <see cref="SearchTermNode"/>
+    /// Binds the specified <see cref="Integration.Models.Device"/> <see cref="SearchTermNode"/>
     /// </summary>
-    /// <param name="searchTermNode">The <see cref="Integration.Models.Device workflow"/> <see cref="SearchTermNode"/> to bind</param>
+    /// <param name="searchTermNode">The <see cref="Integration.Models.Device"/> <see cref="SearchTermNode"/> to bind</param>
     /// <param name="context">The current <see cref="QueryBinderContext"/></param>
     /// <returns>A new <see cref="Expression"/></returns>
     protected virtual Expression BindDeviceSearchTerm(SearchTermNode searchTermNode, QueryBinderContext context)
@@ -84,10 +84,10 @@ public partial class ODataSearchBinder
 
     static bool FilterDevice(Integration.Models.Device device, string searchTerm)
     {
-        return device.Label.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant())
-            || device.Type.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant())
-            || device.Location.ToString().ToLowerInvariant().Contains(searchTerm.ToLowerInvariant())
-            || JsonConvert.SerializeObject(device.State).Contains(searchTerm.ToLowerInvariant())
+        return device.Label.ToLowerInvariant().Contains(searchTerm)
+            || device.Type.ToLowerInvariant().Contains(searchTerm)
+            || device.Location.ToString().ToLowerInvariant().Contains(searchTerm)
+            || JsonConvert.SerializeObject(device.State).Contains(searchTerm)
             ;
     }
 

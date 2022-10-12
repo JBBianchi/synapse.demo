@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.Extensions.Hosting;
 using Neuroglia.Eventing;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using Synapse.Demo.Api.Rest.Extensions.DependencyInjection;
 using Synapse.Demo.Api.WebSocket.Extensions.DependencyInjection;
 using Synapse.Demo.Api.WebSocket.Hubs;
 using Synapse.Demo.Application.Extensions.DependencyInjection;
+using Synapse.Demo.Application.Services;
 using Synapse.Demo.Infrastructure.Extensions.DependencyInjection;
 using Synapse.Demo.Persistence.Extensions.DependencyInjection;
 
@@ -31,6 +33,7 @@ builder.Services.AddDemoApplication(builder.Configuration, demoBuilder =>
     demoBuilder.AddRestApi();
     demoBuilder.AddWebSocketApi();
 });
+builder.Services.AddHostedService<DataSeeder>();
 
 var app = builder.Build();
 
@@ -48,11 +51,9 @@ else
 }
 
 app.UseHttpsRedirection();
-
 app.UseCloudEvents();
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
-
 app.UseODataRouteDebug();
 app.UseRouting();
 app.UseSwagger(builder =>
@@ -68,4 +69,5 @@ app.UseSwaggerUI(builder =>
 app.MapHub<DemoApplicationHub>("/api/ws");
 app.MapControllers();
 app.MapFallbackToFile("index.html");
+
 await app.RunAsync();

@@ -20,7 +20,7 @@ public static class PersistenceServiceCollectionExtensions
             .ToList();
         services.AddDemoInMemoryEventStore();
         services.AddDemoRepositories(writeModelTypes, typeof(EventSourcingRepository<,>));
-        services.AddDemoRepositories(readModelTypes, typeof(InMemoryDbRepository<,>));
+        services.AddDemoRepositories(readModelTypes, typeof(InMemoryDbRepository<,>), ServiceLifetime.Singleton); // should be "Scoped", but as the dataset is bound to the instance of the "in memory" repo, we'll need it to live for the lifespan of the app
         services.AddDemoRepository(typeof(CloudEventOutboxEntry), typeof(InMemoryDbRepository<,>), ServiceLifetime.Singleton);
         return services;
     }

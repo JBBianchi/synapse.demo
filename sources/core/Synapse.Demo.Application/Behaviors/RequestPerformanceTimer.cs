@@ -48,7 +48,7 @@ internal class RequestPerformanceTimer<TRequest, TResult>
         if (this.Stopwatch.ElapsedMilliseconds > 300)
         {
             var requestName = typeof(TRequest).Name;
-            this.Logger.LogWarning($"The request '{requestName}' took more than {this.Stopwatch.ElapsedMilliseconds}ms to be processed.");
+            this.Logger.LogWarning($"The request '{requestName}' was too long to proceed, it took {this.Stopwatch.ElapsedMilliseconds}ms to be processed.");
         }
         return reponse;
     }
