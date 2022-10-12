@@ -24,6 +24,7 @@ public static class IDemoApplicationBuilderExtensions
         });
         demoBuilder.Services.AddTransient<IEdmModelBuilder, EdmModelBuilder>();
         demoBuilder.Services.AddTransient(provider => provider.GetRequiredService<IEdmModelBuilder>().Build());
+        demoBuilder.Services.AddHostedService<CloudEventsHandler>();
         demoBuilder.Services.AddDemoApplicationMediator();
         demoBuilder.Services.AddDemoApplicationMapper();
         demoBuilder.Services.AddGenericQueryHandlers();

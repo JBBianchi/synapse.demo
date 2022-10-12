@@ -26,8 +26,4 @@
     <ProjectReference Include="..\Synapse.Demo.Integration\Synapse.Demo.Integration.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>

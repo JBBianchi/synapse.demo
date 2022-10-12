@@ -1,0 +1,16 @@
+﻿#logo-home {
+  width: var(--base-size);
+  padding-right: calc(var(--base-size) / 2);
+}
+
+header {
+  padding: var(--base-size);
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  line-height: var(--base-size);
+}
+
+header h1 {
+  display: inline-block;
+}

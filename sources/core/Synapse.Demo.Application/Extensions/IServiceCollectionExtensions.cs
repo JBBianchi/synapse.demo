@@ -75,7 +75,7 @@ public static class ApplicationServiceCollectionExtensions
     /// <returns>The configured <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
     internal static IServiceCollection AddGenericQueryHandlers(this IServiceCollection services, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
     {
-        foreach (Type queryableType in TypeCacheUtil.FindFilteredTypes("nqt", t => t.TryGetCustomAttribute<QueryableAttribute>(out _), typeof(QueryableAttribute).Assembly))
+        foreach (Type queryableType in TypeCacheUtil.FindFilteredTypes("integration:queryable-types", t => t.TryGetCustomAttribute<QueryableAttribute>(out _), typeof(QueryableAttribute).Assembly))
         {
             var keyType = queryableType.GetGenericType(typeof(IIdentifiable<>)).GetGenericArguments().First();
             var queryType = typeof(GenericFindByIdQuery<,>).MakeGenericType(queryableType, keyType);

@@ -66,9 +66,9 @@ internal class DomainEventHandlerBase
         where TEvent : class, Integration.IIntegrationEvent
     {
         await this.Mediator.PublishAsync(e);
-        if (!e.GetType().TryGetCustomAttribute(out CloudEventEnvelopeAttribute couldEventAttribute))
+        if (!e.GetType().TryGetCustomAttribute(out CloudEventEnvelopeAttribute cloudEventEnvelopeAttribute))
             return;
-        var eventIdentifier = $"{couldEventAttribute.AggregateType}/{couldEventAttribute.ActionName}/v1";
+        var eventIdentifier = $"{cloudEventEnvelopeAttribute.AggregateType}/{cloudEventEnvelopeAttribute.ActionName}/v1";
         CloudEvent cloudEvent = new()
         {
             Id = Guid.NewGuid().ToString(),

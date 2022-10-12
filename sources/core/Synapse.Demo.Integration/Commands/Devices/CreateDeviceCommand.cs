@@ -4,6 +4,7 @@
 /// <summary>
 /// Represents the command DTO used to create a new <see cref="Device"/>
 /// </summary>
+[CloudEventEnvelope("device", "create")]
 public class CreateDeviceCommand
 {
     /// <summary>

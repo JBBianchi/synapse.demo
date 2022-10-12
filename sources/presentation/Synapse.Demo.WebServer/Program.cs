@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.ResponseCompression;
+using Neuroglia.Eventing;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using Synapse.Demo.Api.Rest.Extensions.DependencyInjection;
 using Synapse.Demo.Api.WebSocket.Extensions.DependencyInjection;
@@ -48,7 +49,7 @@ else
 
 app.UseHttpsRedirection();
 
-//app.UseCloudEvents();
+app.UseCloudEvents();
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
