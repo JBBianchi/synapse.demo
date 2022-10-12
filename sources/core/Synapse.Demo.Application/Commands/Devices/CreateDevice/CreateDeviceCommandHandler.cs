@@ -37,8 +37,6 @@ internal class CreateDeviceCommandHandler
         {
             throw new DomainException($"A device with id '{command.Id}' should have been created but cannot be found.");
         }
-        // Already published automagically by the repository implementation
-        // await this.Mediator.PublishAsync(this.Mapper.Map<DeviceCreatedDomainEvent>(device), cancellationToken);
         var deviceDto = this.Mapper.Map<Device>(device);
         return this.Ok(deviceDto);
     }

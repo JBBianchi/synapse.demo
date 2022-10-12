@@ -109,8 +109,10 @@ public class CloudEventsHandler
                             using var scope = this.ServiceProvider.CreateScope();
                             var integrationCommand = (cloudEvent.Data as JObject)!.ToObject(integrationCommandType)!;
                             var applicationCommand = this.Mapper.Map(integrationCommand, integrationCommandType, applicationCommandType);
+                            var responseType = applicationCommandType.BaseType!.GetGenericArguments()[0];
+                            var operationResultType = typeof(IOperationResult<>).MakeGenericType(responseType);
                             var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-                            await mediator.PublishAsync(applicationCommand);
+                            await mediator.GetType().GetMethod("ExecuteAsync")!.MakeGenericMethod(operationResultType).InvokeAsync(mediator, applicationCommand, cancellationToken);
                         }
                         catch(Exception ex)
                         {

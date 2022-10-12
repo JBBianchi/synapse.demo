@@ -9,16 +9,16 @@ internal class IntegrationEventHandler
     /// <summary>
     /// Gets the application <see cref="Hub{TClient}"/>
     /// </summary>
-    protected DemoApplicationHub Hub { get; init; }
+    protected IHubContext<DemoApplicationHub, IDemoApplicationClient> HubContext { get; init; }
 
     /// <summary>
     /// Initializes a new <see cref="IntegrationEventHandler"/>
     /// </summary>
-    /// <param name="hub">The application <see cref="Hub{TClient}"/></param>
-    public IntegrationEventHandler(DemoApplicationHub hub)
+    /// <param name="hubContext">The application <see cref="Hub{TClient}"/></param>
+    public IntegrationEventHandler(IHubContext<DemoApplicationHub, IDemoApplicationClient> hubContext)
     {
-        if (hub == null) throw DomainException.ArgumentNull(nameof(hub));
-        this.Hub = hub;
+        if (hubContext == null) throw DomainException.ArgumentNull(nameof(hubContext));
+        this.HubContext = hubContext;
     }
 
     /// <summary>
@@ -29,6 +29,6 @@ internal class IntegrationEventHandler
     /// <returns></returns>
     public async Task HandleAsync(Integration.IIntegrationEvent notification, CancellationToken cancellationToken = default)
     {
-        await this.Hub.Clients.All.ReceiveIntegrationEventAsync(notification);
+        await this.HubContext.Clients.All.ReceiveIntegrationEventAsync(notification);
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Synapse.Demo.Api.WebSocket.Extensions.DependencyInjection;
+﻿using System.Reflection;
+
+namespace Synapse.Demo.Api.WebSocket.Extensions.DependencyInjection;
 
 /// <summary>
 /// Extension methods for setting up the <see cref="IDemoApplicationBuilder"/>
@@ -18,6 +20,12 @@ public static class IDemoApplicationBuilderExtensions
             {
                 options.PayloadSerializerSettings.ConfigureSerializerSettings();
             });
+
+        Assembly applicationAssembly = typeof(IDemoApplicationBuilderExtensions).Assembly;
+        demoBuilder.Services.AddMediator(options =>
+        {
+            options.ScanAssembly(applicationAssembly);
+        });
         return demoBuilder;
     }
 }
