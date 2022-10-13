@@ -1,4 +1,4 @@
-﻿namespace Synapse.Demo.Application.Extensions;
+﻿namespace Synapse.Demo.Common.Extensions;
 
 /// <summary>
 /// Extension methods for setting up the <see cref="JsonSerializerSettings"/>

@@ -10,8 +10,8 @@ internal class DevicesDomainEventsHandler
     , INotificationHandler<DeviceStateChangedDomainEvent>
 {
     /// <inheritdoc/>
-    public DevicesDomainEventsHandler(ILoggerFactory loggerFactory, IMapper mapper, IMediator mediator, ICloudEventBus cloudEventBus, IOptions<DemoApplicationOptions> options, IRepository<Domain.Models.Device, string> writeModels, IRepository<Device, string> readModels) 
-        : base(loggerFactory, mapper, mediator, cloudEventBus, options, writeModels, readModels)
+    public DevicesDomainEventsHandler(ILoggerFactory loggerFactory, IOptions<DemoApplicationOptions> options, IMapper mapper, IMediator mediator, ICloudEventBus cloudEventBus, ISubject<CloudEvent> cloudEventStream, IRepository<Domain.Models.Device, string> writeModels, IRepository<Device, string> readModels) 
+        : base(loggerFactory, options, mapper, mediator, cloudEventBus, cloudEventStream, writeModels, readModels)
     {}
 
     /// <summary>

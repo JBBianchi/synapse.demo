@@ -36,6 +36,7 @@ public class DataSeeder
         var devicesRepository = scope.ServiceProvider.GetRequiredService<IRepository<DomainDevice>>();
         if (await devicesRepository.ContainsAsync("thermometer", cancellationToken))
             return;
+        await Task.Delay(5000);
         var devices = new List<DomainDevice>() {
             new DomainDevice("thermometer", "Temperature", "sensor", "indoor", new { temperature = "18°C" }),
             new DomainDevice("hydrometer", "Humidity", "sensor", "indoor", new { humidity = "53%" })

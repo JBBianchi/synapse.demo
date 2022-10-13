@@ -1,7 +1,7 @@
 ﻿namespace Synapse.Demo.Application.Services;
 
 /// <summary>
-/// The service used to handle incomming <see cref="CloudEvent"/>s
+/// The service used to handle incomming <see cref="CloudEvent"/>s and execute incomming <see cref="Command"/>s
 /// </summary>
 public class CloudEventsHandler
     : BackgroundService

@@ -22,10 +22,7 @@ public static class IDemoApplicationBuilderExtensions
             });
 
         Assembly applicationAssembly = typeof(IDemoApplicationBuilderExtensions).Assembly;
-        demoBuilder.Services.AddMediator(options =>
-        {
-            options.ScanAssembly(applicationAssembly);
-        });
+        demoBuilder.Services.AddHostedService<CloudEventsHandler>();
         return demoBuilder;
     }
 }

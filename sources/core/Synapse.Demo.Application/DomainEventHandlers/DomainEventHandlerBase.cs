@@ -15,6 +15,11 @@ internal class DomainEventHandlerBase
     protected ILogger Logger { get; init; }
 
     /// <summary>
+    /// Gets the applicaiton <see cref="IOptions{TOptions}"/>
+    /// </summary>
+    protected DemoApplicationOptions Options { get; init; }
+
+    /// <summary>
     /// Gets the service used to map objects
     /// </summary>
     protected IMapper Mapper { get; init; }
@@ -30,30 +35,33 @@ internal class DomainEventHandlerBase
     protected ICloudEventBus CloudEventBus { get; init; }
 
     /// <summary>
-    /// Gets the applicaiton <see cref="IOptions{TOptions}"/>
+    /// Gets the <see cref="Subject{T}"/> used to observe consumed <see cref="CloudEvent"/>s
     /// </summary>
-    protected DemoApplicationOptions Options { get; init; }
+    protected ISubject<CloudEvent> CloudEventStream { get; init; }
 
     /// <summary>
     /// Initializes a new <see cref="DomainEventHandlerBase"/>
     /// </summary>
     /// <param name="loggerFactory">The service used to create <see cref="ILogger"/>s</param>
+    /// <param name="options">The applicaiton <see cref="IOptions{TOptions}"/></param>
     /// <param name="mapper">The service used to map objects</param>
     /// <param name="mediator">The service used to mediate calls</param>
     /// <param name="cloudEventBus">The service used to publish and subscribe to <see cref="CloudEvent"/>s</param>
-    /// <param name="options">The applicaiton <see cref="IOptions{TOptions}"/></param>
-    protected DomainEventHandlerBase(ILoggerFactory loggerFactory, IMapper mapper, IMediator mediator, ICloudEventBus cloudEventBus, IOptions<DemoApplicationOptions> options)
+    /// <param name="cloudEventBus">The <see cref="Subject{T}"/> used to observe consumed <see cref="CloudEvent"/>s</param>
+    protected DomainEventHandlerBase(ILoggerFactory loggerFactory, IOptions<DemoApplicationOptions> options, IMapper mapper, IMediator mediator, ICloudEventBus cloudEventBus, ISubject<CloudEvent> cloudEventStream)
     {
         if (loggerFactory == null) throw DomainException.ArgumentNull(nameof(loggerFactory));
+        if (options == null) throw DomainException.ArgumentNull(nameof(options));
         if (mapper == null) throw DomainException.ArgumentNull(nameof(mapper));
         if (mediator == null) throw DomainException.ArgumentNull(nameof(mediator));
         if (cloudEventBus == null) throw DomainException.ArgumentNull(nameof(cloudEventBus));
-        if (options == null) throw DomainException.ArgumentNull(nameof(options));
+        if (cloudEventStream == null) throw DomainException.ArgumentNull(nameof(cloudEventStream));
         this.Logger = loggerFactory.CreateLogger(this.GetType());
+        this.Options = options.Value;
         this.Mapper = mapper;
         this.Mediator = mediator;
         this.CloudEventBus = cloudEventBus;
-        this.Options = options.Value;
+        this.CloudEventStream = cloudEventStream;
     }
 
     /// <summary>
@@ -81,9 +89,9 @@ internal class DomainEventHandlerBase
             Data = e
         };
         await this.CloudEventBus.PublishAsync(cloudEvent, cancellationToken);
+        this.CloudEventStream.OnNext(cloudEvent);
     }
 }
-
 
 /// <summary>
 /// Represents the base class for all <see cref="INotificationHandler{TNotification}"/> used to handle <see cref="IDomainEvent"/>s
@@ -112,15 +120,16 @@ internal abstract class DomainEventHandlerBase<TWriteModel, TReadModel, TKey>
     /// Initializes a new <see cref="DomainEventHandlerBase"/>
     /// </summary>
     /// <param name="loggerFactory">The service used to create <see cref="ILogger"/>s</param>
+    /// <param name="options">The applicaiton <see cref="IOptions{TOptions}"/></param>
     /// <param name="mapper">The service used to map objects</param>
     /// <param name="mediator">The service used to mediate calls</param>
     /// <param name="cloudEventBus">The service used to publish and subscribe to <see cref="CloudEvent"/>s</param>
-    /// <param name="options">The applicaiton <see cref="IOptions{TOptions}"/></param>
+    /// <param name="cloudEventBus">The <see cref="Subject{T}"/> used to observe consumed <see cref="CloudEvent"/>s</param>
     /// <param name="writeModels">The <see cref="IRepository"/> used to manage the write models for which to handle <see cref="IDomainEvent"/>s</param>
     /// <param name="readModels">The <see cref="IRepository"/> used to manage the read models to project handled <see cref="IDomainEvent"/>s to</param>
-    protected DomainEventHandlerBase(ILoggerFactory loggerFactory, IMapper mapper, IMediator mediator, ICloudEventBus cloudEventBus, IOptions<DemoApplicationOptions> options,
+    protected DomainEventHandlerBase(ILoggerFactory loggerFactory, IOptions<DemoApplicationOptions> options, IMapper mapper, IMediator mediator, ICloudEventBus cloudEventBus, ISubject<CloudEvent> cloudEventStream,
         IRepository<TWriteModel, TKey> writeModels, IRepository<TReadModel, TKey> readModels)
-        : base(loggerFactory, mapper, mediator, cloudEventBus, options)
+        : base(loggerFactory, options, mapper, mediator, cloudEventBus, cloudEventStream)
     {
         if (writeModels == null) throw DomainException.ArgumentNull(nameof(writeModels));
         if (readModels == null) throw DomainException.ArgumentNull(nameof(readModels));

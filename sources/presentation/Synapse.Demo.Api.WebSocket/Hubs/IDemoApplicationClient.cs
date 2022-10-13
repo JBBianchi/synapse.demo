@@ -6,8 +6,8 @@
 public interface IDemoApplicationClient
 {
     /// <summary>
-    /// Receives an <see cref="Integration.IIntegrationEvent"/>
+    /// Receives an <see cref="CloudEventDto"/>
     /// </summary>
-    /// <param name="e">The received <see cref="Integration.IIntegrationEvent"/></param>
-    Task ReceiveIntegrationEventAsync(Integration.IIntegrationEvent e);
+    /// <param name="e">The received <see cref="CloudEventDto"/></param>
+    Task ReceiveIntegrationEventAsync(CloudEventDto e);
 }

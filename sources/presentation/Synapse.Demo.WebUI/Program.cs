@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
 using Synapse.Demo.WebUI;
+using Synapse.Demo.Common.Extensions;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 var baseAddress = builder.HostEnvironment.BaseAddress;
@@ -16,25 +17,7 @@ builder.Services.AddSingleton(provider =>
         .WithUrl($"{baseAddress}api/ws")
         .WithAutomaticReconnect()
         .AddNewtonsoftJsonProtocol(options => {
-            options.PayloadSerializerSettings = new()
-            {
-                ContractResolver = new NonPublicSetterContractResolver()
-                {
-                    NamingStrategy = new CamelCaseNamingStrategy()
-                    {
-                        ProcessDictionaryKeys = false,
-                        OverrideSpecifiedNames = false,
-                        ProcessExtensionDataNames = false
-                    }
-                },
-                ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-                NullValueHandling = NullValueHandling.Ignore,
-                DefaultValueHandling = DefaultValueHandling.Ignore,
-                DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                DateParseHandling = DateParseHandling.DateTime,
-                DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-            };
-            options.PayloadSerializerSettings.Converters.Add(new AbstractClassConverterFactory());
+            options.PayloadSerializerSettings = new JsonSerializerSettings().ConfigureSerializerSettings();
         })
         .Build()
 );

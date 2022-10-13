@@ -31,6 +31,8 @@ global using Synapse.Demo.Application.Configuration;
 global using Synapse.Demo.Application.Extensions.DependencyInjection;
 global using Synapse.Demo.Application.Queries;
 global using Synapse.Demo.Application.Services;
+global using Synapse.Demo.Common;
+global using Synapse.Demo.Common.Extensions;
 global using Synapse.Demo.Domain.Events.Devices;
 global using Synapse.Demo.Integration.Attributes;
 global using Synapse.Demo.Integration.Events.Devices;
