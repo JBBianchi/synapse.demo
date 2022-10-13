@@ -27,10 +27,4 @@ public class Device
     /// Gets/Sets the state of the <see cref="Device"/>
     /// </summary>
     public object? State { get; set; } = null!;
-
-    /// <summary>
-    /// Initializes a new <see cref="Device"/>
-    /// </summary>
-    protected Device()
-    {}
 }

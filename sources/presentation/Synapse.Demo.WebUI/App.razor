@@ -1,4 +1,7 @@
-﻿@inject HubConnection HubConnection
+﻿@using Synapse.Demo.Integration.Events.Devices
+@inject HubConnection HubConnection
+@inject IDispatcher Dispatcher
+@implements IDisposable
 
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
@@ -14,9 +17,66 @@
 </Router>
 
 @code {
+    protected IDisposable? Subscription = null;
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        this.Subscription = this.HubConnection.On<CloudEventDto>("ReceiveIntegrationEventAsync", cloudEvent =>
+        {
+            switch (cloudEvent.Type)
+            {
+                case $"{ApplicationConstants.CloudEventsType}/device/created/v1":
+                    {
+                        var e = cloudEvent.As<DeviceCreatedIntegrationEvent>();
+                        var device = new Device()
+                        {
+                            Id = e.Id,
+                            Label = e.Label,
+                            Type = e.Type,
+                            Location = e.Location,
+                            State = e.State
+                        };
+                        this.Dispatcher.Dispatch(new Pages.Monitoring.Actions.AddDevice(device));
+                        break;
+                    }
+                case $"{ApplicationConstants.CloudEventsType}/device/state-changed/v1":
+                    {
+                        var e = cloudEvent.As<DeviceStateChangedIntegrationEvent>();
+                        this.Dispatcher.Dispatch(new Pages.Monitoring.Actions.UpdateDeviceState(e.Id, e.State));
+                        break;
+                    }
+            }
+        });
         await this.HubConnection.StartAsync();
+    }
+
+
+    private bool disposed;
+    /// <summary>
+    /// Disposes the current object
+    /// </summary>
+    /// <param name="disposing"></param>
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposed)
+        {
+            if (disposing)
+            {
+                if (this.Subscription != null) {
+                    this.Subscription.Dispose();
+                    this.Subscription = null;
+                }
+            }
+            disposed = true;
+        }
+    }
+
+    /// <inheritdoc/>
+    public void Dispose()
+    {
+        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this);
     }
 }

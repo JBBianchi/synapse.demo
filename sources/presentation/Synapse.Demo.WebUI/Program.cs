@@ -1,11 +1,3 @@
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.AspNetCore.SignalR.Client;
-using Newtonsoft.Json.Serialization;
-using Newtonsoft.Json;
-using Synapse.Demo.WebUI;
-using Synapse.Demo.Common.Extensions;
-
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 var baseAddress = builder.HostEnvironment.BaseAddress;
 builder.RootComponents.Add<App>("#app");
@@ -20,6 +12,9 @@ builder.Services.AddSingleton(provider =>
             options.PayloadSerializerSettings = new JsonSerializerSettings().ConfigureSerializerSettings();
         })
         .Build()
+);
+builder.Services.AddFlux(flux => 
+    flux.ScanMarkupTypeAssembly<App>()
 );
 
 await builder.Build().RunAsync();

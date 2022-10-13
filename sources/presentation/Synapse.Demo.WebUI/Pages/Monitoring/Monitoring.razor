@@ -1,0 +1,45 @@
+﻿@page "/"
+@using Synapse.Demo.WebUI.Pages.Monitoring.Selectors
+@using Synapse.Demo.WebUI.Pages.Monitoring.State
+@inherits StatefulComponent<MonitoringState>
+
+<h3>Monitoring</h3>
+@if (devices != null) {
+    <ul>
+        @foreach (var device in devices) {
+            <li>@device.Label</li>
+        }
+    </ul>
+}
+
+@code {
+    protected Subject<bool>? disposeNotifier;
+    protected IEnumerable<Device>? devices = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.disposeNotifier = new Subject<bool>();
+        MonitoringSelectors.SelectDevices(this.Store)
+            .TakeUntil(this.disposeNotifier)
+            .Subscribe(devices => this.devices = devices);
+        this.Dispatcher.Dispatch(new Actions.InitializeState());
+        await Task.CompletedTask;
+    }
+
+    private bool disposed;
+    protected override void Dispose(bool disposing)
+    {
+        if (!this.disposed)
+        {
+            if (this.disposeNotifier != null)
+            {
+                this.disposeNotifier.OnNext(true);
+                this.disposeNotifier.OnCompleted();
+                this.disposeNotifier.Dispose();
+                this.disposeNotifier = null;
+            }
+            this.disposed = true;
+        }
+        base.Dispose(disposing);
+    }
+}

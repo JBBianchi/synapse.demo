@@ -45,7 +45,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synapse.Demo.Persistence.In
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synapse.Demo.WebUI", "sources\presentation\Synapse.Demo.WebUI\Synapse.Demo.WebUI.csproj", "{0A7C2B30-6EBD-4646-B5AA-A9F273341135}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synapse.Demo.Common", "sources\core\Synapse.Demo.Common\Synapse.Demo.Common.csproj", "{3D2B5B53-28C1-4309-A9AF-C875E67135E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synapse.Demo.Common", "sources\core\Synapse.Demo.Common\Synapse.Demo.Common.csproj", "{3D2B5B53-28C1-4309-A9AF-C875E67135E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

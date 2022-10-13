@@ -19,12 +19,17 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.9" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="6.0.9" />
+    <PackageReference Include="Neuroglia.Data.Flux" Version="2.0.3" />
 	<PackageReference Include="Neuroglia.Serialization.NewtonsoftJson" Version="2.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\core\Synapse.Demo.Common\Synapse.Demo.Common.csproj" />
     <ProjectReference Include="..\..\core\Synapse.Demo.Integration\Synapse.Demo.Integration.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\Devices\" />
   </ItemGroup>
 
 </Project>
