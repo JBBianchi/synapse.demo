@@ -6,6 +6,7 @@
 /// </summary>
 [CloudEventEnvelope("device", "create")]
 public class CreateDeviceCommand
+    : IIntegrationCommand
 {
     /// <summary>
     /// Gets the id of the <see cref="Device"/> to create

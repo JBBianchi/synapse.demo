@@ -1,3 +1,16 @@
 ﻿@page "/"
+@using Synapse.Demo.Integration.Commands
+@using Synapse.Demo.Integration.Commands.Devices
+@using Synapse.Demo.Integration.Models
+@inject HubConnection HubConnection
 
 <PageTitle>Index</PageTitle>
+
+<button type="button" @onclick="CreateDeviceClickedAsync">Create a device</button>
+
+@code {
+    public async Task CreateDeviceClickedAsync() {
+        var command = new CreateDeviceCommand("from-ui", "From UI", "sensor", "indoor", null);
+        await this.HubConnection.InvokeAsync("HandleCloudEvent", command.AsCloudEvent());
+    }
+}

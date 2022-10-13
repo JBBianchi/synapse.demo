@@ -6,6 +6,7 @@
 /// </summary>
 [CloudEventEnvelope("device", "update-state")]
 public class UpdateDeviceStateCommand
+    : IIntegrationCommand
 {
     /// <summary>
     /// Gets the id of the <see cref="Device"/> to create

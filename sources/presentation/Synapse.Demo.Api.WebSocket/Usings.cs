@@ -1,11 +1,20 @@
-﻿global using Microsoft.AspNetCore.SignalR;
+﻿global using CloudNative.CloudEvents;
+global using Microsoft.AspNetCore.SignalR;
 global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Hosting;
+global using Microsoft.Extensions.Logging;
+global using Neuroglia;
 global using Neuroglia.Data;
 global using Neuroglia.Mapping;
+global using Neuroglia.Mediation;
+global using System.Reactive.Linq;
+global using System.Reactive.Subjects;
+global using System.Reflection;
 
 global using Synapse.Demo.Api.WebSocket.Hubs;
 global using Synapse.Demo.Api.WebSocket.Services;
 global using Synapse.Demo.Application.Configuration;
 global using Synapse.Demo.Common;
 global using Synapse.Demo.Common.Extensions;
+global using Synapse.Demo.Integration.Attributes;
 global using Synapse.Demo.Integration.Models;

@@ -1,4 +1,6 @@
-﻿namespace Synapse.Demo.Application.Services;
+﻿using Synapse.Demo.Integration.Commands;
+
+namespace Synapse.Demo.Application.Services;
 
 /// <summary>
 /// The service used to handle incomming <see cref="CloudEvent"/>s and execute incomming <see cref="Command"/>s
@@ -27,7 +29,12 @@ public class CloudEventsHandler
     protected ISubject<CloudEvent> Stream { get; }
 
     /// <summary>
-    /// Gets the types of the application assembly marked with <see cref="DataTransferObjectTypeAttribute"/>
+    /// Gets the types of the integration assembly inheriting <see cref="IIntegrationCommand"/>
+    /// </summary>
+    protected IEnumerable<Type> IntegrationCommands { get; init; } = new List<Type>();
+
+    /// <summary>
+    /// Gets a <see cref="Dictionary{T1,T2}"/> used to retrieve an application <see cref="Command"/> based on an <see cref="IIntegrationCommand"/>'s type
     /// </summary>
     protected Dictionary<Type, Type> IntegrationToApplicationCommandTypes { get; init; } = new Dictionary<Type, Type>();
 
@@ -60,6 +67,16 @@ public class CloudEventsHandler
         this.Mapper = mapper;
         this.Stream = stream;
         this.DisposeNotifier = new Subject<bool>();
+        var integrationCommandInterface = typeof(IIntegrationCommand);
+        this.IntegrationCommands = TypeCacheUtil.FindFilteredTypes(
+                "integration:commands",
+                t => t.IsClass
+                    && !t.IsAbstract
+                    && !t.IsInterface
+                    && integrationCommandInterface.IsAssignableFrom(t)
+                    && t.TryGetCustomAttribute<CloudEventEnvelopeAttribute>(out _),
+                typeof(CloudEventEnvelopeAttribute).Assembly
+            );
         this.IntegrationToApplicationCommandTypes = TypeCacheUtil.FindFilteredTypes(
                 "application:commands",
                 t => !t.IsAbstract
@@ -79,19 +96,10 @@ public class CloudEventsHandler
     /// </summary>
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        foreach(Type integrationCommandType in TypeCacheUtil.FindFilteredTypes(
-                "integration:commands", 
-                t => t.IsClass 
-                    && !t.IsAbstract 
-                    && !t.IsInterface
-                    && t.Name.EndsWith("Command")
-                    && t.TryGetCustomAttribute<CloudEventEnvelopeAttribute>(out _),
-                typeof(CloudEventEnvelopeAttribute).Assembly
-            )
-        )
+        foreach(Type integrationCommandType in this.IntegrationCommands)
         {
             if (integrationCommandType == null || !this.IntegrationToApplicationCommandTypes.ContainsKey(integrationCommandType)) continue;
-            CloudEventEnvelopeAttribute? cloudEventEnvelopeAttribute = integrationCommandType.GetCustomAttribute<CloudEventEnvelopeAttribute>();
+            var cloudEventEnvelopeAttribute = integrationCommandType.GetCustomAttribute<CloudEventEnvelopeAttribute>();
             if (cloudEventEnvelopeAttribute == null 
                 || string.IsNullOrWhiteSpace(cloudEventEnvelopeAttribute.AggregateType) 
                 || string.IsNullOrWhiteSpace(cloudEventEnvelopeAttribute.ActionName)

@@ -55,4 +55,33 @@ public class CloudEventDto
     /// </summary>
     /// <see href="https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#event-data"/>
     public object? Data { get; set; }
+
+    /// <summary>
+    /// Initializes a new <see cref="CloudEventDto"/>
+    /// </summary>
+    /// <param name="id"><see cref="Id"/></param>
+    /// <param name="source"><see cref="Source"/></param>
+    /// <param name="type"><see cref="Type"/></param>
+    /// <param name="data"><see cref="Data"/></param>
+    /// <param name="subject"><see cref="Subject"/></param>
+    /// <param name="time"><see cref="Time"/></param>
+    /// <param name="dataSchema"><see cref="DataSchema"/></param>
+    public CloudEventDto(string id, string source, string type, object? data = null, string? subject = null, DateTimeOffset? time = null, Uri? dataSchema = null)
+    {
+        if (string.IsNullOrWhiteSpace(id)) throw DomainException.ArgumentNullOrWhitespace(nameof(id));
+        if (string.IsNullOrWhiteSpace(source)) throw DomainException.ArgumentNullOrWhitespace(nameof(source));
+        if (string.IsNullOrWhiteSpace(type)) throw DomainException.ArgumentNullOrWhitespace(nameof(type));
+        this.Id = id;
+        this.Source = new (source, UriKind.RelativeOrAbsolute);
+        this.Type = type;
+        this.Subject = subject;
+        this.Time = time;
+        this.DataSchema = dataSchema;
+        this.Data = data;
+    }
+
+    /// <summary>
+    /// Initializes a new <see cref="CloudEventDto"/>
+    /// </summary>
+    protected CloudEventDto() { }
 }

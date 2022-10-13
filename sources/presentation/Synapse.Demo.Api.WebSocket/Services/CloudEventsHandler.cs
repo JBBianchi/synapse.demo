@@ -1,14 +1,4 @@
-﻿using CloudNative.CloudEvents;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Neuroglia;
-using Newtonsoft.Json.Linq;
-using Synapse.Demo.Integration.Attributes;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
-using System.Reflection;
-
-namespace Synapse.Demo.Api.WebSocket.Services;
+﻿namespace Synapse.Demo.Api.WebSocket.Services;
 
 /// <summary>
 /// The service used to handle <see cref="CloudEvent"/>s and forward the <see cref="Integration.IntegrationEvent"/>s on the SignalR <see cref="Hub"/>
@@ -90,7 +80,7 @@ public class CloudEventsHandler
         foreach (Type IntegrationEventType in this.IntegrationEvents)
         {
             if (IntegrationEventType == null) continue;
-            CloudEventEnvelopeAttribute? cloudEventEnvelopeAttribute = IntegrationEventType.GetCustomAttribute<CloudEventEnvelopeAttribute>();
+            var cloudEventEnvelopeAttribute = IntegrationEventType.GetCustomAttribute<CloudEventEnvelopeAttribute>();
             if (cloudEventEnvelopeAttribute == null
                 || string.IsNullOrWhiteSpace(cloudEventEnvelopeAttribute.AggregateType)
                 || string.IsNullOrWhiteSpace(cloudEventEnvelopeAttribute.ActionName)
