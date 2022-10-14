@@ -12,10 +12,9 @@ public static class MonitoringSelectors
     /// </summary>
     /// <param name="store"></param>
     /// <returns></returns>
-    public static IObservable<IEnumerable<Device>> SelectDevices(IStore store)
+    public static IObservable<IEnumerable<Device>> SelectDevices(this IFeature<MonitoringState> feature)
     {
-        return store.GetFeature<MonitoringState>()
-            .Select(featureState => 
+        return feature.Select(featureState => 
                 featureState.Devices.Any() ? featureState.Devices.Values : new List<Device>().AsEnumerable()
             )
             .DistinctUntilChanged();

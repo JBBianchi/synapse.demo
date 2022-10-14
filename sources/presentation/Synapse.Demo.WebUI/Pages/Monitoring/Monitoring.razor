@@ -19,7 +19,8 @@
     protected override async Task OnInitializedAsync()
     {
         this.disposeNotifier = new Subject<bool>();
-        MonitoringSelectors.SelectDevices(this.Store)
+        this.Feature
+            .SelectDevices()
             .TakeUntil(this.disposeNotifier)
             .Subscribe(devices => this.devices = devices);
         this.Dispatcher.Dispatch(new Actions.InitializeState());
