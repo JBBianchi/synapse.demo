@@ -26,6 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\core\Synapse.Demo.Common\Synapse.Demo.Common.csproj" />
     <ProjectReference Include="..\..\core\Synapse.Demo.Integration\Synapse.Demo.Integration.csproj" />
+    <ProjectReference Include="..\Synapse.Demo.Client.Rest\Synapse.Demo.Client.Rest.csproj" />
   </ItemGroup>
 
   <ItemGroup>

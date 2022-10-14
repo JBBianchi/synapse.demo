@@ -6,6 +6,8 @@ global using Neuroglia.Data.Flux;
 global using Newtonsoft.Json;
 global using System.Reactive.Linq;
 
+global using Synapse.Demo.Client.Rest.Extensions;
+global using Synapse.Demo.Client.Rest.Services;
 global using Synapse.Demo.Common.Extensions;
 global using Synapse.Demo.Integration.Models;
 global using Synapse.Demo.WebUI;

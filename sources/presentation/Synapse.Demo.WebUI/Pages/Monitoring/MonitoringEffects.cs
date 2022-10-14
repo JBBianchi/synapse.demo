@@ -5,7 +5,6 @@ namespace Synapse.Demo.WebUI.Pages.Monitoring.Effects;
 [Effect]
 public static class MonitoringEffects
 {
-
     /// <summary>
     /// Handles the state initialization
     /// </summary>
@@ -15,6 +14,8 @@ public static class MonitoringEffects
     /// <exception cref="NullReferenceException"></exception>
     public static async Task OnInitiliazeState(InitializeState action, IEffectContext context)
     {
-        // TODO: call the REST API client to get the list of devices
+        var api = context.Services.GetRequiredService<IRestApiClient>();
+        var devices = await api.GetDevices();
+        context.Dispatcher.Dispatch(new ReplaceDevices(devices));
     }
 }

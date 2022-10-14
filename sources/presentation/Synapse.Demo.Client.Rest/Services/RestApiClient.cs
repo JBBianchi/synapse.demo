@@ -1,16 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
-using Neuroglia.Serialization;
-using Synapse.Demo.Integration.Commands.Devices;
-using Synapse.Demo.Integration.Models;
-using System.Net.Mime;
-using System.Text;
-
-namespace Synapse.Demo.Client.Rest.Services;
+﻿namespace Synapse.Demo.Client.Rest.Services;
 
 /// <summary>
 /// Represents the service used to interact with the HTTP REST API
 /// </summary>
 public class RestApiClient
+    : IRestApiClient
 {
 
     /// <summary>
@@ -45,9 +39,9 @@ public class RestApiClient
     /// Queries the <see cref="Device"/>s
     /// </summary>
     /// <param name="query">The potential OData query</param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/></param>
     /// <returns>A list of <see cref="Device"/>s</returns>
-    public async Task<IEnumerable<Device>> GetDevices(string query, CancellationToken cancellationToken)
+    public async Task<IEnumerable<Device>> GetDevices(string? query = null, CancellationToken cancellationToken = default)
     {
         var requestUri = "api/v1/devices";
         if (!string.IsNullOrWhiteSpace(query)) requestUri += $"?{query}";
@@ -64,9 +58,9 @@ public class RestApiClient
     /// Creates a new <see cref="Device"/>
     /// </summary>
     /// <param name="command">The <see cref="CreateDeviceCommand"/> used to create the device</param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/></param>
     /// <returns>The created <see cref="Device"/></returns>
-    public async Task<Device> CreateDevice(CreateDeviceCommand command, CancellationToken cancellationToken)
+    public async Task<Device> CreateDevice(CreateDeviceCommand command, CancellationToken cancellationToken = default)
     {
         var requestUri = "api/v1/devices";
         var request = new HttpRequestMessage(HttpMethod.Post, requestUri);
@@ -84,9 +78,9 @@ public class RestApiClient
     /// Updates a <see cref="Device"/> state
     /// </summary>
     /// <param name="command">The <see cref="UpdateDeviceStateCommand"/> used to update the device state</param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/></param>
     /// <returns>The updated <see cref="Device"/></returns>
-    public async Task<Device> UpdateDeviceState(UpdateDeviceStateCommand command, CancellationToken cancellationToken)
+    public async Task<Device> UpdateDeviceState(UpdateDeviceStateCommand command, CancellationToken cancellationToken = default)
     {
         var requestUri = "api/v1/devices";
         var request = new HttpRequestMessage(HttpMethod.Put, requestUri);
