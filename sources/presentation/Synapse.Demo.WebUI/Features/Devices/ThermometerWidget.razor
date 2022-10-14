@@ -1,30 +1,45 @@
 ﻿@namespace Synapse.Demo.WebUI
+@inject IKnobManager KnobManager
 
 @if (device !=  null) {
     <div class="device-widget active">
-        <div id="thermometer-knob" class="knob"></div>
+        <div @ref="knobsRef" id="@(device.Id)-knob" class="knob"></div>
         <h3>@device.Label</h3>
         <div>@temperature</div>
     </div>
 }
 
 @code {
-    private Device device = null;
-    [CascadingParameter] public Device Device { get; set; }
+    private Device? device = null;
+    [CascadingParameter] public Device? Device { get; set; }
     private bool shouldRender = false;
     private string temperature = "N/A";
+    private ElementReference? knobsRef { get; set; }
 
     protected override void OnParametersSet()
     {
         if (this.device != this.Device)
         {
             this.device = this.Device;
-            try {
-
-                this.temperature = ((dynamic)(this.device)).temperature;
+            if (this.device?.State != null) {
+                try {
+                    this.temperature = ((dynamic)(this.device.State)).temperature ?? "N/A";
+                }
+                catch{}
             }
-            catch{}
             this.shouldRender = true;
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!string.IsNullOrWhiteSpace(this.temperature))
+        {
+            var temperatureValue = Regex.Match(this.temperature, @"\d+").Value;
+            if (int.TryParse(temperatureValue, out int temperatureInt) && this.knobsRef != null)
+            {
+                await this.KnobManager.CreateKnobAsync(this.knobsRef.Value, 0, 50, temperatureInt, "thermometer");
+            }
         }
     }
 

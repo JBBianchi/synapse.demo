@@ -19,4 +19,6 @@ builder.Services.AddFlux(flux =>
     flux.ScanMarkupTypeAssembly<App>()
 );
 
+builder.Services.AddSingleton<IKnobManager, KnobManager>();
+
 await builder.Build().RunAsync();

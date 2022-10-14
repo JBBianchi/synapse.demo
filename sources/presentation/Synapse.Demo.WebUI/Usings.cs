@@ -2,6 +2,7 @@
 global using Microsoft.AspNetCore.Components.Web;
 global using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 global using Microsoft.AspNetCore.SignalR.Client;
+global using Microsoft.JSInterop;
 global using Neuroglia.Data.Flux;
 global using Neuroglia.Serialization;
 global using Newtonsoft.Json;
