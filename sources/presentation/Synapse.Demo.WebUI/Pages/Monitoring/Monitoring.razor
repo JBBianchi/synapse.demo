@@ -2,11 +2,10 @@
 @using Synapse.Demo.WebUI.Pages.Monitoring.State
 @inherits StatefulComponent<MonitoringState>
 
-<h3>Monitoring</h3>
 @if (devices != null) {
     <ul>
         @foreach (var device in devices) {
-            <li><DevicePresenter Device="device" /></li>
+            <li><DeviceWidget Device="device" /></li>
         }
     </ul>
 }

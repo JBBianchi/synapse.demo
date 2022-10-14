@@ -1,0 +1,36 @@
+﻿@namespace Synapse.Demo.WebUI
+
+@if (device != null)
+{
+    <CascadingValue Value="device">
+        <DynamicComponent Type="widgetType" />
+    </CascadingValue>
+}
+
+@code {
+    private Device device = null;
+    [Parameter] public Device Device { get; set; } = null;
+    private bool shouldRender = false;
+    private Type widgetType = null;
+
+    protected override void OnParametersSet()
+    {
+        if (this.device != this.Device) {
+            this.device = this.Device;
+            if (DeviceTypeComponent.ComponentFor.ContainsKey(device.Type)) {
+                this.widgetType = DeviceTypeComponent.ComponentFor[device.Type];
+            }
+            else {
+                this.widgetType = typeof(DefaultWidget);
+            }
+            this.shouldRender = true;
+        }
+    }
+
+    protected override bool ShouldRender()
+    {
+        if (!this.shouldRender) return false;
+        this.shouldRender = false;
+        return true;
+    }
+}

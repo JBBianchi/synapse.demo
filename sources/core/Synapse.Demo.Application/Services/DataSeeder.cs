@@ -38,8 +38,12 @@ public class DataSeeder
             return;
         await Task.Delay(5000);
         var devices = new List<DomainDevice>() {
-            new DomainDevice("thermometer", "Temperature", "sensor", "indoor", new { temperature = "18°C" }),
-            new DomainDevice("hydrometer", "Humidity", "sensor", "indoor", new { humidity = "53%" })
+            new DomainDevice("thermometer", "Temperature", "sensor.thermometer", "indoor", new { temperature = "18°C" }),
+            new DomainDevice("hydrometer", "Humidity", "sensor.hydrometer", "indoor", new { humidity = "53%" }),
+            new DomainDevice("lights-hallway", "Hallway lights", "switch.light", "indoor.hallway", new { on = false }),
+            new DomainDevice("lights-living", "Living lights", "switch.light", "indoor.living", new { on = true }),
+            new DomainDevice("heater", "Heater", "equipment.heater", "indoor.cellar", new { on = true }),
+            new DomainDevice("air-conditioning", "A/C", "equipment.air-conditioning", "indoor.living", new { on = false })
         };
         foreach(var device in devices)
         {

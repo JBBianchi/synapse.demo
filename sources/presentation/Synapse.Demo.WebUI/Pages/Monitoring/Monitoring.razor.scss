@@ -1,0 +1,12 @@
+﻿ul {
+    --min-card-width: calc(var(--base-size) * 4);
+    margin: calc(var(--base-size) / 2);
+    list-style: none;
+    display: grid;
+    grid-gap: calc(var(--base-size) / 2);
+    grid-template-columns: repeat(auto-fill, minmax(var(--min-card-width), 1fr));
+
+    li {
+        min-height: var(--min-card-width);
+    }
+}

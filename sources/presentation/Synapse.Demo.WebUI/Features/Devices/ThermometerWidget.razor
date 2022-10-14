@@ -1,0 +1,37 @@
+﻿@namespace Synapse.Demo.WebUI
+
+@if (device !=  null) {
+    <div class="device-widget active">
+        <div id="thermometer-knob" class="knob"></div>
+        <h3>@device.Label</h3>
+        <div>@temperature</div>
+    </div>
+}
+
+@code {
+    private Device device = null;
+    [CascadingParameter] public Device Device { get; set; }
+    private bool shouldRender = false;
+    private string temperature = "N/A";
+
+    protected override void OnParametersSet()
+    {
+        if (this.device != this.Device)
+        {
+            this.device = this.Device;
+            try {
+
+                this.temperature = ((dynamic)(this.device)).temperature;
+            }
+            catch{}
+            this.shouldRender = true;
+        }
+    }
+
+    protected override bool ShouldRender()
+    {
+        if (!this.shouldRender) return false;
+        this.shouldRender = false;
+        return true;
+    }
+}

@@ -6,5 +6,9 @@
   {
     "outputFile": "Shared/MainLayout.razor.css",
     "inputFile": "Shared/MainLayout.razor.scss"
+  },
+  {
+    "outputFile": "Pages/Monitoring/Monitoring.razor.css",
+    "inputFile": "Pages/Monitoring/Monitoring.razor.scss"
   }
 ]

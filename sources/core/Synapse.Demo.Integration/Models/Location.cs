@@ -8,7 +8,7 @@ public class Location
     /// <summary>
     /// The characters used to split the hierarchy
     /// </summary>
-    public readonly static string LabelSeparator = "\\\\";
+    public readonly static string LabelSeparator = ".";
 
     /// <summary>
     /// Gets the label that identifies the <see cref="Location"/>
