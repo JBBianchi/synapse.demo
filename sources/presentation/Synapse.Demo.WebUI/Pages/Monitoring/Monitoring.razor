@@ -1,5 +1,4 @@
 ﻿@page "/"
-@using Synapse.Demo.WebUI.Pages.Monitoring.Selectors
 @using Synapse.Demo.WebUI.Pages.Monitoring.State
 @inherits StatefulComponent<MonitoringState>
 
@@ -7,7 +6,7 @@
 @if (devices != null) {
     <ul>
         @foreach (var device in devices) {
-            <li>@device.Label</li>
+            <li><DevicePresenter Device="device"</li>
         }
     </ul>
 }
@@ -23,7 +22,7 @@
             .SelectDevices()
             .TakeUntil(this.disposeNotifier)
             .Subscribe(devices => this.devices = devices);
-        this.Dispatcher.Dispatch(new Actions.InitializeState());
+        this.Dispatcher.Dispatch(new InitializeState());
         await Task.CompletedTask;
     }
 

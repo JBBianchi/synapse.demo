@@ -1,7 +1,4 @@
-﻿using Synapse.Demo.WebUI.Pages.Monitoring.Actions;
-using Synapse.Demo.WebUI.Pages.Monitoring.State;
-
-namespace Synapse.Demo.WebUI.Pages.Monitoring.Reducer;
+﻿namespace Synapse.Demo.WebUI.Pages.Monitoring.State;
 
 [Reducer]
 public class MonitoringReducer

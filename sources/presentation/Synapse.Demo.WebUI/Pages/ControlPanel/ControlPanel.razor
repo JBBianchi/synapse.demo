@@ -1,6 +1,39 @@
 ﻿@page "/control"
-<h3>ControlPanel</h3>
+@using Synapse.Demo.WebUI.Pages.ControlPanel.State
+@inherits StatefulComponent<ControlPanelState>
+
+@if (count!=null) {
+    @count
+}
 
 @code {
+    protected Subject<bool>? disposeNotifier;
+    protected int? count = null;
 
+    protected override async Task OnInitializedAsync()
+    {
+        this.disposeNotifier = new Subject<bool>();
+        this.Feature
+            .SelectCount()
+            .TakeUntil(this.disposeNotifier)
+            .Subscribe(count => this.count = count);
+        await Task.CompletedTask;
+    }
+
+    private bool disposed;
+    protected override void Dispose(bool disposing)
+    {
+        if (!this.disposed)
+        {
+            if (this.disposeNotifier != null)
+            {
+                this.disposeNotifier.OnNext(true);
+                this.disposeNotifier.OnCompleted();
+                this.disposeNotifier.Dispose();
+                this.disposeNotifier = null;
+            }
+            this.disposed = true;
+        }
+        base.Dispose(disposing);
+    }
 }

@@ -1,4 +1,4 @@
-﻿namespace Synapse.Demo.WebUI.Pages.Monitoring.Actions;
+﻿namespace Synapse.Demo.WebUI.Pages.Monitoring.State;
 
 /// <summary>
 /// Triggers the state initialization

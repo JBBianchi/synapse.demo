@@ -37,13 +37,13 @@
                             Location = e.Location,
                             State = e.State
                         };
-                        this.Dispatcher.Dispatch(new Pages.Monitoring.Actions.AddDevice(device));
+                        this.Dispatcher.Dispatch(new Pages.Monitoring.State.AddDevice(device));
                         break;
                     }
                 case $"{ApplicationConstants.CloudEventsType}/device/state-changed/v1":
                     {
                         var e = cloudEvent.As<DeviceStateChangedIntegrationEvent>();
-                        this.Dispatcher.Dispatch(new Pages.Monitoring.Actions.UpdateDeviceState(e.Id, e.State));
+                        this.Dispatcher.Dispatch(new Pages.Monitoring.State.UpdateDeviceState(e.Id, e.State));
                         break;
                     }
             }

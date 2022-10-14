@@ -1,6 +1,4 @@
-﻿using Synapse.Demo.WebUI.Pages.Monitoring.Actions;
-
-namespace Synapse.Demo.WebUI.Pages.Monitoring.Effects;
+﻿namespace Synapse.Demo.WebUI.Pages.Monitoring.State;
 
 [Effect]
 public static class MonitoringEffects

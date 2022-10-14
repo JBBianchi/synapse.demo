@@ -29,8 +29,4 @@
     <ProjectReference Include="..\Synapse.Demo.Client.Rest\Synapse.Demo.Client.Rest.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Devices\" />
-  </ItemGroup>
-
 </Project>

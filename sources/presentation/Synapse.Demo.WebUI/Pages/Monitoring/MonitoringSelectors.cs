@@ -1,6 +1,4 @@
-﻿using Synapse.Demo.WebUI.Pages.Monitoring.State;
-
-namespace Synapse.Demo.WebUI.Pages.Monitoring.Selectors;
+﻿namespace Synapse.Demo.WebUI.Pages.Monitoring.State;
 
 /// <summary>
 /// Holds the state slices selectors for the <see cref="MonitoringState"/>

@@ -1,0 +1,10 @@
+﻿@namespace Synapse.Demo.WebUI
+
+@if (Device != null)
+{
+    @Device.Label
+}
+
+@code {
+    [Parameter] public Device Device { get; set; } = null!;
+}
