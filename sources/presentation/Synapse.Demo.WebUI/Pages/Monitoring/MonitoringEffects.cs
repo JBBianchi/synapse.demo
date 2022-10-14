@@ -12,8 +12,15 @@ public static class MonitoringEffects
     /// <exception cref="NullReferenceException"></exception>
     public static async Task OnInitiliazeState(InitializeState action, IEffectContext context)
     {
-        var api = context.Services.GetRequiredService<IRestApiClient>();
-        var devices = await api.GetDevices();
-        context.Dispatcher.Dispatch(new ReplaceDevices(devices));
+        try
+        {
+            var api = context.Services.GetRequiredService<IRestApiClient>();
+            var devices = await api.GetDevices();
+            context.Dispatcher.Dispatch(new ReplaceDevices(devices));
+        }
+        catch (Exception ex)
+        {
+
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace Synapse.Demo.WebUI.Pages.Monitoring.State;
 
 [Reducer]
-public class MonitoringReducer
+public static class MonitoringReducer
 {
     /// <summary>
     /// Replaces the list of <see cref="Device"/>s
@@ -9,7 +9,7 @@ public class MonitoringReducer
     /// <param name="state">The state to reduce</param>
     /// <param name="action">The action to reduce</param>
     /// <returns>The reduced state</returns>
-    public MonitoringState On(MonitoringState state, ReplaceDevices action)
+    public static MonitoringState On(MonitoringState state, ReplaceDevices action)
     {
         return state with {
             Devices = action.Devices.ToDictionary(device => device.Id)
@@ -22,7 +22,7 @@ public class MonitoringReducer
     /// <param name="state">The state to reduce</param>
     /// <param name="action">The action to reduce</param>
     /// <returns>The reduced state</returns>
-    public MonitoringState On(MonitoringState state, AddDevice action)
+    public static MonitoringState On(MonitoringState state, AddDevice action)
     {
         if (action?.Device == null) return state;
         var devices = new Dictionary<string, Device>(state.Devices);
@@ -39,7 +39,7 @@ public class MonitoringReducer
     /// <param name="state">The state to reduce</param>
     /// <param name="action">The action to reduce</param>
     /// <returns>The reduced state</returns>
-    public MonitoringState On(MonitoringState state, UpdateDeviceState action)
+    public static MonitoringState On(MonitoringState state, UpdateDeviceState action)
     {
         if (action?.DeviceId == null) return state;
         if (!state.Devices.ContainsKey(action.DeviceId)) return state;

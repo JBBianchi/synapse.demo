@@ -12,12 +12,12 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
         this.disposeNotifier = new Subject<bool>();
         this.Feature
             .SelectCount()
             .TakeUntil(this.disposeNotifier)
             .Subscribe(count => this.count = count);
-        await Task.CompletedTask;
     }
 
     private bool disposed;
