@@ -3,7 +3,7 @@
 /// <summary>
 /// The <see cref="State{TState}"/> of the monitoring page
 /// </summary>
-[Neuroglia.Data.Flux.Feature]
+[Feature]
 public record MonitoringState
 {
     /// <summary>

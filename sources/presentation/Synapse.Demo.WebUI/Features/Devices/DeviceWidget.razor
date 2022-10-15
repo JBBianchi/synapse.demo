@@ -1,29 +1,42 @@
 ﻿@namespace Synapse.Demo.WebUI
+@inject IKnobManager KnobManager
 
 @if (device != null)
 {
-    <CascadingValue Value="device">
-        <DynamicComponent Type="widgetType" />
-    </CascadingValue>
+    <div class="device-widget@(device.IsActive ? " active" : "")">
+        @if (hasKnob) {
+            <div @ref="knobsRef" id="@(device.Id)-knob" class="knob"></div>
+        }
+        else if(device.Hero != null) {
+            <span class="material-symbols-outlined">@device.Hero</span>
+        }
+        <h3>@device.Label</h3>
+        <div>@device.Data</div>
+    </div>
 }
 
 @code {
-    private Device device = null;
-    [Parameter] public Device Device { get; set; } = null;
+    private DeviceWidgetViewModel? device = null;
+    [Parameter] public Device? Device { get; set; } = null;
+    private bool hasKnob { get; set; }
+    private ElementReference? knobsRef { get; set; }
     private bool shouldRender = false;
-    private Type widgetType = null;
 
     protected override void OnParametersSet()
     {
-        if (this.device != this.Device) {
-            this.device = this.Device;
-            if (DeviceTypeComponent.ComponentFor.ContainsKey(device.Type)) {
-                this.widgetType = DeviceTypeComponent.ComponentFor[device.Type];
-            }
-            else {
-                this.widgetType = typeof(DefaultWidget);
-            }
+        if (this.device?.Id != this.Device?.Id) {
+            this.device = this.Device.AsViewModel();
+            this.hasKnob = this.device?.Hero?.GetType() == typeof(KnobHeroViewModel);
             this.shouldRender = true;
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (this.hasKnob && this.knobsRef != null)
+        {
+            var knob = (KnobHeroViewModel)this.device!.Hero!;
+            await this.KnobManager.CreateKnobAsync(this.knobsRef.Value, knob.Min, knob.Max, knob.Value, knob.Icon);
         }
     }
 

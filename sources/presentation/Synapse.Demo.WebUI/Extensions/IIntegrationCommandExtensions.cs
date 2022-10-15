@@ -1,11 +1,8 @@
-﻿using Neuroglia;
-using Synapse.Demo.Common;
-using Synapse.Demo.Integration.Attributes;
-using Synapse.Demo.Integration.Commands;
-using Synapse.Demo.Integration.Models;
+﻿namespace Synapse.Demo.WebUI.Extensions;
 
-namespace Synapse.Demo.WebUI.Extensions;
-
+/// <summary>
+/// Extension methods for <see cref="IIntegrationCommand"/>s
+/// </summary>
 public static class IIntegrationCommandExtensions
 {
     /// <summary>

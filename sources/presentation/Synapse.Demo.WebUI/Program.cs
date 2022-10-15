@@ -15,9 +15,7 @@ builder.Services.AddSingleton(provider =>
         })
         .Build()
 );
-builder.Services.AddFlux(flux => 
-    flux.ScanMarkupTypeAssembly<App>()
-);
+builder.Services.AddFlux(flux => flux.ScanMarkupTypeAssembly<App>());
 
 builder.Services.AddSingleton<IKnobManager, KnobManager>();
 

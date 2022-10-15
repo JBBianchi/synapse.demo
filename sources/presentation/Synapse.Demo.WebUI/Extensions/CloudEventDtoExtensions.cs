@@ -1,7 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
+﻿namespace Synapse.Demo.WebUI.Extensions;
 
-namespace Synapse.Demo.WebUI.Extensions;
-
+/// <summary>
+/// Extension methods for <see cref="CloudEventDto"/>s
+/// </summary>
 public static class CloudEventDtoExtensions
 {
     /// <summary>

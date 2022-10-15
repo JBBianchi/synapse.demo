@@ -1,9 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using Synapse.Demo.Integration.Attributes;
-using Synapse.Demo.Integration.Commands;
-using System.Collections;
-
-namespace Synapse.Demo.Api.WebSocket.Hubs;
+﻿namespace Synapse.Demo.Api.WebSocket.Hubs;
 
 /// <summary>
 /// Represents the WebSocket facade of the application
