@@ -25,7 +25,12 @@ public static class DeviceExtensions
             case "sensor.thermometer":
                 {
                     viewModel.IsActive = true;
-                    viewModel.Data = device.State != null ? ((dynamic)device.State).temperature ?? "N/A" : "N/A";
+                    var displayedTemperature = device.State != null ? ((dynamic)device.State).temperature ?? "N/A" : "N/A";
+                    if (device.State != null && ((dynamic)device.State).desired != null)
+                    {
+                        displayedTemperature += "->" + ((dynamic)device.State!).desired;
+                    }
+                    viewModel.Data = displayedTemperature;
                     var temperature = Regex.Match(viewModel.Data, @"\d+").Value;
                     if (!string.IsNullOrWhiteSpace(temperature) && int.TryParse(temperature, out int temperatureValue))
                     {
@@ -41,6 +46,22 @@ public static class DeviceExtensions
                     if (!string.IsNullOrWhiteSpace(humidity) && int.TryParse(humidity, out int humidityValue))
                     {
                         viewModel.Hero = new KnobHeroViewModel(0, 100, humidityValue, "humidity_low");
+                    }
+                    break;
+                }
+            case "sensor.motion":
+                {
+                    if (device.State != null && ((dynamic)device.State).on == true)
+                    {
+                        viewModel.Hero = "motion_sensor_active";
+                        viewModel.Data = "-ON-";
+                        viewModel.IsActive = true;
+                    }
+                    else
+                    {
+                        viewModel.Hero = "motion_sensor_idle";
+                        viewModel.Data = "-OFF-";
+                        viewModel.IsActive = false;
                     }
                     break;
                 }
