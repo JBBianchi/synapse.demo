@@ -1,13 +1,19 @@
 ﻿@inherits LayoutComponentBase
 
-<header>
-  <svg id="logo-home" viewBox="0 0 512 512"  xml:space="preserve">
-    <use xlink:href="#home" />
-  </svg> 
-  <h1>
-    Home Sweet Home
-  </h1>
-</header>
-<main>
-    @Body
-</main>
+<div id="layout">
+    <header>
+      <svg id="logo-home" viewBox="0 0 512 512"  xml:space="preserve">
+        <use xlink:href="#home" />
+      </svg> 
+      <h1>
+        Home Sweet Home
+      </h1>
+    </header>
+    <main>
+        @Body
+    </main>
+    <footer>
+        <a href="https://neuroglia.io" target="_blank">Featured by Neuroglia</a>
+        <img src="img/logo_blue.png" />
+    </footer>
+</div>

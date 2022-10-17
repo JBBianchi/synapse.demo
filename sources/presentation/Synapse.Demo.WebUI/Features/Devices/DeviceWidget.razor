@@ -1,32 +1,35 @@
 ﻿@namespace Synapse.Demo.WebUI
 @inject IKnobManager KnobManager
+@inject IMapper Mapper
 
-@if (device != null)
+@if (deviceVM != null)
 {
-    <div class="device-widget@(device.IsActive ? " active" : "")">
+    <div class="device-widget@(deviceVM.IsActive ? " active" : "")">
         @if (hasKnob) {
-            <div @ref="knobsRef" id="@(device.Id)-knob" class="knob"></div>
+            <div @ref="knobsRef" id="@(deviceVM.Id)-knob" class="knob"></div>
         }
-        else if(device.Hero != null) {
-            <span class="material-symbols-outlined">@device.Hero</span>
+        else if(deviceVM.Hero != null) {
+            <span class="material-symbols-outlined">@deviceVM.Hero</span>
         }
-        <h3>@device.Label</h3>
-        <div>@device.Data</div>
+        <h3>@deviceVM.Label</h3>
+        <div>@deviceVM.Data</div>
     </div>
 }
 
 @code {
-    private DeviceWidgetViewModel? device = null;
+    private Device? device = null;
     [Parameter] public Device? Device { get; set; } = null;
+    private DeviceWidgetViewModel? deviceVM = null;
     private bool hasKnob { get; set; }
     private ElementReference? knobsRef { get; set; }
     private bool shouldRender = false;
 
     protected override void OnParametersSet()
     {
-        if (this.device?.Id != this.Device?.Id) {
-            this.device = this.Device.AsViewModel();
-            this.hasKnob = this.device?.Hero?.GetType() == typeof(KnobHeroViewModel);
+        if (this.device != this.Device) {
+            this.device = this.Device;
+            this.deviceVM = this.Device.AsViewModel(this.Mapper);
+            this.hasKnob = this.deviceVM?.Hero?.GetType() == typeof(KnobHeroViewModel);
             this.shouldRender = true;
         }
     }
@@ -35,7 +38,7 @@
     {
         if (this.hasKnob && this.knobsRef != null)
         {
-            var knob = (KnobHeroViewModel)this.device!.Hero!;
+            var knob = (KnobHeroViewModel)this.deviceVM!.Hero!;
             await this.KnobManager.CreateKnobAsync(this.knobsRef.Value, knob.Min, knob.Max, knob.Value, knob.Icon);
         }
     }

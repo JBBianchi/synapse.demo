@@ -1,4 +1,7 @@
-﻿namespace Synapse.Demo.Application.UnitTests.Cases.Mapping;
+﻿using Synapse.Demo.Domain.Models;
+using Synapse.Demo.Integration.Models;
+
+namespace Synapse.Demo.Application.UnitTests.Cases.Mapping;
 
 /// <summary>
 /// Holds the tests for a <see cref="Device"/>
@@ -12,8 +15,8 @@ public class MappingProfileTests
     public void Domain_Model_To_Integration_Should_Work()
     {
         var mapper = MapperFactory.Create();
-        var domainModel = new Domain.Models.Device("device-123", "my device", "lamp", @"indoors\\kitchen", new { Hello = "World" });
-        
+        var domainModel = DeviceFactory.CreateDomainDevice();
+
         var integrationModel = mapper.Map<Integration.Models.Device>(domainModel);
 
         integrationModel.Should().NotBeNull();
@@ -34,17 +37,37 @@ public class MappingProfileTests
     public void Domain_Events_To_Integration_Should_Work()
     {
         var mapper = MapperFactory.Create();
-        var domainEvent = new DeviceCreatedDomainEvent("device-123", "my device", "lamp", @"indoors\\kitchen", new { Hello = "World" });
+        var domainEvent = DeviceFactory.CreateDomainDevice();
 
         var integrationEvent = mapper.Map<DeviceCreatedIntegrationEvent>(domainEvent);
 
         integrationEvent.Should().NotBeNull();
-        integrationEvent.Id.Should().Be(domainEvent.AggregateId);
+        integrationEvent.Id.Should().Be(domainEvent.Id);
         integrationEvent.Label.Should().Be(domainEvent.Label);
         integrationEvent.Type.Should().Be(domainEvent.Type);
         integrationEvent.Location.Label.Should().Be("kitchen");
         integrationEvent.Location.Parent.Should().NotBeNull();
         integrationEvent.Location.Parent!.Label.Should().Be("indoors");
         integrationEvent.State.Should().Be(domainEvent.State);
+    }
+
+    /// <summary>
+    /// Mapping a integration device to a specialized device "thermometer"
+    /// </summary>
+    [Fact]
+    public void Integration_Device_To_Specialized_Device_Should_Work()
+    {
+        var mapper = MapperFactory.Create();
+        var device = DeviceFactory.CreatePseudoThermometer();
+
+        var thermometer = mapper.Map<Thermometer>(device);
+
+        thermometer.Should().NotBeNull();
+        thermometer.Id.Should().Be(device.Id);
+        thermometer.Label.Should().Be(device.Label);
+        thermometer.Type.Should().Be(device.Type);
+        thermometer.Location.Label.Should().Be(device.Location.Label);
+        thermometer.Temperature.Should().Be(((dynamic?)device.State)!.temperature);
+        thermometer.DesiredTemperature.Should().Be(((dynamic?)device.State)!.desired);
     }
 }

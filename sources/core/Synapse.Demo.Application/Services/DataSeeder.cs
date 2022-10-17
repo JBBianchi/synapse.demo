@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using static System.Formats.Asn1.AsnWriter;
-using DomainDevice = Synapse.Demo.Domain.Models.Device;
+﻿using DomainDevice = Synapse.Demo.Domain.Models.Device;
 
 namespace Synapse.Demo.Application.Services;
 
@@ -37,9 +35,9 @@ public class DataSeeder
         if (await devicesRepository.ContainsAsync("thermometer", cancellationToken))
             return;
         var devices = new List<DomainDevice>() {
-            new DomainDevice("thermometer", "Temperature", "sensor.thermometer", "indoor", new { temperature = "17°C", desired = "19°C" }),
-            new DomainDevice("hydrometer", "Humidity", "sensor.hydrometer", "indoor", new { humidity = "53%" }),
-            new DomainDevice("heater", "Heater", "equipment.heater", "indoor.cellar", new { on = true }),
+            new DomainDevice("thermometer", "Temperature", "sensor.thermometer", "indoor", new { temperature = 16, desired = 19 }),
+            new DomainDevice("hydrometer", "Humidity", "sensor.hydrometer", "indoor", new { humidity = 53 }),
+            new DomainDevice("heater", "Heater", "equipment.heater", "indoor.cellar", new { on = false }),
             new DomainDevice("air-conditioning", "A/C", "equipment.air-conditioning", "indoor.living", new { on = false }),
             new DomainDevice("lights-hallway", "Hallway lights", "switch.light", "indoor.hallway", new { on = false }),
             new DomainDevice("motien-sensor-hallway", "Hallway motion", "sensor.motion", "indoor.hallway", new { on = false }),

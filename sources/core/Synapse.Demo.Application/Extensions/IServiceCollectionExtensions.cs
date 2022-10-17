@@ -10,7 +10,6 @@ public static class ApplicationServiceCollectionExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
     /// <param name="configuration">The current <see cref="IConfiguration"/></param>
-    /// <param name="setup">An <see cref="Action{T}"/> used to configure Synapse</param>
     /// <returns>The configured <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
     public static IServiceCollection AddDemoApplication(this IServiceCollection services, IConfiguration configuration)
     {
@@ -24,7 +23,7 @@ public static class ApplicationServiceCollectionExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
     /// <param name="configuration">The current <see cref="IConfiguration"/></param>
-    /// <param name="setup">An <see cref="Action{T}"/> used to configure Synapse</param>
+    /// <param name="setup">An <see cref="Action{T}"/> used to configure the app</param>
     /// <returns>The configured <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
     public static IServiceCollection AddDemoApplication(this IServiceCollection services, IConfiguration configuration, Action<IDemoApplicationBuilder> setup)
     {

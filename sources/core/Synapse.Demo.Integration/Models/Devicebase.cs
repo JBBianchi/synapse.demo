@@ -3,9 +3,8 @@
 /// <summary>
 /// Represents an IoT device
 /// </summary>
-[Queryable]
-public class Device
-    : DeviceBase
+public abstract class DeviceBase
+    : ModelDto
 {
     /// <summary>
     /// Gets/Sets the label of the <see cref="Device"/>

@@ -4,7 +4,7 @@
       "commandName": "Project",
       "environmentVariables": {
         "CLOUDEVENTSSOURCE": "https://demo.synpase.com",
-        "CLOUDEVENTBROKER": "https://webhook.site/2938e77a-0508-4d98-8d75-3830262437b3",
+        "CLOUDEVENTBROKER": "https://webhook.site/23fe6664-6e3f-4ed2-ba37-eb1472d4852b",
         "SCHEMAREGISTRY": "https://schema-registry.synapse.com"
       }
     }

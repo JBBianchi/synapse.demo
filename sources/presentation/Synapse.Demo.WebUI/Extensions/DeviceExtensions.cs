@@ -12,7 +12,7 @@ public static class DeviceExtensions
     /// </summary>
     /// <param name="device"></param>
     /// <returns></returns>
-    public static DeviceWidgetViewModel? AsViewModel(this Device? device)
+    public static DeviceWidgetViewModel? AsViewModel(this Device? device, IMapper mapper)
     {
         if (device == null) return null;
         DeviceWidgetViewModel viewModel = new DeviceWidgetViewModel()
@@ -24,34 +24,35 @@ public static class DeviceExtensions
         {
             case "sensor.thermometer":
                 {
+                    var thermometer = mapper.Map<Thermometer>(device);
                     viewModel.IsActive = true;
-                    var displayedTemperature = device.State != null ? ((dynamic)device.State).temperature ?? "N/A" : "N/A";
-                    if (device.State != null && ((dynamic)device.State).desired != null)
+                    var displayedTemperature = thermometer.DisplayedTemperature;
+                    if (thermometer.DesiredTemperature != null)
                     {
-                        displayedTemperature += "->" + ((dynamic)device.State!).desired;
+                        displayedTemperature += "->" + thermometer.DisplayedDesiredTemperature;
                     }
                     viewModel.Data = displayedTemperature;
-                    var temperature = Regex.Match(viewModel.Data, @"\d+").Value;
-                    if (!string.IsNullOrWhiteSpace(temperature) && int.TryParse(temperature, out int temperatureValue))
+                    if (thermometer.Temperature.HasValue)
                     {
-                        viewModel.Hero = new KnobHeroViewModel(0, 50, temperatureValue, "thermometer");
+                        viewModel.Hero = new KnobHeroViewModel(0, 50, thermometer.Temperature.Value, "thermometer");
                     }
                     break;
                 }
             case "sensor.hydrometer":
                 {
+                    var hydrometer = mapper.Map<Hydrometer>(device);
                     viewModel.IsActive = true;
-                    viewModel.Data = device.State != null ? ((dynamic)device.State).humidity ?? "N/A" : "N/A";
-                    var humidity = Regex.Match(viewModel.Data, @"\d+").Value;
-                    if (!string.IsNullOrWhiteSpace(humidity) && int.TryParse(humidity, out int humidityValue))
+                    viewModel.Data = hydrometer.DisplayedHumidity;
+                    if (hydrometer.Humidity.HasValue)
                     {
-                        viewModel.Hero = new KnobHeroViewModel(0, 100, humidityValue, "humidity_low");
+                        viewModel.Hero = new KnobHeroViewModel(0, 100, hydrometer.Humidity.Value, "humidity_low");
                     }
                     break;
                 }
             case "sensor.motion":
                 {
-                    if (device.State != null && ((dynamic)device.State).on == true)
+                    var switchable = mapper.Map<Switchable>(device);
+                    if (switchable.IsTurnedOn)
                     {
                         viewModel.Hero = "motion_sensor_active";
                         viewModel.Data = "-ON-";
@@ -68,7 +69,8 @@ public static class DeviceExtensions
             case "switch.light":
                 {
                     viewModel.Hero = "light";
-                    if (device.State != null && ((dynamic)device.State).on == true)
+                    var switchable = mapper.Map<Switchable>(device);
+                    if (switchable.IsTurnedOn)
                     { 
                         viewModel.Data = "-ON-";
                         viewModel.IsActive = true;
@@ -83,7 +85,8 @@ public static class DeviceExtensions
             case "equipment.heater":
                 {
                     viewModel.Hero = "fireplace";
-                    if (device.State != null && ((dynamic)device.State).on == true)
+                    var switchable = mapper.Map<Switchable>(device);
+                    if (switchable.IsTurnedOn)
                     {
                         viewModel.Data = "-ON-";
                         viewModel.IsActive = true;
@@ -97,7 +100,8 @@ public static class DeviceExtensions
                 }
             case "equipment.air-conditioning":
                 {
-                    if (device.State != null && ((dynamic)device.State).on == true)
+                    var switchable = mapper.Map<Switchable>(device);
+                    if (switchable.IsTurnedOn)
                     {
                         viewModel.Hero = "mode_cool";
                         viewModel.Data = "-ON-";

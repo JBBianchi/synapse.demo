@@ -11,7 +11,7 @@ public class DeviceStateChangedIntegrationEvent
     /// <summary>
     /// Gets the id of the created <see cref="Device"/>
     /// </summary>
-    public string Id { get; init; }
+    public string DeviceId { get; init; }
 
     /// <summary>
     /// Gets the state of the created <see cref="Device"/>
@@ -27,7 +27,7 @@ public class DeviceStateChangedIntegrationEvent
     {
         this.AggregateId = id;
         this.CreatedAt = DateTime.UtcNow;
-        this.Id = id;
+        this.DeviceId = id;
         this.State = state;
     }
 

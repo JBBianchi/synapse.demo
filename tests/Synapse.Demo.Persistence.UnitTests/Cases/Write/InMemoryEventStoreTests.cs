@@ -53,7 +53,7 @@ public class InMemoryEventStoreTests
         };
 
         await eventStore.AppendToStreamAsync(streamId, events);
-        await eventStore.AppendToStreamAsync(streamId, events, 1);
+        await eventStore.AppendToStreamAsync(streamId, events, 2);
         var sourcedEvents = await eventStore.ReadAllEventsForwardAsync(streamId);
 
         sourcedEvents.Should().NotBeNull();

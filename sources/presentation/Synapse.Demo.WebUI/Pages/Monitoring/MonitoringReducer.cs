@@ -45,9 +45,16 @@ public static class MonitoringReducer
         if (!state.Devices.ContainsKey(action.DeviceId)) return state;
         var devices = new Dictionary<string, Device>(state.Devices);
         var device = devices[action.DeviceId];
-        device.State = action.State;
+        var newDevice = new Device()
+        {
+            Id = device.Id,
+            Label = device.Label,
+            Type = device.Type,
+            Location = device.Location,
+            State = action.State
+        };
         devices.Remove(action.DeviceId);
-        devices.Add(action.DeviceId, device);
+        devices.Add(action.DeviceId, newDevice);
         return state with
         {
             Devices = devices

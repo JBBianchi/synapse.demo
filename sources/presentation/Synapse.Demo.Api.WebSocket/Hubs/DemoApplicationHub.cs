@@ -1,4 +1,5 @@
-﻿namespace Synapse.Demo.Api.WebSocket.Hubs;
+﻿
+namespace Synapse.Demo.Api.WebSocket.Hubs;
 
 /// <summary>
 /// Represents the WebSocket facade of the application
