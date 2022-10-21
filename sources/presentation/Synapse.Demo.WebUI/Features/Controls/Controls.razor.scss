@@ -4,7 +4,7 @@
 }
 
 #container {
-    --min-card-width: calc(var(--base-size) * 4);
+    --min-card-width: calc(var(--base-size) * 5);
     margin: calc(var(--base-size) / 2);
     list-style: none;
     display: grid;
@@ -19,6 +19,7 @@
 
 input {
     padding: calc(var(--base-size) / 8);
+    margin-right: calc(var(--base-size) / 2);
     border-radius: calc(var(--base-size) / 8);
     -webkit-box-shadow: 0px 0px 5px 1px var(--color-shadow);
     box-shadow: 0px 0px 5px 1px var(--color-shadow);
@@ -33,4 +34,6 @@ button {
     background-color: var(--color-foreground);
     color: var(--color-background);
     border: 1px solid var(--color-background);
+    flex-grow: 1;
+    cursor: pointer;
 }

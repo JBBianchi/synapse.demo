@@ -4,13 +4,6 @@
 
 <h2>Controls</h2>
 
-<!--// Set desired temp
-// Set measured temp
-// Set humidity?
-// Trigger motion sensor
-// Send "holiday mode" notification
-//-->
-
 <div id="container">
     <div class="control-group">
         <input type="number" @bind="desiredTemperature" placeholder="Desired temperature" /><button type="button" @onclick="@(async() => await ChangeDesiredTemperature())">Change desired temperature</button>
@@ -48,7 +41,7 @@
     private bool shouldRender = false;
     private Thermometer? thermometer => this.Mapper.Map<Thermometer>(this.devices?.FirstOrDefault(device => device.Id == "thermometer"));
     private Hydrometer? hydrometer => this.Mapper.Map<Hydrometer>(this.devices?.FirstOrDefault(device => device.Id == "hydrometer"));
-    private Switchable? hallwayLight => this.Mapper.Map<Switchable>(this.devices?.FirstOrDefault(device => device.Id == "lights-living"));
+    private Switchable? hallwayLight => this.Mapper.Map<Switchable>(this.devices?.FirstOrDefault(device => device.Id == "lights-hallway"));
     private Switchable? livingLight => this.Mapper.Map<Switchable>(this.devices?.FirstOrDefault(device => device.Id == "lights-living"));
     private int temperature = 19;
     private int desiredTemperature = 19;

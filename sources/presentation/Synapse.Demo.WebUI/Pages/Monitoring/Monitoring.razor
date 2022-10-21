@@ -52,6 +52,7 @@
     private void SendUpdateDeviceStateCommand(UpdateDeviceStateCommand command)
     {
         this.Dispatcher.Dispatch(new SendUpdateStateCommand(command));
+        this.ToggleControls();
     }
 
     private bool disposed;
