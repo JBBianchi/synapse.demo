@@ -60,4 +60,18 @@ public static class MonitoringReducer
             Devices = devices
         };
     }
+
+    /// <summary>
+    /// Toggles the controls visibility state
+    /// </summary>
+    /// <param name="state">The state to reduce</param>
+    /// <param name="action">The action to reduce</param>
+    /// <returns></returns>
+    public static MonitoringState On(MonitoringState state, ToggleControls action)
+    {
+        return state with
+        {
+            AreControlsHidden = !state.AreControlsHidden
+        };
+    }
 }

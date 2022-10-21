@@ -17,6 +17,7 @@
 }
 #layout > header h1 {
   display: inline-block;
+  border: none;
 }
 #layout > main {
   grid-area: main;

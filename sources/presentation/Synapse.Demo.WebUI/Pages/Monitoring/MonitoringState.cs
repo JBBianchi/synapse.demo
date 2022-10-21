@@ -7,7 +7,12 @@
 public record MonitoringState
 {
     /// <summary>
-    /// The <see cref="Device"/>s displayed
+    /// Gets the <see cref="Device"/>s displayed
     /// </summary>
     public Dictionary<string, Device> Devices { get; set; } = new Dictionary<string, Device>();
+
+    /// <summary>
+    /// Gets the visibility state of the controls panel
+    /// </summary>
+    public bool AreControlsHidden { get; set; } = true;
 }

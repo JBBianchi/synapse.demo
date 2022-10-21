@@ -3,9 +3,9 @@
 namespace Synapse.Demo.Application.Services;
 
 /// <summary>
-/// The service used to emulate the effects of a heater
+/// The service used to emulate the effects of an air conditioning
 /// </summary>
-internal class HeaterSimulator
+internal class AcSimulator
     : INotificationHandler<DeviceStateChangedDomainEvent>
 {
     /// <summary>
@@ -29,17 +29,17 @@ internal class HeaterSimulator
     protected IMapper Mapper { get; init; }
 
     public static CancellationTokenSource? CancellationTokenSource = null;
-    private string _heaterId = "heater";
+    private string _acId = "air-conditioning";
     private string _thermometerId = "thermometer";
 
     /// <summary>
-    /// Initializes a <see cref="HeaterSimulator"/>
+    /// Initializes a <see cref="AcSimulator"/>
     /// </summary>
     /// <param name="logger">The service used to log</param>
     /// <param name="devices">The <see cref="IRepository"/> used to manage the <see cref="Device"/>s</param>
     /// <param name="mediator">The service used to mediate calls</param>
     /// <param name="mapper">The service used to map objects</param>
-    public HeaterSimulator(ILogger<HeaterSimulator> logger, IServiceProvider serviceProvider, IRepository<Device, string> devices, IMapper mapper)
+    public AcSimulator(ILogger<AcSimulator> logger, IServiceProvider serviceProvider, IRepository<Device, string> devices, IMapper mapper)
     {
         if (logger == null) throw DomainException.ArgumentNull(nameof(logger));
         if (serviceProvider == null) throw DomainException.ArgumentNull(nameof(serviceProvider));
@@ -59,20 +59,20 @@ internal class HeaterSimulator
     /// <returns></returns>
     public async Task HandleAsync(DeviceStateChangedDomainEvent e, CancellationToken cancellationToken = default)
     {
-        if (e.AggregateId != this._heaterId) return;
+        if (e.AggregateId != this._acId) return;
         var turnedOn = ((dynamic?)e.State)?.on != null && (bool)((dynamic?)e.State)?.on;
         if (!turnedOn) {
-            if (HeaterSimulator.CancellationTokenSource != null)
+            if (AcSimulator.CancellationTokenSource != null)
             {
-                HeaterSimulator.CancellationTokenSource.Cancel();
-                HeaterSimulator.CancellationTokenSource.Dispose();
-                HeaterSimulator.CancellationTokenSource = null;
+                AcSimulator.CancellationTokenSource.Cancel();
+                AcSimulator.CancellationTokenSource.Dispose();
+                AcSimulator.CancellationTokenSource = null;
             }
         }
-        else if (HeaterSimulator.CancellationTokenSource == null)
+        else if (AcSimulator.CancellationTokenSource == null)
         {
-            HeaterSimulator.CancellationTokenSource = new CancellationTokenSource();
-            var token = HeaterSimulator.CancellationTokenSource.Token;
+            AcSimulator.CancellationTokenSource = new CancellationTokenSource();
+            var token = AcSimulator.CancellationTokenSource.Token;
             var _ = Task.Run(async () =>
             {
                 try
@@ -92,14 +92,14 @@ internal class HeaterSimulator
                     || thermometer.Temperature == thermometer.DesiredTemperature
                     )
                     {
-                        await mediator.ExecuteAsync(new UpdateDeviceStateCommand(this._heaterId, new { on = false }));
+                        await mediator.ExecuteAsync(new UpdateDeviceStateCommand(this._acId, new { on = false }));
                         return;
                     }
                     var temperature = thermometer.Temperature;
                     var desiredTemperature = thermometer.DesiredTemperature;
-                    while (temperature < desiredTemperature)
+                    while (temperature > desiredTemperature)
                     {
-                        temperature++;
+                        temperature--;
                         await mediator.ExecuteAsync(new UpdateDeviceStateCommand(thermometer.Id, new
                         {
                             temperature = temperature,
@@ -107,11 +107,11 @@ internal class HeaterSimulator
                         }));
                         await Task.Delay(2000);
                     }
-                    await mediator.ExecuteAsync(new UpdateDeviceStateCommand(this._heaterId, new { on = false }));
+                    await mediator.ExecuteAsync(new UpdateDeviceStateCommand(this._acId, new { on = false }));
                 }
                 catch(Exception ex)
                 {
-                    this.Logger.LogError("The heater experienced an exception '{ex}'", ex);
+                    this.Logger.LogError("The A/C experienced an exception '{ex}'", ex);
                 }
             }, cancellationToken);
         }

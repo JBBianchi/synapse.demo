@@ -2,17 +2,25 @@
 @using Synapse.Demo.WebUI.Pages.Monitoring.State
 @inherits StatefulComponent<MonitoringState>
 
+<button id="show-controls" type="button" @onclick="ToggleControls">
+    <span class="material-symbols-outlined">tune</span>
+</button>
 @if (devices != null) {
-    <ul>
-        @foreach (var device in devices) {
-            <li><DeviceWidget Device="device" /></li>
-        }
-    </ul>
+<ul>
+    @foreach (var device in devices) {
+        <li><DeviceWidget Device="device" /></li>
+    }
+</ul>
 }
+<div @ref="controls" id="controls" class="@(areControlsHidden ? "hide" : "")">
+    <Controls Devices="devices" UpdateDeviceState="SendUpdateDeviceStateCommand" />
+</div>
 
 @code {
-    protected Subject<bool>? disposeNotifier;
-    protected IEnumerable<Device>? devices = null;
+    private Subject<bool>? disposeNotifier;
+    private IEnumerable<Device>? devices = null;
+    private ElementReference controls;
+    private bool areControlsHidden = true;
 
     protected override async Task OnInitializedAsync()
     {
@@ -25,7 +33,25 @@
                 this.devices = devices;
                 this.StateHasChanged();
             });
+        this.Feature
+            .SelectAreControlsHidden()
+            .TakeUntil(this.disposeNotifier)
+            .Subscribe(areControlsHidden =>
+            {
+                this.areControlsHidden = areControlsHidden;
+                this.StateHasChanged();
+            });
         this.Dispatcher.Dispatch(new InitializeState());
+    }
+
+    private void ToggleControls()
+    {
+        this.Dispatcher.Dispatch(new ToggleControls());
+    }
+
+    private void SendUpdateDeviceStateCommand(UpdateDeviceStateCommand command)
+    {
+        this.Dispatcher.Dispatch(new SendUpdateStateCommand(command));
     }
 
     private bool disposed;

@@ -1,4 +1,6 @@
-﻿namespace Synapse.Demo.WebUI.Pages.Monitoring.State;
+﻿using Synapse.Demo.Integration.Commands.Devices;
+
+namespace Synapse.Demo.WebUI.Pages.Monitoring.State;
 
 /// <summary>
 /// Triggers the state initialization
@@ -13,7 +15,7 @@ public class AddDevice
     /// <summary>
     /// Get the <see cref="Device"/> to monitor
     /// </summary>
-    public Device Device { get; set; }
+    public Device Device { get; }
 
     /// <summary>
     /// Initializes a new <see cref="AddDevice"/> action
@@ -33,7 +35,7 @@ public class ReplaceDevices
     /// <summary>
     /// Get the list <see cref="Device"/>s to monitor
     /// </summary>
-    public IEnumerable<Device> Devices { get; set; }
+    public IEnumerable<Device> Devices { get; }
 
     /// <summary>
     /// Initializes a new <see cref="ReplaceDevices"/> action
@@ -53,12 +55,12 @@ public class UpdateDeviceState
     /// <summary>
     /// Get the <see cref="Device"/> id to update the state of
     /// </summary>
-    public string DeviceId { get; set; }
+    public string DeviceId { get; }
 
     /// <summary>
     /// Get the updated state
     /// </summary>
-    public Object? State { get; set; }
+    public Object? State { get; }
 
     /// <summary>
     /// Initiliazes a new <see cref="UpdateDeviceState"/> action
@@ -69,5 +71,30 @@ public class UpdateDeviceState
     {
         this.DeviceId = deviceId;
         this.State = state;
+    }
+}
+
+/// <summary>
+/// Toggles the controls panel state
+/// </summary>
+public class ToggleControls { }
+
+/// <summary>
+/// Send a command to update a device state
+/// </summary>
+public class SendUpdateStateCommand
+{
+    /// <summary>
+    /// Gets the command to send
+    /// </summary>
+    public UpdateDeviceStateCommand Command { get; }
+
+    /// <summary>
+    /// Initializes a new <see cref="SendUpdateStateCommand"/>
+    /// </summary>
+    /// <param name="command">The command to send</param>
+    public SendUpdateStateCommand(UpdateDeviceStateCommand command)
+    {
+        this.Command = command;
     }
 }

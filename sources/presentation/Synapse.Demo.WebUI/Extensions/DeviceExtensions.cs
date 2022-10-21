@@ -27,7 +27,7 @@ public static class DeviceExtensions
                     var thermometer = mapper.Map<Thermometer>(device);
                     viewModel.IsActive = true;
                     var displayedTemperature = thermometer.DisplayedTemperature;
-                    if (thermometer.DesiredTemperature != null)
+                    if (thermometer.DesiredTemperature != null && thermometer.DesiredTemperature != thermometer.Temperature)
                     {
                         displayedTemperature += "->" + thermometer.DisplayedDesiredTemperature;
                     }

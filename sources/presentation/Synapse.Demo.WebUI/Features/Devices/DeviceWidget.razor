@@ -4,9 +4,9 @@
 
 @if (deviceVM != null)
 {
-    <div class="device-widget@(deviceVM.IsActive ? " active" : "")">
+    <div class="device-widget@(deviceVM.IsActive ? " device-widget--active" : "")">
         @if (hasKnob) {
-            <div @ref="knobsRef" id="@(deviceVM.Id)-knob" class="knob"></div>
+            <div @ref="knobsRef" id="@(deviceVM.Id)-knob" class="device-widget__knob"></div>
         }
         else if(deviceVM.Hero != null) {
             <span class="material-symbols-outlined">@deviceVM.Hero</span>

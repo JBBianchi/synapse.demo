@@ -10,5 +10,9 @@
   {
     "outputFile": "Pages/Monitoring/Monitoring.razor.css",
     "inputFile": "Pages/Monitoring/Monitoring.razor.scss"
+  },
+  {
+    "outputFile": "Features/Controls/Controls.razor.css",
+    "inputFile": "Features/Controls/Controls.razor.scss"
   }
 ]

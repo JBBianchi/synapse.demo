@@ -4,15 +4,29 @@
 * {
     padding: 0;
     margin: 0;
+    border: none;
+}
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+button {
+  appearance:none;
+  -webkit-appearance:none;
 }
 
 body {
-    font-family: 'Oxygen Mono', monospace;
-    background-color: #f3f3f3;
-    user-select: none;
     --color-primary: #005EB8;
     --color-accent: #43C6F4;
+    --color-background: #F3F3F3;
+    --color-foreground: #2C2C2C;
+    --color-active: #FFF;
+    --color-shadow: #CCC;
+    --color-danger: red;
     --base-size: 4rem;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: 'Oxygen Mono', monospace;
+    user-select: none;
 }
 
 a {
@@ -21,8 +35,8 @@ a {
 }
 
 #blazor-error-ui {
-    background: var(--bs-danger);
-    color: var(--bs-light);
+    background: var(--color-danger);
+    color: var(--color-foreground);
     bottom: 0;
     display: none;
     left: 0;
@@ -32,7 +46,7 @@ a {
     z-index: 1000;
 
     a {
-        color: var(--bs-light);
+        color: var(--color-foreground);
         text-decoration: none;
     }
 
@@ -65,20 +79,24 @@ a {
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
 }
 
+.hide {
+    display: none;
+}
+
 .device-widget {
     width: 100%;
     height: 100%;
     border-radius: calc(var(--base-size) / 8);
-    -webkit-box-shadow: 0px 0px 10px 1px #ccc;
-    box-shadow: 0px 0px 10px 1px #ccc;
+    -webkit-box-shadow: 0px 0px 10px 1px var(--color-shadow);
+    box-shadow: 0px 0px 10px 1px var(--color-shadow);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: calc(var(--base-size) / 4);
 
-    &.active {
-        background-color: #fff;
+    &.device-widget--active {
+        background-color: var(--color-active);
 
         div {
             color: var(--color-accent);
@@ -89,17 +107,17 @@ a {
             font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48 !important
         }
     }
-}
 
-.knob {
-    width: var(--base-size);
-    height: var(--base-size);
-    position: relative;
+    .device-widget__knob {
+        width: var(--base-size);
+        height: var(--base-size);
+        position: relative;
 
-    .material-symbols-outlined {
-        position: absolute;
-        top: 0;
-        left: 0;
-        scale: 0.6;
+        .material-symbols-outlined {
+            position: absolute;
+            top: 0;
+            left: 0;
+            scale: 0.6;
+        }
     }
 }

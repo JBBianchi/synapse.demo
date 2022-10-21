@@ -17,4 +17,14 @@ public static class MonitoringSelectors
             )
             .DistinctUntilChanged();
     }
+    /// <summary>
+    /// Selects the controls panel visibility state
+    /// </summary>
+    /// <param name="store"></param>
+    /// <returns></returns>
+    public static IObservable<bool> SelectAreControlsHidden(this IFeature<MonitoringState> feature)
+    {
+        return feature.Select(featureState => featureState.AreControlsHidden)
+            .DistinctUntilChanged();
+    }
 }
