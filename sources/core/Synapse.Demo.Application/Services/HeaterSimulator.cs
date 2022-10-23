@@ -59,7 +59,7 @@ internal class HeaterSimulator
     /// <returns></returns>
     public async Task HandleAsync(DeviceStateChangedDomainEvent e, CancellationToken cancellationToken = default)
     {
-        if (e.AggregateId != this._heaterId) return;
+        if (e.AggregateId != ApplicationConstants.DeviceIds.Heater) return;
         var turnedOn = ((dynamic?)e.State)?.on != null && (bool)((dynamic?)e.State)?.on;
         if (!turnedOn) {
             if (HeaterSimulator.CancellationTokenSource != null)
@@ -79,7 +79,7 @@ internal class HeaterSimulator
                 {
                     using var scope = this.ServiceProvider.CreateScope();
                     var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-                    var device = await this.Devices.FindAsync(this._thermometerId);
+                    var device = await this.Devices.FindAsync(ApplicationConstants.DeviceIds.Thermometer);
                     Thermometer thermometer = null!;
                     if (device != null)
                     {
@@ -88,16 +88,14 @@ internal class HeaterSimulator
                     if (
                         thermometer == null
                     || !thermometer.Temperature.HasValue
-                    || !thermometer.DesiredTemperature.HasValue
-                    || thermometer.Temperature == thermometer.DesiredTemperature
                     )
                     {
-                        await mediator.ExecuteAsync(new UpdateDeviceStateCommand(this._heaterId, new { on = false }));
+                        await mediator.ExecuteAsync(new UpdateDeviceStateCommand(ApplicationConstants.DeviceIds.Heater, new { on = false }));
                         return;
                     }
                     var temperature = thermometer.Temperature;
                     var desiredTemperature = thermometer.DesiredTemperature;
-                    while (temperature < desiredTemperature)
+                    while (!cancellationToken.IsCancellationRequested)
                     {
                         temperature++;
                         await mediator.ExecuteAsync(new UpdateDeviceStateCommand(thermometer.Id, new
@@ -107,7 +105,6 @@ internal class HeaterSimulator
                         }));
                         await Task.Delay(2000);
                     }
-                    await mediator.ExecuteAsync(new UpdateDeviceStateCommand(this._heaterId, new { on = false }));
                 }
                 catch(Exception ex)
                 {

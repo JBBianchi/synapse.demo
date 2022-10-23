@@ -29,12 +29,19 @@ internal class UpdateDeviceStateCommandHandler
     /// <inheritdoc/>
     public async Task<IOperationResult<Device>> HandleAsync(UpdateDeviceStateCommand command, CancellationToken cancellationToken = default)
     {
-        var device = await this.Devices.FindAsync(command.DeviceId, cancellationToken);
-        if (device == null) throw DomainException.NullReference(typeof(Device), command.DeviceId);
-        device.SetState(command.State);
-        device = await this.Devices.UpdateAsync(device, cancellationToken);
-        await this.Devices.SaveChangesAsync(cancellationToken);
-        var deviceDto = this.Mapper.Map<Device>(device);
-        return this.Ok(deviceDto);
+        try
+        {
+            var device = await this.Devices.FindAsync(command.DeviceId, cancellationToken);
+            if (device == null) throw DomainException.NullReference(typeof(Device), command.DeviceId);
+            device.SetState(command.State);
+            device = await this.Devices.UpdateAsync(device, cancellationToken);
+            await this.Devices.SaveChangesAsync(cancellationToken);
+            var deviceDto = this.Mapper.Map<Device>(device);
+            return this.Ok(deviceDto);
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
 }

@@ -51,8 +51,8 @@ public static class WebUIServiceCollectionExtensions
     /// <returns>The configured <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
     public static IServiceCollection AddWebUIMapper(this IServiceCollection services)
     {
-        Assembly webUIAssembly = typeof(WebUIServiceCollectionExtensions).Assembly;
-        services.AddMapper(webUIAssembly);
+        Assembly integrationAssembly = typeof(Integration.ModelDto).Assembly;
+        services.AddMapper(integrationAssembly);
         return services;
     }
 

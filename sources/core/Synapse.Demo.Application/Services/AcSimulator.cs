@@ -29,8 +29,6 @@ internal class AcSimulator
     protected IMapper Mapper { get; init; }
 
     public static CancellationTokenSource? CancellationTokenSource = null;
-    private string _acId = "air-conditioning";
-    private string _thermometerId = "thermometer";
 
     /// <summary>
     /// Initializes a <see cref="AcSimulator"/>
@@ -59,7 +57,7 @@ internal class AcSimulator
     /// <returns></returns>
     public async Task HandleAsync(DeviceStateChangedDomainEvent e, CancellationToken cancellationToken = default)
     {
-        if (e.AggregateId != this._acId) return;
+        if (e.AggregateId != ApplicationConstants.DeviceIds.AirConditioning) return;
         var turnedOn = ((dynamic?)e.State)?.on != null && (bool)((dynamic?)e.State)?.on;
         if (!turnedOn) {
             if (AcSimulator.CancellationTokenSource != null)
@@ -79,7 +77,7 @@ internal class AcSimulator
                 {
                     using var scope = this.ServiceProvider.CreateScope();
                     var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-                    var device = await this.Devices.FindAsync(this._thermometerId);
+                    var device = await this.Devices.FindAsync(ApplicationConstants.DeviceIds.Thermometer);
                     Thermometer thermometer = null!;
                     if (device != null)
                     {
@@ -88,16 +86,14 @@ internal class AcSimulator
                     if (
                         thermometer == null
                     || !thermometer.Temperature.HasValue
-                    || !thermometer.DesiredTemperature.HasValue
-                    || thermometer.Temperature == thermometer.DesiredTemperature
                     )
                     {
-                        await mediator.ExecuteAsync(new UpdateDeviceStateCommand(this._acId, new { on = false }));
+                        await mediator.ExecuteAsync(new UpdateDeviceStateCommand(ApplicationConstants.DeviceIds.AirConditioning, new { on = false }));
                         return;
                     }
                     var temperature = thermometer.Temperature;
                     var desiredTemperature = thermometer.DesiredTemperature;
-                    while (temperature > desiredTemperature)
+                    while (!cancellationToken.IsCancellationRequested)
                     {
                         temperature--;
                         await mediator.ExecuteAsync(new UpdateDeviceStateCommand(thermometer.Id, new
@@ -107,7 +103,6 @@ internal class AcSimulator
                         }));
                         await Task.Delay(2000);
                     }
-                    await mediator.ExecuteAsync(new UpdateDeviceStateCommand(this._acId, new { on = false }));
                 }
                 catch(Exception ex)
                 {

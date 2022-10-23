@@ -10,7 +10,12 @@
   <ItemGroup>
     <PackageReference Include="Neuroglia.Core" Version="2.0.3" />
     <PackageReference Include="Neuroglia.Data" Version="2.0.3" />
+    <PackageReference Include="Neuroglia.Mapping" Version="2.0.3" />
     <PackageReference Include="Neuroglia.Mediation" Version="2.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Mapping\" />
   </ItemGroup>
 
 </Project>

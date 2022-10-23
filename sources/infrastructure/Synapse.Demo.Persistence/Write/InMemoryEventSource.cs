@@ -157,7 +157,7 @@ public class InMemoryEventSource
     /// </summary>
     public async Task AppendToStreamAsync(IEnumerable<IEventMetadata> events, long expectedVersion, CancellationToken cancellationToken = default)
     {
-        if (expectedVersion != this._sequence + 1) throw new DomainException($"The expected version '{expectedVersion}' doesn't match the next state version '{this._sequence+1}'.");
+        if (expectedVersion != -1 && expectedVersion != this._sequence + 1) throw new DomainException($"The expected version '{expectedVersion}' doesn't match the next state version '{this._sequence+1}'.");
         foreach (var e in events)
         {
             this._sequence++;

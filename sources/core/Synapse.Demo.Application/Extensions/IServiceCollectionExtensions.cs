@@ -63,6 +63,8 @@ public static class ApplicationServiceCollectionExtensions
     {
         Assembly applicationAssembly = typeof(ApplicationServiceCollectionExtensions).Assembly;
         services.AddMapper(applicationAssembly);
+        Assembly integrationAssembly = typeof(Integration.ModelDto).Assembly;
+        services.AddMapper(integrationAssembly);
         return services;
     }
 

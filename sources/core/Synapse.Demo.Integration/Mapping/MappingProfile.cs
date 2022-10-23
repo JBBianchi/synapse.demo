@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 
-namespace Synapse.Demo.WebUI.Mappging;
+namespace Synapse.Demo.Integration.Mapping;
 
 /// <summary>
-/// Represents the application mapping <see cref="Profile"/>
+/// Represents the Integration mapping <see cref="Profile"/>
 /// </summary>
 public class MappingProfile
     : Profile
@@ -26,7 +26,7 @@ public class MappingProfile
     {
         this.AllowNullCollections = true;
         this.KnownConfigurationTypes = new HashSet<Type>();
-        this.MappingConfigurationTypes = TypeCacheUtil.FindFilteredTypes("webui:mapping-configuration", t => !t.IsAbstract && !t.IsInterface && t.IsClass && typeof(IMappingConfiguration).IsAssignableFrom(t), this.GetType().Assembly);
+        this.MappingConfigurationTypes = TypeCacheUtil.FindFilteredTypes("integration:mapping-configuration", t => !t.IsAbstract && !t.IsInterface && t.IsClass && typeof(IMappingConfiguration).IsAssignableFrom(t), this.GetType().Assembly);
         this.AddConfiguredMappings();
     }
 

@@ -32,17 +32,17 @@ public class DataSeeder
     {
         using var scope = this.ServiceProvider.CreateScope();
         var devicesRepository = scope.ServiceProvider.GetRequiredService<IRepository<DomainDevice>>();
-        if (await devicesRepository.ContainsAsync("thermometer", cancellationToken))
+        if (await devicesRepository.ContainsAsync(ApplicationConstants.DeviceIds.Thermometer, cancellationToken))
             return;
         var devices = new List<DomainDevice>() {
-            new DomainDevice("thermometer", "Temperature", "sensor.thermometer", "indoor", new { temperature = 16 /*, desired = 19*/ }),
-            new DomainDevice("hydrometer", "Humidity", "sensor.hydrometer", "indoor", new { humidity = 53 }),
-            new DomainDevice("heater", "Heater", "equipment.heater", "indoor.cellar", new { on = false }),
-            new DomainDevice("air-conditioning", "A/C", "equipment.air-conditioning", "indoor.living", new { on = false }),
-            new DomainDevice("lights-hallway", "Hallway lights", "switch.light", "indoor.hallway", new { on = false }),
-            new DomainDevice("motion-sensor-hallway", "Hallway motion", "sensor.motion", "indoor.hallway", new { on = false }),
-            new DomainDevice("lights-living", "Living lights", "switch.light", "indoor.living", new { on = false }),
-            new DomainDevice("motion-sensor-living", "Living motion", "sensor.motion", "indoor.living", new { on = false })
+            new DomainDevice(ApplicationConstants.DeviceIds.Thermometer, "Temperature", "sensor.thermometer", "indoor", new { temperature = 16 /*, desired = 19*/ }),
+            new DomainDevice(ApplicationConstants.DeviceIds.Hydrometer, "Humidity", "sensor.hydrometer", "indoor", new { humidity = 53 }),
+            new DomainDevice(ApplicationConstants.DeviceIds.Heater, "Heater", "equipment.heater", "indoor.cellar", new { on = false }),
+            new DomainDevice(ApplicationConstants.DeviceIds.AirConditioning, "A/C", "equipment.air-conditioning", "indoor.living", new { on = false }),
+            new DomainDevice(ApplicationConstants.DeviceIds.HallwayLights, "Hallway lights", "switch.light", "indoor.hallway", new { on = false }),
+            new DomainDevice(ApplicationConstants.DeviceIds.LivingLights, "Living lights", "switch.light", "indoor.living", new { on = false }),
+            new DomainDevice(ApplicationConstants.DeviceIds.HallwayMotionSensor, "Hallway motion", "sensor.motion", "indoor.hallway", new { on = false }),
+            new DomainDevice(ApplicationConstants.DeviceIds.LivingMotionSensor, "Living motion", "sensor.motion", "indoor.living", new { on = false })
         };
         foreach(var device in devices)
         {
