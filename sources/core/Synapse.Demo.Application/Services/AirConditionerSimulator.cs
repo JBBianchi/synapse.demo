@@ -63,7 +63,6 @@ public class AirConditionerSimulator
     {
         if (!this.IsPoweredOn || this.CoolingCancellationTokenSource == null) return;
         this.CoolingCancellationTokenSource.Cancel();
-        this.CoolingCancellationTokenSource = null;
         await Task.CompletedTask;
     }
 
@@ -92,7 +91,7 @@ public class AirConditionerSimulator
             }
             var temperature = thermometer.Temperature;
             var desiredTemperature = thermometer.DesiredTemperature;
-            while (!this.CancellationTokenSource.IsCancellationRequested)
+            while (!this.CoolingCancellationTokenSource.IsCancellationRequested)
             {
                 temperature--;
                 var state = new
@@ -113,6 +112,7 @@ public class AirConditionerSimulator
         {
             this.IsPoweredOn = false;
             this.Logger.LogInformation("AC is now off");
+            this.CoolingCancellationTokenSource = null;
         }
     }
 

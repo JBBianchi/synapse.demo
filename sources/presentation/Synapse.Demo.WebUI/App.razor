@@ -43,7 +43,7 @@
                 case $"{ApplicationConstants.CloudEventsType}/device/state-changed/v1":
                     {
                         var e = cloudEvent.As<DeviceStateChangedIntegrationEvent>();
-                        this.Dispatcher.Dispatch(new Pages.Monitoring.State.UpdateDeviceState(e.DeviceId, e.State));
+                        this.Dispatcher.Dispatch(new Pages.Monitoring.State.UpdateDeviceState(e.AggregateId, e.State));
                         break;
                     }
             }

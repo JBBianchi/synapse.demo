@@ -63,7 +63,6 @@ public class HeaterSimulator
     {
         if (!this.IsPoweredOn || this.HeatingCancellationTokenSource == null) return;
         this.HeatingCancellationTokenSource.Cancel();
-        this.HeatingCancellationTokenSource = null;
         await Task.CompletedTask;
     }
 
@@ -92,7 +91,7 @@ public class HeaterSimulator
             }
             var temperature = thermometer.Temperature;
             var desiredTemperature = thermometer.DesiredTemperature;
-            while (!this.CancellationTokenSource.IsCancellationRequested)
+            while (!this.HeatingCancellationTokenSource.IsCancellationRequested)
             {
                 temperature++;
                 var state = new
@@ -113,6 +112,7 @@ public class HeaterSimulator
         {
             this.IsPoweredOn = false;
             this.Logger.LogInformation("Heater is now off");
+            this.HeatingCancellationTokenSource = null;
         }
     }
 
