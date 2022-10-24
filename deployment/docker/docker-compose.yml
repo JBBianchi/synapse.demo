@@ -6,6 +6,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - SYNAPSE_API_HOSTNAME=${SYNAPSE_HOST}
+      - SYNAPSE_CLOUDEVENTS_SINK_URI=https://${DEMO_HOST}
     ports:
       - 42286:42286
       - 41387:41387
