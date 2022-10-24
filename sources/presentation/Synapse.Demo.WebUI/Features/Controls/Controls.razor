@@ -53,7 +53,7 @@
 @code {
     private IEnumerable<Device>? devices { get; set; } = null;
     [Parameter] public IEnumerable<Device>? Devices { get; set; } = null;
-    [Parameter] public EventCallback<UpdateDeviceStateCommand> UpdateDeviceState { get; set; }
+    [Parameter] public EventCallback<PatchDeviceStateCommand> UpdateDeviceState { get; set; }
     private bool shouldRender = false;
     private Thermometer? thermometer => this.Mapper.Map<Thermometer>(this.devices?.FirstOrDefault(device => device.Id == ApplicationConstants.DeviceIds.Thermometer));
     private Hydrometer? hydrometer => this.Mapper.Map<Hydrometer>(this.devices?.FirstOrDefault(device => device.Id == ApplicationConstants.DeviceIds.Hydrometer));
@@ -65,7 +65,7 @@
     private int desiredTemperature = 19;
     private int humidity = 50;
 
-        protected override void OnParametersSet()
+    protected override void OnParametersSet()
     {
         if (this.devices != this.Devices)
         {
@@ -80,8 +80,8 @@
     private async Task ChangeDesiredTemperature() {
         if (this.thermometer != null)
         {
-            dynamic state = new { desired = this.desiredTemperature, temperature = this.thermometer.Temperature };
-            var command = new UpdateDeviceStateCommand(this.thermometer!.Id, state);
+            dynamic state = new { desired = this.desiredTemperature };//, temperature = this.thermometer.Temperature };
+        var command = new PatchDeviceStateCommand(this.thermometer!.Id, state);
             await this.UpdateDeviceState.InvokeAsync(command);
         }
     }
@@ -91,7 +91,7 @@
         if (this.thermometer != null)
         {
             dynamic state = new { temperature = this.temperature, desired = this.thermometer.DesiredTemperature };
-            var command = new UpdateDeviceStateCommand(this.thermometer!.Id, state);
+            var command = new PatchDeviceStateCommand(this.thermometer!.Id, state);
             await this.UpdateDeviceState.InvokeAsync(command);
         }
     }
@@ -101,7 +101,7 @@
         if (this.thermometer != null)
         {
             dynamic state = new { humidity = this.humidity };
-            var command = new UpdateDeviceStateCommand(this.hydrometer!.Id, state);
+            var command = new PatchDeviceStateCommand(this.hydrometer!.Id, state);
             await this.UpdateDeviceState.InvokeAsync(command);
         }
     }
@@ -109,14 +109,14 @@
     private async Task Activate(string sensorId)
     {
         var state = new { on = true };
-        var command = new UpdateDeviceStateCommand(sensorId, state);
+        var command = new PatchDeviceStateCommand(sensorId, state);
         await this.UpdateDeviceState.InvokeAsync(command);
     }
 
     private async Task Deactivate(string sensorId)
     {
         var state = new { on = false };
-        var command = new UpdateDeviceStateCommand(sensorId, state);
+        var command = new PatchDeviceStateCommand(sensorId, state);
         await this.UpdateDeviceState.InvokeAsync(command);
     }
 

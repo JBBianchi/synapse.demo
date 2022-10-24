@@ -87,13 +87,13 @@ public class SendUpdateStateCommand
     /// <summary>
     /// Gets the command to send
     /// </summary>
-    public UpdateDeviceStateCommand Command { get; }
+    public PatchDeviceStateCommand Command { get; }
 
     /// <summary>
     /// Initializes a new <see cref="SendUpdateStateCommand"/>
     /// </summary>
     /// <param name="command">The command to send</param>
-    public SendUpdateStateCommand(UpdateDeviceStateCommand command)
+    public SendUpdateStateCommand(PatchDeviceStateCommand command)
     {
         this.Command = command;
     }

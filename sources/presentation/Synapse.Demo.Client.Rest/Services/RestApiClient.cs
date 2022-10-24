@@ -55,6 +55,24 @@ public class RestApiClient
     }
 
     /// <summary>
+    /// Queries the <see cref="Device"/>s
+    /// </summary>
+    /// <param name="query">The potential OData query</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/></param>
+    /// <returns>A list of <see cref="Device"/>s</returns>
+    public async Task<Device> GetDeviceById(string id, CancellationToken cancellationToken = default)
+    {
+        var requestUri = $"api/v1/devices/{id}";
+        var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+        using var response = await this.HttpClient.SendAsync(request, cancellationToken);
+        var json = await response.Content?.ReadAsStringAsync(cancellationToken)!;
+        if (!response.IsSuccessStatusCode)
+            this.Logger.LogError("An error occured while getting the device: {details}", json);
+        response.EnsureSuccessStatusCode();
+        return await this.Serializer.DeserializeAsync<Device>(json, cancellationToken);
+    }
+
+    /// <summary>
     /// Creates a new <see cref="Device"/>
     /// </summary>
     /// <param name="command">The <see cref="CreateDeviceCommand"/> used to create the device</param>
@@ -90,6 +108,26 @@ public class RestApiClient
         json = await response.Content?.ReadAsStringAsync(cancellationToken)!;
         if (!response.IsSuccessStatusCode)
             this.Logger.LogError("An error occured while updating a device state: {details}", json);
+        response.EnsureSuccessStatusCode();
+        return await this.Serializer.DeserializeAsync<Device>(json, cancellationToken);
+    }
+
+    /// <summary>
+    /// Patches a <see cref="Device"/> state
+    /// </summary>
+    /// <param name="command">The <see cref="PatchDeviceStateCommand"/> used to patch the device state</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/></param>
+    /// <returns>The patched <see cref="Device"/></returns>
+    public async Task<Device> PatchDeviceState(PatchDeviceStateCommand command, CancellationToken cancellationToken = default)
+    {
+        var requestUri = "api/v1/devices";
+        var request = new HttpRequestMessage(HttpMethod.Patch, requestUri);
+        var json = await this.Serializer.SerializeAsync(command, cancellationToken);
+        request.Content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json);
+        using var response = await this.HttpClient.SendAsync(request, cancellationToken);
+        json = await response.Content?.ReadAsStringAsync(cancellationToken)!;
+        if (!response.IsSuccessStatusCode)
+            this.Logger.LogError("An error occured while patching a device state: {details}", json);
         response.EnsureSuccessStatusCode();
         return await this.Serializer.DeserializeAsync<Device>(json, cancellationToken);
     }

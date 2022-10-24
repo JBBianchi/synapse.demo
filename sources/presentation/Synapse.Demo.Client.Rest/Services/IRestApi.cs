@@ -1,4 +1,6 @@
-﻿namespace Synapse.Demo.Client.Rest.Services;
+﻿using System.Threading.Tasks;
+
+namespace Synapse.Demo.Client.Rest.Services;
 
 /// <summary>
 /// Represents the service used to interact with the HTTP REST API
@@ -22,10 +24,26 @@ public interface IRestApiClient
     Task<IEnumerable<Device>> GetDevices(string? query = null, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Gets the <see cref="Device"/> with the specified id.
+    /// </summary>
+    /// <param name="id">The id of the <see cref="Device"/> to find</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/></param>
+    /// <returns>The targeted <see cref="Device"/></returns>
+    Task<Device> GetDeviceById(string id, CancellationToken cancellationToken);
+
+    /// <summary>
     /// Updates a <see cref="Device"/> state
     /// </summary>
     /// <param name="command">The <see cref="UpdateDeviceStateCommand"/> used to update the device state</param>
     /// <param name="cancellationToken">A <see cref="CancellationToken"/></param>
     /// <returns>The updated <see cref="Device"/></returns>
     Task<Device> UpdateDeviceState(UpdateDeviceStateCommand command, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Patch a <see cref="Device"/> state
+    /// </summary>
+    /// <param name="command">The <see cref="PatchDeviceStateCommand"/> used to patch the device state</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/></param>
+    /// <returns>The updated <see cref="Device"/></returns>
+    Task<Device> PatchDeviceState(PatchDeviceStateCommand command, CancellationToken cancellationToken = default);
 }

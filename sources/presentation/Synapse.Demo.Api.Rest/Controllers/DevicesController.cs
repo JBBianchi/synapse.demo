@@ -63,7 +63,7 @@ public class DevicesController
     }
 
     /// <summary>
-    /// Update a <see cref="Device"/>'s state
+    /// Updates a <see cref="Device"/>'s state
     /// </summary>
     /// <param name="command">An object that represents the command to execute</param>
     /// <param name="cancellationToken">A <see cref="CancellationToken"/></param>
@@ -74,5 +74,19 @@ public class DevicesController
     public async Task<IActionResult> UpdateDeviceState([FromBody] UpdateDeviceStateCommand command, CancellationToken cancellationToken)
     {
         return this.Process(await this.Mediator.ExecuteAsync(this.Mapper.Map<Application.Commands.Devices.UpdateDeviceStateCommand>(command), cancellationToken));
+    }
+
+    /// <summary>
+    /// Patches a <see cref="Device"/>'s state
+    /// </summary>
+    /// <param name="command">An object that represents the command to execute</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/></param>
+    /// <returns></returns>
+    [HttpPatch]
+    [ProducesResponseType(typeof(Device), (int)HttpStatusCode.Created)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    public async Task<IActionResult> PatchDeviceState([FromBody] PatchDeviceStateCommand command, CancellationToken cancellationToken)
+    {
+        return this.Process(await this.Mediator.ExecuteAsync(this.Mapper.Map<Application.Commands.Devices.PatchDeviceStateCommand>(command), cancellationToken));
     }
 }
