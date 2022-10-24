@@ -22,7 +22,7 @@ public static class DeviceExtensions
         };
         switch (device.Type)
         {
-            case "sensor.thermometer":
+            case ApplicationConstants.DeviceTypes.ThermometerSensor:
                 {
                     var thermometer = mapper.Map<Thermometer>(device);
                     viewModel.IsActive = true;
@@ -38,7 +38,7 @@ public static class DeviceExtensions
                     }
                     break;
                 }
-            case "sensor.hydrometer":
+            case ApplicationConstants.DeviceTypes.HydrometerSensor:
                 {
                     var hydrometer = mapper.Map<Hydrometer>(device);
                     viewModel.IsActive = true;
@@ -49,7 +49,7 @@ public static class DeviceExtensions
                     }
                     break;
                 }
-            case "sensor.motion":
+            case ApplicationConstants.DeviceTypes.MotionSensor:
                 {
                     var switchable = mapper.Map<Switchable>(device);
                     if (switchable.IsTurnedOn)
@@ -66,7 +66,7 @@ public static class DeviceExtensions
                     }
                     break;
                 }
-            case "switch.light":
+            case ApplicationConstants.DeviceTypes.LightsSwitch:
                 {
                     viewModel.Hero = "light";
                     var switchable = mapper.Map<Switchable>(device);
@@ -82,7 +82,7 @@ public static class DeviceExtensions
                     }
                     break;
                 }
-            case "equipment.heater":
+            case ApplicationConstants.DeviceTypes.HeaterEquipment:
                 {
                     viewModel.Hero = "fireplace";
                     var switchable = mapper.Map<Switchable>(device);
@@ -98,7 +98,7 @@ public static class DeviceExtensions
                     }
                     break;
                 }
-            case "equipment.air-conditioning":
+            case ApplicationConstants.DeviceTypes.AirConditioningEquipment:
                 {
                     var switchable = mapper.Map<Switchable>(device);
                     if (switchable.IsTurnedOn)
@@ -111,6 +111,23 @@ public static class DeviceExtensions
                     {
                         viewModel.Hero = "mode_cool_off";
                         viewModel.Data = "-OFF-";
+                        viewModel.IsActive = false;
+                    }
+                    break;
+                }
+            case ApplicationConstants.DeviceTypes.BlindsEquipment:
+                {
+                    var switchable = mapper.Map<Switchable>(device);
+                    if (switchable.IsTurnedOn)
+                    {
+                        viewModel.Hero = "blinds";
+                        viewModel.Data = "-OPEN-";
+                        viewModel.IsActive = true;
+                    }
+                    else
+                    {
+                        viewModel.Hero = "blinds_closed";
+                        viewModel.Data = "-CLOSED-";
                         viewModel.IsActive = false;
                     }
                     break;

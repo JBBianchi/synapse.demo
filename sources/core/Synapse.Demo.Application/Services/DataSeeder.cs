@@ -35,14 +35,16 @@ public class DataSeeder
         if (await devicesRepository.ContainsAsync(ApplicationConstants.DeviceIds.Thermometer, cancellationToken))
             return;
         var devices = new List<DomainDevice>() {
-            new DomainDevice(ApplicationConstants.DeviceIds.Thermometer, "Temperature", "sensor.thermometer", "indoor", new { temperature = 16 /*, desired = 19*/ }),
-            new DomainDevice(ApplicationConstants.DeviceIds.Hydrometer, "Humidity", "sensor.hydrometer", "indoor", new { humidity = 53 }),
-            new DomainDevice(ApplicationConstants.DeviceIds.Heater, "Heater", "equipment.heater", "indoor.cellar", new { on = false }),
-            new DomainDevice(ApplicationConstants.DeviceIds.AirConditioning, "A/C", "equipment.air-conditioning", "indoor.living", new { on = false }),
-            new DomainDevice(ApplicationConstants.DeviceIds.HallwayLights, "Hallway lights", "switch.light", "indoor.hallway", new { on = false }),
-            new DomainDevice(ApplicationConstants.DeviceIds.LivingLights, "Living lights", "switch.light", "indoor.living", new { on = false }),
-            new DomainDevice(ApplicationConstants.DeviceIds.HallwayMotionSensor, "Hallway motion", "sensor.motion", "indoor.hallway", new { on = false }),
-            new DomainDevice(ApplicationConstants.DeviceIds.LivingMotionSensor, "Living motion", "sensor.motion", "indoor.living", new { on = false })
+            new DomainDevice(ApplicationConstants.DeviceIds.Thermometer, "Temperature", ApplicationConstants.DeviceTypes.ThermometerSensor, "indoor", new { temperature = 16 /*, desired = 19*/ }),
+            new DomainDevice(ApplicationConstants.DeviceIds.Hydrometer, "Humidity", ApplicationConstants.DeviceTypes.HydrometerSensor, "indoor", new { humidity = 53 }),
+            new DomainDevice(ApplicationConstants.DeviceIds.Heater, "Heater", ApplicationConstants.DeviceTypes.HeaterEquipment, "indoor.cellar", new { on = false }),
+            new DomainDevice(ApplicationConstants.DeviceIds.AirConditioning, "A/C", ApplicationConstants.DeviceTypes.AirConditioningEquipment, "indoor.living", new { on = false }),
+            new DomainDevice(ApplicationConstants.DeviceIds.HallwayLights, "Hallway lights", ApplicationConstants.DeviceTypes.LightsSwitch, "indoor.hallway", new { on = false }),
+            new DomainDevice(ApplicationConstants.DeviceIds.LivingLights, "Living lights", ApplicationConstants.DeviceTypes.LightsSwitch, "indoor.living", new { on = false }),
+            new DomainDevice(ApplicationConstants.DeviceIds.HallwayMotionSensor, "Hallway motion", ApplicationConstants.DeviceTypes.MotionSensor, "indoor.hallway", new { on = false }),
+            new DomainDevice(ApplicationConstants.DeviceIds.LivingMotionSensor, "Living motion", ApplicationConstants.DeviceTypes.MotionSensor, "indoor.living", new { on = false }),
+            new DomainDevice(ApplicationConstants.DeviceIds.LivingBlinds, "Living blinds", ApplicationConstants.DeviceTypes.BlindsEquipment, "indoor.living", new { on = false }),
+            new DomainDevice(ApplicationConstants.DeviceIds.KitchenBlinds, "Kitchen blinds", ApplicationConstants.DeviceTypes.BlindsEquipment, "indoor.kitchen", new { on = false })
         };
         foreach(var device in devices)
         {

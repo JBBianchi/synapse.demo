@@ -36,7 +36,7 @@ public static class MonitoringEffects
         try
         {
             var api = context.Services.GetRequiredService<IRestApiClient>();
-            var device = await api.PatchDeviceState(action.Command);
+            var device = await api.UpdateDeviceState(action.Command);
             context.Dispatcher.Dispatch(new UpdateDeviceState(device.Id, device.State));
         }
         catch (Exception ex)
