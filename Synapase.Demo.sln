@@ -47,6 +47,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synapse.Demo.Common", "sour
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synapse.Demo.Client.Rest", "sources\presentation\Synapse.Demo.Client.Rest\Synapse.Demo.Client.Rest.csproj", "{1D2D5828-4C04-4850-8F0B-374A9515DBA7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{1CC19477-D9AE-4160-BF31-7DA6D3963B01}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "deployment\docker\docker-compose.dcproj", "{5BEDAE44-DC57-48B2-9795-7A64CFD61748}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -117,6 +121,10 @@ Global
 		{1D2D5828-4C04-4850-8F0B-374A9515DBA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D2D5828-4C04-4850-8F0B-374A9515DBA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D2D5828-4C04-4850-8F0B-374A9515DBA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BEDAE44-DC57-48B2-9795-7A64CFD61748}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BEDAE44-DC57-48B2-9795-7A64CFD61748}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BEDAE44-DC57-48B2-9795-7A64CFD61748}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BEDAE44-DC57-48B2-9795-7A64CFD61748}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -141,6 +149,8 @@ Global
 		{0A7C2B30-6EBD-4646-B5AA-A9F273341135} = {C846924B-BEAA-4162-AC37-3C495393CAF0}
 		{3D2B5B53-28C1-4309-A9AF-C875E67135E1} = {25212BAB-602C-43B1-8ABD-86E035755D2C}
 		{1D2D5828-4C04-4850-8F0B-374A9515DBA7} = {C846924B-BEAA-4162-AC37-3C495393CAF0}
+		{1CC19477-D9AE-4160-BF31-7DA6D3963B01} = {CEDAA5E1-B77A-42C0-AFA0-7AD551A704E8}
+		{5BEDAE44-DC57-48B2-9795-7A64CFD61748} = {1CC19477-D9AE-4160-BF31-7DA6D3963B01}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {36DE8419-6939-4E54-9DD4-4C7294147691}

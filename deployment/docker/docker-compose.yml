@@ -1,0 +1,53 @@
+version: '3.4'
+
+services:
+  synapse:
+    image: ghcr.io/serverlessworkflow/synapse:latest
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - SYNAPSE_API_HOSTNAME=${SYNAPSE_HOST}
+    ports:
+      - 42286:42286
+      - 41387:41387
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      default:
+      synapse-net:
+        ipv4_address: 172.14.1.2
+    extra_hosts:
+      - host.docker.internal:host-gateway
+      - "${DEMO_HOST}:172.14.1.3"
+
+  synapse.demo.webserver:
+    image: ${DOCKER_REGISTRY-}synapse-demo
+    build:
+      context: ../../
+      dockerfile: sources/presentation/Synapse.Demo.WebServer/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: 'https://+:443;http://+:80'
+      HOST: 'https://${DEMO_HOST}'
+      CloudEventsSource: 'https://demo.synpase.com'
+      CloudEventBroker: 'http://${SYNAPSE_HOST}:42286'
+      SchemaRegistry: 'https://schema-registry.synapse.com'
+    ports:
+      - 8088:80
+      - 44362:443
+    depends_on:
+      - synapse
+    networks:
+      default:
+      synapse-net:
+        ipv4_address: 172.14.1.3
+    extra_hosts:
+      - "${SYNAPSE_HOST}:172.14.1.2"
+
+networks:
+  default:
+    name: synapse-demo_default
+  synapse-net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.14.1.0/16
