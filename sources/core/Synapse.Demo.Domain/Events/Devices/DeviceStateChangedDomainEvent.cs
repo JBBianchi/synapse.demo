@@ -7,10 +7,6 @@
 public class DeviceStateChangedDomainEvent
     : DomainEvent<Device>
 {
-    /// <summary>
-    /// Gets the id of the <see cref="Device"/> to create
-    /// </summary>
-    public string DeviceId { get; init; }
 
     /// <summary>
     /// Gets the state of the <see cref="Device"/>
@@ -27,11 +23,11 @@ public class DeviceStateChangedDomainEvent
     /// <summary>
     /// Initializes a new <see cref="DeviceCreatedDomainEvent"/>
     /// </summary>
+    /// <param name="id">The id of the <see cref="Device"/> which's state has changed</param>
     /// <param name="state">The new state of the <see cref="Device"/></param>
     public DeviceStateChangedDomainEvent(string id, object? state)
         : base(id)
     {
-        this.DeviceId = id;
         this.State = state;
     }
 }

@@ -42,6 +42,7 @@ public class DeviceCreatedDomainEvent
     /// <summary>
     /// Initializes a new <see cref="DeviceCreatedDomainEvent"/>
     /// </summary>
+    /// <param name="id">The id of the newly created <see cref="Device"/></param>
     /// <param name="label">The label of the created <see cref="Device"/></param>
     /// <param name="type">The type of the created <see cref="Device"/></param>
     /// <param name="location">The location of the created <see cref="Device"/></param>

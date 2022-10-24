@@ -25,6 +25,19 @@ public static class IDemoApplicationBuilderExtensions
         demoBuilder.Services.AddTransient<IEdmModelBuilder, EdmModelBuilder>();
         demoBuilder.Services.AddTransient(provider => provider.GetRequiredService<IEdmModelBuilder>().Build());
         demoBuilder.Services.AddHostedService<CloudEventsHandler>();
+
+        demoBuilder.Services.AddSingleton<AirConditionerSimulator>();
+        demoBuilder.Services.AddSingleton<IAirConditioner>(provider => provider.GetRequiredService<AirConditionerSimulator>());
+        demoBuilder.Services.AddSingleton<IHostedService>(provider => provider.GetRequiredService<AirConditionerSimulator>());
+
+        demoBuilder.Services.AddSingleton<HeaterSimulator>();
+        demoBuilder.Services.AddSingleton<IHeater>(provider => provider.GetRequiredService<HeaterSimulator>());
+        demoBuilder.Services.AddSingleton<IHostedService>(provider => provider.GetRequiredService<HeaterSimulator>());
+
+        demoBuilder.Services.AddSingleton<MotionSensorSimulator>();
+        demoBuilder.Services.AddSingleton<IMotionSensor>(provider => provider.GetRequiredService<MotionSensorSimulator>());
+        demoBuilder.Services.AddSingleton<IHostedService>(provider => provider.GetRequiredService<MotionSensorSimulator>());
+
         demoBuilder.Services.AddDemoApplicationMediator();
         demoBuilder.Services.AddDemoApplicationMapper();
         demoBuilder.Services.AddGenericQueryHandlers();
