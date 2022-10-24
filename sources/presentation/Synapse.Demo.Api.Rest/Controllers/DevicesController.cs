@@ -33,6 +33,22 @@ public class DevicesController
     }
 
     /// <summary>
+    /// Gets the <see cref="Device"/> with the specified id.
+    /// </summary>
+    /// <param name="id">The id of the <see cref="Device"/> to find</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/></param>
+    /// <returns>A new <see cref="IActionResult"/></returns>
+    [HttpGet("{id}"), EnableQuery]
+    [ProducesResponseType(typeof(Device), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType((int)HttpStatusCode.Forbidden)]
+    public async Task<IActionResult> GetDeviceById(string id, CancellationToken cancellationToken)
+    {
+        return this.Process(await this.Mediator.ExecuteAsync(new GenericFindByIdQuery<Device, string>(id), cancellationToken));
+    }
+
+    /// <summary>
     /// Creates a new <see cref="Device"/>
     /// </summary>
     /// <param name="command">An object that represents the command to execute</param>
